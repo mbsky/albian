@@ -11,6 +11,10 @@ namespace Albian.Persistence.Imp.Parser
 {
     public class StorageParser : AbstractStorageParser
     {
+        public static string DefaultStorageName
+        {
+            get { return "DefaultStorage"; }
+        }
         protected override IDictionary<string, IStorageAttribute> ParserStorages(XmlNode node)
         {
             if (null == node)
@@ -23,15 +27,28 @@ namespace Albian.Persistence.Imp.Parser
                 throw new Exception("the Storage node is empty in the Storage..config");
             }
             IDictionary<string, IStorageAttribute> dic = new Dictionary<string, IStorageAttribute>();
+            int idx = 0;
             foreach (XmlNode n in nodes)
             {
                 IStorageAttribute storageAttribute = ParserStorage(n);
                 if (null != storageAttribute)
                 {
                     dic.Add(storageAttribute.Name, storageAttribute);
+                    if (0 == idx)
+                    {
+                        //insert the default storage
+                        //the default is the first storage
+                        StorageCache.InsertOrUpdate(DefaultStorageName,storageAttribute);
+                    }
+                    idx++;
                 }
             }
-            return 0 == dic.Count ? null : dic;
+
+            if (0 == dic.Count)
+            {
+                throw new Exception("the error in the storage.config");
+            }
+            return dic;
         }
 
         protected override IStorageAttribute ParserStorage(XmlNode node)

@@ -12,8 +12,16 @@ namespace Albian.Persistence.Imp.Parser
 {
     public class PersistenceParser : AbstractPersistenceParser
     {
+        public static string DefaultRoutingName
+        {
+            get { return "DefaultRouting"; }
+        }
         protected override IList<IObjectAttribute> ParserObjects(XmlNode entitiesNode)
         {
+            if (null == entitiesNode)
+            {
+                throw new ArgumentNullException("entitiesNode");
+            }
             IList<IObjectAttribute> list = new List<IObjectAttribute>();
             XmlNodeList entityNodes = entitiesNode.SelectNodes("Object");
             if (null == entityNodes || 0 == entityNodes.Count)
@@ -77,6 +85,20 @@ namespace Albian.Persistence.Imp.Parser
                                                                                  XmlNodeList routingNodes)
         {
             IDictionary<string, IRoutingAttribute> routings = new Dictionary<string, IRoutingAttribute>();
+            //set the default value when the routingnodes is not exist
+            if (null == routingNodes || 0 == routingNodes.Count)
+            {
+                IRoutingAttribute routing = new RoutingAttribute()
+                                                {
+                                                    Name = DefaultRoutingName,
+                                                    Permission = PermissionMode.WR,
+                                                    StorageName = StorageParser.DefaultStorageName,
+                                                    TableName = defaultTableName,
+                                                };
+                routings.Add(DefaultRoutingName, routing);
+                return routings;
+            }
+
             foreach (XmlNode node in routingNodes)
             {
                 IRoutingAttribute routing = ParserRouting(defaultTableName, node);
@@ -90,6 +112,10 @@ namespace Albian.Persistence.Imp.Parser
 
         protected override IRoutingAttribute ParserRouting(string defaultTableName, XmlNode routingNode)
         {
+            if (null == routingNode)
+            {
+                throw new ArgumentNullException("routingNode");
+            }
             object name;
             XmlFileParser.TryGetAttributeValue(routingNode, "Name", out name);
             if (null == name)
@@ -127,11 +153,25 @@ namespace Albian.Persistence.Imp.Parser
         protected override IDictionary<string, IMemberAttribute> ParserMembers(string typeFullName,
                                                                                XmlNodeList memberNodes)
         {
+            if (string.IsNullOrEmpty(typeFullName))
+            {
+                throw new ArgumentNullException("typeFullName");
+            }
+            object target = MemberCache.Get(typeFullName);
+            if (null == memberNodes || 0 == memberNodes.Count)
+            {
+                if (null == target)
+                {
+                    return null;
+                }
+                return (IDictionary<string, IMemberAttribute>)target;
+            }
+
             foreach (XmlNode node in memberNodes)
             {
                 ParserMember(typeFullName, node);
             }
-            object target = MemberCache.Get(typeFullName);
+            
             if (null == target)
             {
                 throw new Exception("Get the members attribute is error.");
@@ -141,6 +181,11 @@ namespace Albian.Persistence.Imp.Parser
 
         protected override IMemberAttribute ParserMember(string typeFullName, XmlNode memberNode)
         {
+            if (string.IsNullOrEmpty(typeFullName))
+            {
+                throw new ArgumentNullException("typeFullName");
+            }
+
             object target = MemberCache.Get(typeFullName);
             if (null == target)
             {
@@ -161,6 +206,10 @@ namespace Albian.Persistence.Imp.Parser
 
         private static IMemberAttribute GenerateMember(IMemberAttribute member, XmlNode memberNode)
         {
+            if (null == memberNode)
+            {
+                return member;
+            }
             object oFieldName;
             object oAllowNull;
             object oLength;
