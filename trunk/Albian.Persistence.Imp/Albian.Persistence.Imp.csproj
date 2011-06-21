@@ -69,7 +69,7 @@
     <Compile Include="Context\Task.cs" />
     <Compile Include="ConvertToDatabaseStyle.cs" />
     <Compile Include="ConvertToDbType.cs" />
-    <Compile Include="ConvertToGeneratorMode.cs" />
+    <Compile Include="ConvertToPermissionMode.cs" />
     <Compile Include="Model\FakeCommandAttribute.cs" />
     <Compile Include="Model\MemberAttribute.cs" />
     <Compile Include="Model\ObjectAttribute.cs" />
