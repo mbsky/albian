@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{376313F1-1886-4690-8E93-9B4ACE705868}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Albian.Persistence.Imp</RootNamespace>
+    <AssemblyName>Albian.Persistence.Imp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Reference\dll\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\MemberCache.cs" />
+    <Compile Include="Cache\ObjectCache.cs" />
+    <Compile Include="Cache\PropertyCache.cs" />
+    <Compile Include="Cache\StorageCache.cs" />
+    <Compile Include="Command\DaoFactory.cs" />
+    <Compile Include="Command\DatabaseHelper.cs" />
+    <Compile Include="Command\DbHelper.cs" />
+    <Compile Include="Command\DbType.cs" />
+    <Compile Include="Command\Interface\IComposeText.cs" />
+    <Compile Include="Command\Interface\IDao.cs" />
+    <Compile Include="Command\Interface\IDaoFactory.cs" />
+    <Compile Include="Command\Interface\IDbTypeFactory.cs" />
+    <Compile Include="Command\MySql.cs" />
+    <Compile Include="Command\Oracle.cs" />
+    <Compile Include="Command\SqlServer.cs" />
+    <Compile Include="Context\StorageContext.cs" />
+    <Compile Include="Context\Task.cs" />
+    <Compile Include="ConvertToDatabaseStyle.cs" />
+    <Compile Include="ConvertToDbType.cs" />
+    <Compile Include="ConvertToGeneratorMode.cs" />
+    <Compile Include="Model\FakeCommandAttribute.cs" />
+    <Compile Include="Model\MemberAttribute.cs" />
+    <Compile Include="Model\ObjectAttribute.cs" />
+    <Compile Include="Model\RoutingAttribute.cs" />
+    <Compile Include="Model\StorageAttribute.cs" />
+    <Compile Include="Parser\AbstractPersistenceParser.cs" />
+    <Compile Include="Parser\AbstractStorageParser.cs" />
+    <Compile Include="Parser\PersistenceParser.cs" />
+    <Compile Include="Parser\StorageParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\AssemblyManager.cs" />
+    <Compile Include="Reflection\ReflectMember.cs" />
+    <Compile Include="SeparatedManager.cs" />
+    <Compile Include="Template.cs" />
+    <Compile Include="Text\CommandText.cs" />
+    <Compile Include="Text\Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config\Persistence.config" />
+    <None Include="config\Storage.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Albian.Cached.Imp\Albian.Cached.Imp.csproj">
+      <Project>{0900A2D7-9898-4AAA-B093-6B085EA5BA79}</Project>
+      <Name>Albian.Cached.Imp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Cached\Albian.Cached.csproj">
+      <Project>{C842F310-52A3-4111-BD4A-65A2798B929B}</Project>
+      <Name>Albian.Cached</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.ObjectModel\Albian.ObjectModel.csproj">
+      <Project>{21EDF711-2FDA-49C5-85B4-5A83D3768591}</Project>
+      <Name>Albian.ObjectModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
+      <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
+      <Name>Albian.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.XmlParser\Albian.XmlParser.csproj">
+      <Project>{12EC6673-7DAF-4396-93BE-02232371B9AF}</Project>
+      <Name>Albian.XmlParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
