@@ -88,10 +88,10 @@
     <Compile Include="Reflection\ReflectMember.cs" />
     <Compile Include="SeparatedManager.cs" />
     <Compile Include="Template.cs" />
-    <Compile Include="Text\FakeCommandBuilder.cs" />
-    <Compile Include="Text\StorageContextBuilder.cs" />
-    <Compile Include="Text\TaskBuilder.cs" />
-    <Compile Include="Text\DatabaseFactory.cs" />
+    <Compile Include="Command\FakeCommandBuilder.cs" />
+    <Compile Include="Command\StorageContextBuilder.cs" />
+    <Compile Include="Command\TaskBuilder.cs" />
+    <Compile Include="Command\DatabaseFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\Persistence.config" />
