@@ -150,9 +150,9 @@ namespace Albian.Persistence.Imp.Text
                     continue;
                 }
                 sbCols.AppendFormat("{0},", member.FieldName);
-                string paraName = Util.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
+                string paraName = DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
                 sbValues.AppendFormat("{0},", paraName);
-                paras.Add(Util.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
             }
             int colsLen = sbCols.Length;
             if (0 < colsLen)

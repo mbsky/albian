@@ -91,7 +91,7 @@
     <Compile Include="Text\FakeCommandBuilder.cs" />
     <Compile Include="Text\StorageContextBuilder.cs" />
     <Compile Include="Text\TaskBuilder.cs" />
-    <Compile Include="Text\Util.cs" />
+    <Compile Include="Text\DatabaseFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\Persistence.config" />
