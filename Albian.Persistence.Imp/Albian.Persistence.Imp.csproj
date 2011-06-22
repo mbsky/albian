@@ -58,17 +58,17 @@
     <Compile Include="Cache\ObjectCache.cs" />
     <Compile Include="Cache\PropertyCache.cs" />
     <Compile Include="Cache\StorageCache.cs" />
-    <Compile Include="Command\DaoFactory.cs" />
-    <Compile Include="Command\DatabaseHelper.cs" />
-    <Compile Include="Command\DbHelper.cs" />
-    <Compile Include="Command\DbType.cs" />
-    <Compile Include="Command\Interface\IComposeText.cs" />
-    <Compile Include="Command\Interface\IDao.cs" />
-    <Compile Include="Command\Interface\IDaoFactory.cs" />
-    <Compile Include="Command\Interface\IDbTypeFactory.cs" />
-    <Compile Include="Command\MySql.cs" />
-    <Compile Include="Command\Oracle.cs" />
-    <Compile Include="Command\SqlServer.cs" />
+    <Compile Include="Cmd\DaoFactory.cs" />
+    <Compile Include="Cmd\DatabaseHelper.cs" />
+    <Compile Include="Cmd\DbHelper.cs" />
+    <Compile Include="Cmd\DbType.cs" />
+    <Compile Include="Cmd\Interface\IComposeText.cs" />
+    <Compile Include="Cmd\Interface\IDao.cs" />
+    <Compile Include="Cmd\Interface\IDaoFactory.cs" />
+    <Compile Include="Cmd\Interface\IDbTypeFactory.cs" />
+    <Compile Include="Cmd\MySql.cs" />
+    <Compile Include="Cmd\Oracle.cs" />
+    <Compile Include="Cmd\SqlServer.cs" />
     <Compile Include="Context\StorageContext.cs" />
     <Compile Include="Context\Task.cs" />
     <Compile Include="ConvertToDatabaseStyle.cs" />
@@ -88,7 +88,9 @@
     <Compile Include="Reflection\ReflectMember.cs" />
     <Compile Include="SeparatedManager.cs" />
     <Compile Include="Template.cs" />
-    <Compile Include="Text\CommandText.cs" />
+    <Compile Include="Text\FakeCommandBuilder.cs" />
+    <Compile Include="Text\StorageContextBuilder.cs" />
+    <Compile Include="Text\TaskBuilder.cs" />
     <Compile Include="Text\Util.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +118,9 @@
       <Project>{12EC6673-7DAF-4396-93BE-02232371B9AF}</Project>
       <Name>Albian.XmlParser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Execution\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

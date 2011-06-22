@@ -16,13 +16,6 @@ namespace Albian.Persistence.Imp
         public static int Create<T>(T entity)
             where T : IAlbianObject, new()
         {
-            //Type type = typeof(T);
-            //string fullName = type.FullName;
-            //PropertyInfo[] properties =(PropertyInfo[]) PropertyCache.Get(fullName);
-            //foreach (PropertyInfo property in properties)
-            //{
-            //    property.
-            //}
             return 0;
         }
 
