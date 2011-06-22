@@ -16,7 +16,7 @@ namespace Albian.Persistence.Imp.Text
 {
     public class CommandText
     {
-        public string GenerateInsertText<T>(T target)
+        public ITask GenerateSingleCreateTask<T>(T target)
             where T : IAlbianObject
         {
             ITask task = new Task();
@@ -28,73 +28,31 @@ namespace Albian.Persistence.Imp.Text
 
             var objectAttribute = (IObjectAttribute) ObjectCache.Get(fullName);
 
-            foreach (var routing in objectAttribute.RoutingAttributes)
+            foreach (var routing in objectAttribute.RoutingAttributes.Values)
             {
-                //if (null == routing.Value)
-                //{
-                //    continue;
-                //}
-                //StringBuilder sbInsert = new StringBuilder();
-                //StringBuilder sbCols = new StringBuilder();
-                //StringBuilder sbValues = new StringBuilder();
-                //IDictionary<string, DbParameter[]> cmdText;
-                //if (null == task || null == task.Context || 0 == task.Context.Count)
-                //{
-                //    cmdText = new Dictionary<string, DbParameter[]>();
-                //}
-                //else
-                //{
-                //    cmdText = task.Context.FakeCommand;
-                //}
-                //IList<DbParameter> paras = new List<DbParameter>();
-                //IStorageContext context = new StorageContext();
-
-                ////create the connection string
-                //IStorageAttribute storageAttr = (IStorageAttribute) StorageCache.Get(routing.Value.StorageName);
-                //context.ConnectionString = StorageParser.BuildConnectionString(storageAttr);
-                ////create the hash table name
-                //SeparatedHandle<T> handler = SeparatedManager.GetEvent<T>(storageAttr.Name, fullName);
-                //string tableName = null == handler ? routing.Value.TableName : string.Format("{0}{1}", routing.Value.TableName, handler(target));
-                //string tableFullName = "dbo" == routing.Value.Owner || string.IsNullOrEmpty(routing.Value.Owner) ? tableName : string.Format("[{0}].[{1}]", routing.Value.Owner, tableName);
-
-                ////build the command text
-                //IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
-                //foreach (PropertyInfo property in properties)
-                //{
-                //    object value = property.GetValue(target,null);
-                //    if(null == value)
-                //    {
-                //        continue;
-                //    }
-                //    IMemberAttribute member = members[property.Name];
-                //    if (!member.IsSave)
-                //    {
-                //        continue;
-                //    }
-                //    sbCols.AppendFormat("{0},",member.FieldName);
-                //    string paraName = Util.GetParameterName(storageAttr.DatabaseStyle,member.FieldName);
-                //    sbValues.AppendFormat("{0},", paraName);
-                //    paras.Add(Util.GetDbParameter(storageAttr.DatabaseStyle,paraName,member.DBType,value,member.Length));
-                //}
-                //int colsLen = sbCols.Length;
-                //if (0 < colsLen)
-                //{
-                //    sbCols.Remove(colsLen - 1, 1);
-                //}
-                //int valLen = sbValues.Length;
-                //if (0 < valLen)
-                //{
-                //    sbValues.Remove(valLen - 1,1);
-                //}
-                //sbInsert.AppendFormat("INSERT INTO {0} ({1}) VALUES({2}) ",tableFullName,sbCols,sbValues);
-                //cmdText.Add(sbInsert.ToString(),((List<DbParameter>)paras).ToArray());
-                //context.FakeCommand = cmdText;
-                //storageContexts.Add(storageAttr.Name, context);
+               IFakeCommandAttribute fakeCommandAttrribute = BuildCreateFakeCommandByRouting(PermissionMode.W, target, routing, objectAttribute, properties);
+               if (null == fakeCommandAttrribute)//the PermissionMode is not enough
+               {
+                   continue;
+               }
+                if (storageContexts.ContainsKey(fakeCommandAttrribute.StorageName))
+               {
+                   storageContexts[fakeCommandAttrribute.StorageName].FakeCommand.Add(fakeCommandAttrribute.CommandText, fakeCommandAttrribute.Paras);
+               }
+               else
+               {
+                   IStorageContext storageContext = new StorageContext();
+                   storageContext.FakeCommand = new Dictionary<string, DbParameter[]>();
+                   storageContext.FakeCommand.Add(fakeCommandAttrribute.CommandText, fakeCommandAttrribute.Paras);
+                   storageContexts.Add(fakeCommandAttrribute.StorageName, storageContext);
+               }
             }
-
-
+            if (0 == storageContexts.Count)//no the storage context
+            {
+                return null;
+            }
             task.Context = storageContexts;
-            return string.Empty;
+            return task;
         }
 
 
