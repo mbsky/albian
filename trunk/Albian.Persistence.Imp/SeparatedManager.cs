@@ -12,10 +12,10 @@ namespace Albian.Persistence.Imp
     {
         private static readonly Hashtable _separatedEvents = Hashtable.Synchronized(new Hashtable());
 
-        public static void Register<T>(string storageName, string typeFullName, SeparatedHandle<T> separatedEvent)
+        public static void Register<T>(string routingName, string typeFullName, SeparatedHandle<T> separatedEvent)
             where T : IAlbianObject
         {
-            if (string.IsNullOrEmpty(storageName))
+            if (string.IsNullOrEmpty(routingName))
             {
                 throw new ArgumentNullException("storageName");
             }
@@ -25,13 +25,13 @@ namespace Albian.Persistence.Imp
             }
             if (null == separatedEvent)
                 return;
-            _separatedEvents.Add(string.Format("{0}{1}", typeFullName, storageName), separatedEvent);
+            _separatedEvents.Add(string.Format("{0}{1}", typeFullName, routingName), separatedEvent);
         }
 
-        public static SeparatedHandle<T> GetEvent<T>(string storageName, string typeFullName)
+        public static SeparatedHandle<T> GetEvent<T>(string routingName, string typeFullName)
             where T : IAlbianObject
         {
-            object target = _separatedEvents[string.Format("{0}{1}", typeFullName, storageName)];
+            object target = _separatedEvents[string.Format("{0}{1}", typeFullName, routingName)];
             if (null != target)
                 return (SeparatedHandle<T>) target;
             return null;
