@@ -14,7 +14,7 @@ using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 using log4net;
 
-namespace Albian.Persistence.Imp.Text
+namespace Albian.Persistence.Imp.Command
 {
     public class FakeCommandBuilder
     {
@@ -27,50 +27,29 @@ namespace Albian.Persistence.Imp.Text
             {
                 throw new ArgumentNullException("target");
             }
-            IDictionary<string, IStorageContext> storageContexts = new Dictionary<string, IStorageContext>();
+
             Type type = typeof (T);
             string fullName = AssemblyManager.GetFullTypeName(type);
-            object obj = PropertyCache.Get(fullName);
+            object oProperties = PropertyCache.Get(fullName);
             PropertyInfo[] properties;
-            if (null == obj)
+            if (null == oProperties)
             {
                 if (null != Logger)
                     Logger.Warn("Get the object property info from cache is null.Reflection now and add to cache.");
                 properties = type.GetProperties();
                 PropertyCache.InsertOrUpdate(fullName,properties);
             }
-             properties = (PropertyInfo[]) obj;
-
-            var objectAttribute = (IObjectAttribute) ObjectCache.Get(fullName);
-
-            foreach (var routing in objectAttribute.RoutingAttributes.Values)
+            properties = (PropertyInfo[])oProperties;
+            object oAttribute = ObjectCache.Get(fullName);
+            if (null == oAttribute)
             {
-               IFakeCommandAttribute fakeCommandAttrribute = BuildCreateFakeCommandByRouting(PermissionMode.W, target, routing, objectAttribute, properties);
-               if (null == fakeCommandAttrribute)//the PermissionMode is not enough
-               {
-                   if (null != Logger)
-                       Logger.WarnFormat("The permission is not enough in the {0} routing.",routing.Name);
-                   continue;
-               }
-                if (storageContexts.ContainsKey(fakeCommandAttrribute.StorageName))
-               {
-                   storageContexts[fakeCommandAttrribute.StorageName].FakeCommand.Add(fakeCommandAttrribute.CommandText, fakeCommandAttrribute.Paras);
-               }
-               else
-               {
-                   IStorageContext storageContext = new StorageContext
-                                                        {
-                                                            FakeCommand = new Dictionary<string, DbParameter[]>
-                                                                              {
-                                                                                  {
-                                                                                      fakeCommandAttrribute.CommandText,
-                                                                                      fakeCommandAttrribute.Paras
-                                                                                      }
-                                                                              }
-                                                        };
-                   storageContexts.Add(fakeCommandAttrribute.StorageName, storageContext);
-               }
+                if (null != Logger)
+                    Logger.ErrorFormat("The {0} object attribute is null in the object cache.",fullName);
+                throw new Exception("The object attribute is null");
             }
+            IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
+            IDictionary<string, IStorageContext> storageContexts = BuildCreateFakeCommandByRoutings(target, properties, objectAttribute);
+
             if (0 == storageContexts.Count)//no the storage context
             {
                 if (null != Logger)
@@ -80,6 +59,55 @@ namespace Albian.Persistence.Imp.Text
             return storageContexts;
         }
 
+        public IDictionary<string, IStorageContext> BuildCreateFakeCommandByRoutings<T>(T target, PropertyInfo[] properties, IObjectAttribute objectAttribute) 
+            where T : IAlbianObject
+        {
+            if (null == properties || 0 == properties.Length)
+            {
+                throw new ArgumentNullException("properties");
+            }
+            if (null == objectAttribute)
+            {
+                throw new ArgumentNullException("objectAttribute");
+            }
+            if (null == objectAttribute.RoutingAttributes || null == objectAttribute.RoutingAttributes.Values || 0 == objectAttribute.RoutingAttributes.Values.Count)
+            {
+                if (null != Logger)
+                    Logger.Error("The routing attributes or routings is null");
+                throw new Exception("The routing attributes or routing is null");
+            }
+
+            IDictionary<string, IStorageContext> storageContexts = new Dictionary<string, IStorageContext>();
+            foreach (var routing in objectAttribute.RoutingAttributes.Values)
+            {
+                IFakeCommandAttribute fakeCommandAttrribute = BuildCreateFakeCommandByRouting(PermissionMode.W, target, routing, objectAttribute, properties);
+                if (null == fakeCommandAttrribute)//the PermissionMode is not enough
+                {
+                    if (null != Logger)
+                        Logger.WarnFormat("The permission is not enough in the {0} routing.",routing.Name);
+                    continue;
+                }
+                if (storageContexts.ContainsKey(fakeCommandAttrribute.StorageName))
+                {
+                    storageContexts[fakeCommandAttrribute.StorageName].FakeCommand.Add(fakeCommandAttrribute.CommandText, fakeCommandAttrribute.Paras);
+                }
+                else
+                {
+                    IStorageContext storageContext = new StorageContext
+                                                         {
+                                                             FakeCommand = new Dictionary<string, DbParameter[]>
+                                                                               {
+                                                                                   {
+                                                                                       fakeCommandAttrribute.CommandText,
+                                                                                       fakeCommandAttrribute.Paras
+                                                                                       }
+                                                                               }
+                                                         };
+                    storageContexts.Add(fakeCommandAttrribute.StorageName, storageContext);
+                }
+            }
+            return storageContexts;
+        }
 
         public IFakeCommandAttribute BuildCreateFakeCommandByRouting<T>(PermissionMode permission, T target,
                                                                         IRoutingAttribute routing,
@@ -94,10 +122,6 @@ namespace Albian.Persistence.Imp.Text
             if (null == properties || 0 == properties.Length)
             {
                 throw new ArgumentNullException("properties");
-            }
-            if (null == target)
-            {
-                throw new ArgumentNullException("target");
             }
             if (null == objectAttribute)
             {
@@ -126,14 +150,7 @@ namespace Albian.Persistence.Imp.Text
             }
 
             //create the hash table name
-            SeparatedHandle<T> handler = SeparatedManager.GetEvent<T>(storageAttr.Name,
-                                                                      AssemblyManager.GetFullTypeName(typeof (T)));
-            string tableName = null == handler
-                                   ? routing.TableName
-                                   : string.Format("{0}{1}", routing.TableName, handler(target));
-            string tableFullName = "dbo" == routing.Owner || string.IsNullOrEmpty(routing.Owner)
-                                       ? tableName
-                                       : string.Format("[{0}].[{1}]", routing.Owner, tableName);
+            string tableFullName = GetTableFullName(routing, target);
 
             //build the command text
             IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
@@ -172,6 +189,18 @@ namespace Albian.Persistence.Imp.Text
                                                     StorageName = routing.StorageName
                                                 };
             return fakeCmd;
+        }
+
+        private string GetTableFullName<T>(IRoutingAttribute routing, T target) where T : IAlbianObject
+        {
+            SeparatedHandle<T> handler = SeparatedManager.GetEvent<T>(routing.Name,
+                                                                      AssemblyManager.GetFullTypeName(typeof (T)));
+            string tableName = null == handler
+                                   ? routing.TableName
+                                   : string.Format("{0}{1}", routing.TableName, handler(target));
+            return "dbo" == routing.Owner || string.IsNullOrEmpty(routing.Owner)
+                       ? tableName
+                       : string.Format("[{0}].[{1}]", routing.Owner, tableName);
         }
     }
 }

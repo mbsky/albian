@@ -8,7 +8,7 @@ using Albian.Persistence.Enum;
 using log4net;
 using MySql.Data.MySqlClient;
 
-namespace Albian.Persistence.Imp.Text
+namespace Albian.Persistence.Imp.Command
 {
     public class DatabaseFactory
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Albian.Persistence.Imp.Text
+namespace Albian.Persistence.Imp.Command
 {
     public class StorageContextBuilder
     {
