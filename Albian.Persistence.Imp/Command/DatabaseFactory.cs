@@ -52,7 +52,7 @@ namespace Albian.Persistence.Imp.Command
                     {
                         DbParameter para = new MySqlParameter
                                                {
-                                                   ParameterName = GetParameterName(DatabaseStyle.MySql, name),
+                                                   ParameterName = name,
                                                    Value = value
                                                };
                         if (DbType.AnsiString == dbType || DbType.AnsiStringFixedLength == dbType ||
@@ -67,7 +67,7 @@ namespace Albian.Persistence.Imp.Command
                     {
                         DbParameter para = new OracleParameter
                                                {
-                                                   ParameterName = GetParameterName(DatabaseStyle.Oracle, name),
+                                                   ParameterName = name,
                                                    Value = value
                                                };
                         if (DbType.AnsiString == dbType || DbType.AnsiStringFixedLength == dbType ||
@@ -83,7 +83,7 @@ namespace Albian.Persistence.Imp.Command
                     {
                         DbParameter para = new SqlParameter
                                                {
-                                                   ParameterName = GetParameterName(DatabaseStyle.SqlServer, name),
+                                                   ParameterName = name,
                                                    Value = value
                                                };
                         if (DbType.AnsiString == dbType || DbType.AnsiStringFixedLength == dbType ||

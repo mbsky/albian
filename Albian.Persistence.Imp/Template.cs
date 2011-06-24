@@ -2,6 +2,9 @@
 using System.Data;
 using System.Data.Common;
 using Albian.ObjectModel;
+using Albian.Persistence.Context;
+using Albian.Persistence.Imp.Command;
+using Albian.Persistence.Model;
 
 namespace Albian.Persistence.Imp
 {
@@ -14,8 +17,10 @@ namespace Albian.Persistence.Imp
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
         public static int Create<T>(T entity)
-            where T : IAlbianObject, new()
+            where T : IAlbianObject
         {
+            FakeCommandBuilder builder = new FakeCommandBuilder();
+            IDictionary<string,IStorageContext> value = builder.GenerateSingleCreateStorage<T>(entity);
             return 0;
         }
 
