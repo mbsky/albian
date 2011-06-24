@@ -58,7 +58,7 @@ namespace Albian.Persistence.Imp.Parser
                 throw new ArgumentNullException("node");
             }
             IStorageAttribute storageAttribute = GenerateStorageAttribute(node);
-            if (string.IsNullOrEmpty(storageAttribute.Uid) || !storageAttribute.IntegratedSecurity)
+            if (string.IsNullOrEmpty(storageAttribute.Uid) && !storageAttribute.IntegratedSecurity)
             {
                 throw new Exception("the database authentication mechanism is error.");
             }
@@ -81,70 +81,185 @@ namespace Albian.Persistence.Imp.Parser
             object oPooling;
             object oIntegratedSecurity;
             object oDbClass;
-            if (XmlFileParser.TryGetAttributeValue(node, "Name", out oName) && null != oName)
+
+            foreach (XmlNode n in node.ChildNodes)
             {
-                storageAttribute.Name = oName.ToString().Trim();
+                switch (n.Name)
+                {
+                    case "Name":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oName))
+                            {
+                                storageAttribute.Name = oName.ToString().Trim();
+                            }
+                            break;
+                        }
+                    case "DatabaseStyle":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oDbClass))
+                            {
+                                storageAttribute.DatabaseStyle = ConvertToDatabaseStyle.Convert(oDbClass.ToString());
+                            }
+                            break;
+                        }
+                    case "Server":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oServer))
+                            {
+                                storageAttribute.Server = oServer.ToString().Trim();
+                            }
+                            break;
+                        }
+                    case "Database":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oDateBase))
+                            {
+                                storageAttribute.Database = oDateBase.ToString().Trim();
+                            }
+                            break;
+                        }
+                    case "Uid":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oUid))
+                            {
+                                storageAttribute.Uid = oUid.ToString().Trim();
+                            }
+                            break;
+                        }
+                    case "Password":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oPassword))
+                            {
+                                storageAttribute.Password = oPassword.ToString().Trim();
+                            }
+                            break;
+                        }
+                    case "MinPoolSize":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oMinPoolSize))
+                            {
+                                storageAttribute.MinPoolSize = Math.Abs(int.Parse(oMinPoolSize.ToString().Trim()));
+                            }
+                            break;
+                        }
+                    case "MaxPoolSize":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oMaxPoolSize))
+                            {
+                                storageAttribute.MaxPoolSize = Math.Abs(int.Parse(oMaxPoolSize.ToString().Trim()));
+                            }
+                            break;
+                        }
+                    case "Timeout":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oTimeout))
+                            {
+                                storageAttribute.Timeout = Math.Abs(int.Parse(oTimeout.ToString().Trim()));
+                            }
+                            break;
+                        }
+                    case "Pooling":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oPooling))
+                            {
+                                storageAttribute.Pooling = bool.Parse(oPooling.ToString().Trim());
+                            }
+                            break;
+                        }
+                    case "IntegratedSecurity":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oIntegratedSecurity))
+                            {
+                                string sIntegratedSecurity = oIntegratedSecurity.ToString().Trim();
+                                if ("false" == sIntegratedSecurity.ToLower() || "no" == sIntegratedSecurity.ToLower())
+                                    storageAttribute.IntegratedSecurity = false;
+                                if ("true" == sIntegratedSecurity.ToLower()
+                                    || "yes" == sIntegratedSecurity.ToLower() || "sspi" == sIntegratedSecurity.ToLower())
+                                    storageAttribute.IntegratedSecurity = true;
+                            }
+                            break;
+                        }
+                }
             }
-            else
+            if(string.IsNullOrEmpty(storageAttribute.Name))
             {
                 throw new Exception("the name is empty in the storage.config");
             }
-            if (XmlFileParser.TryGetAttributeValue(node, "DatabaseStyle", out oDbClass) && null != oDbClass)
-            {
-                storageAttribute.DatabaseStyle = ConvertToDatabaseStyle.Convert(oDbClass.ToString());
-            }
-            if (XmlFileParser.TryGetAttributeValue(node, "Server", out oServer) && null != oServer)
-            {
-                storageAttribute.Server = oServer.ToString().Trim();
-            }
-            else
+            if (string.IsNullOrEmpty(storageAttribute.Server))
             {
                 throw new Exception("the Server is empty in the storage.config");
             }
-            if (XmlFileParser.TryGetAttributeValue(node, "DateBase", out oDateBase) && null != oDateBase)
-            {
-                storageAttribute.Database = oDateBase.ToString().Trim();
-            }
-            else
+            if (string.IsNullOrEmpty(storageAttribute.Database))
             {
                 throw new Exception("the Database is empty in the storage.config");
             }
-
-            if (XmlFileParser.TryGetAttributeValue(node, "Uid", out oUid) && null != oUid)
-            {
-                storageAttribute.Uid = oUid.ToString().Trim();
-            }
-            if (XmlFileParser.TryGetAttributeValue(node, "Password", out oPassword) && null != oPassword)
-            {
-                storageAttribute.Password = oPassword.ToString().Trim();
-            }
-            if (XmlFileParser.TryGetAttributeValue(node, "MinPoolSize", out oMinPoolSize) && null != oMinPoolSize)
-            {
-                storageAttribute.MinPoolSize = Math.Abs(int.Parse(oMinPoolSize.ToString().Trim()));
-            }
-            if (XmlFileParser.TryGetAttributeValue(node, "MaxPoolSize", out oMaxPoolSize) && null != oMaxPoolSize)
-            {
-                storageAttribute.MaxPoolSize = Math.Abs(int.Parse(oMaxPoolSize.ToString().Trim()));
-            }
-            if (XmlFileParser.TryGetAttributeValue(node, "Timeout", out oTimeout) && null != oTimeout)
-            {
-                storageAttribute.Timeout = Math.Abs(int.Parse(oTimeout.ToString().Trim()));
-            }
-            if (XmlFileParser.TryGetAttributeValue(node, "Pooling", out oPooling) && null != oPooling)
-            {
-                storageAttribute.Pooling = bool.Parse(oPooling.ToString().Trim());
-            }
-            if (XmlFileParser.TryGetAttributeValue(node, "IntegratedSecurity", out oIntegratedSecurity) &&
-                null != oIntegratedSecurity)
-            {
-                string sIntegratedSecurity = oIntegratedSecurity.ToString().Trim();
-                if ("false" == sIntegratedSecurity.ToLower() || "no" == sIntegratedSecurity.ToLower())
-                    storageAttribute.IntegratedSecurity = false;
-                if ("true" == sIntegratedSecurity.ToLower()
-                    || "yes" == sIntegratedSecurity.ToLower() || "sspi" == sIntegratedSecurity.ToLower())
-                    storageAttribute.IntegratedSecurity = true;
-            }
             return storageAttribute;
+
+
+            //if (XmlFileParser.TryGetNodeValue(node, "Name", out oName) && null != oName)
+            //{
+            //    storageAttribute.Name = oName.ToString().Trim();
+            //}
+            //else
+            //{
+            //    throw new Exception("the name is empty in the storage.config");
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "DatabaseStyle", out oDbClass) && null != oDbClass)
+            //{
+            //    storageAttribute.DatabaseStyle = ConvertToDatabaseStyle.Convert(oDbClass.ToString());
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "Server", out oServer) && null != oServer)
+            //{
+            //    storageAttribute.Server = oServer.ToString().Trim();
+            //}
+            //else
+            //{
+            //    throw new Exception("the Server is empty in the storage.config");
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "DateBase", out oDateBase) && null != oDateBase)
+            //{
+            //    storageAttribute.Database = oDateBase.ToString().Trim();
+            //}
+            //else
+            //{
+            //    throw new Exception("the Database is empty in the storage.config");
+            //}
+
+            //if (XmlFileParser.TryGetAttributeValue(node, "Uid", out oUid) && null != oUid)
+            //{
+            //    storageAttribute.Uid = oUid.ToString().Trim();
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "Password", out oPassword) && null != oPassword)
+            //{
+            //    storageAttribute.Password = oPassword.ToString().Trim();
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "MinPoolSize", out oMinPoolSize) && null != oMinPoolSize)
+            //{
+            //    storageAttribute.MinPoolSize = Math.Abs(int.Parse(oMinPoolSize.ToString().Trim()));
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "MaxPoolSize", out oMaxPoolSize) && null != oMaxPoolSize)
+            //{
+            //    storageAttribute.MaxPoolSize = Math.Abs(int.Parse(oMaxPoolSize.ToString().Trim()));
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "Timeout", out oTimeout) && null != oTimeout)
+            //{
+            //    storageAttribute.Timeout = Math.Abs(int.Parse(oTimeout.ToString().Trim()));
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "Pooling", out oPooling) && null != oPooling)
+            //{
+            //    storageAttribute.Pooling = bool.Parse(oPooling.ToString().Trim());
+            //}
+            //if (XmlFileParser.TryGetAttributeValue(node, "IntegratedSecurity", out oIntegratedSecurity) &&
+            //    null != oIntegratedSecurity)
+            //{
+            //    string sIntegratedSecurity = oIntegratedSecurity.ToString().Trim();
+            //    if ("false" == sIntegratedSecurity.ToLower() || "no" == sIntegratedSecurity.ToLower())
+            //        storageAttribute.IntegratedSecurity = false;
+            //    if ("true" == sIntegratedSecurity.ToLower()
+            //        || "yes" == sIntegratedSecurity.ToLower() || "sspi" == sIntegratedSecurity.ToLower())
+            //        storageAttribute.IntegratedSecurity = true;
+            //}
+            //return storageAttribute;
         }
 
         public static string BuildConnectionString(IStorageAttribute storageAttribute)

@@ -1,6 +1,8 @@
-﻿namespace Albian.Persistence.Imp.TestProject
+﻿using Albian.ObjectModel;
+
+namespace Albian.Persistence.Imp.TestProject
 {
-    public interface IOrder
+    public interface IOrder : IAlbianObject
     {
         string Id { get; set; }
         string Name { get; set; }

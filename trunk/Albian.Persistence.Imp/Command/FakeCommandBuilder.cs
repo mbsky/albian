@@ -28,8 +28,8 @@ namespace Albian.Persistence.Imp.Command
                 throw new ArgumentNullException("target");
             }
 
-            Type type = typeof (T);
-            string fullName = AssemblyManager.GetFullTypeName(type);
+            Type type = target.GetType();
+            string fullName = AssemblyManager.GetFullTypeName(target);
             object oProperties = PropertyCache.Get(fullName);
             PropertyInfo[] properties;
             if (null == oProperties)

@@ -9,7 +9,7 @@ namespace Albian.Persistence.Imp.Model
     {
         private DatabaseStyle _databaseStyle = DatabaseStyle.SqlServer;
         private string _databse = string.Empty;
-        private bool _integratedSecurity;
+        private bool _integratedSecurity = false;
         private int _maxPoolSize = 100;
         private int _minPoolSize = 5;
         private string _name = string.Empty;
