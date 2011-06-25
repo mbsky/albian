@@ -17,7 +17,7 @@ namespace Albian.Persistence.Imp
         {
             if (string.IsNullOrEmpty(routingName))
             {
-                throw new ArgumentNullException("storageName");
+                throw new ArgumentNullException("routingName");
             }
             if (string.IsNullOrEmpty(typeFullName))
             {

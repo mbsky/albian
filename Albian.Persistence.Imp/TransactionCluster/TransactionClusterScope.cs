@@ -14,11 +14,18 @@ namespace Albian.Persistence.Imp.TransactionCluster
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private TransactionClusterState _state = TransactionClusterState.NoStarted; 
+        /// <summary>
+        /// 当前事务集群的状态
+        /// </summary>
         public TransactionClusterState State 
         {
             get { return _state; }
         }
 
+        /// <summary>
+        /// 自动执行事务，并且提交或者回滚
+        /// </summary>
+        /// <param name="task"></param>
         public void Execute(ITask task)
         {
             IDictionary<string, IStorageContext> contexts = task.Context;
@@ -56,7 +63,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        private void UnLoadExecute(IDictionary<string, IStorageContext> storageContexts)
+        protected void UnLoadExecute(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -86,7 +93,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        private void Executed(IDictionary<string,IStorageContext> storageContexts)
+        protected void Executed(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -94,7 +101,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        private void ExceptionHandler(IDictionary<string, IStorageContext> storageContexts)
+        protected void ExceptionHandler(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -102,7 +109,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        private void ExecuteHandler(IDictionary<string, IStorageContext> storageContexts)
+        protected void ExecuteHandler(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -114,7 +121,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        private void PreLoadExecute(IDictionary<string, IStorageContext> storageContexts)
+        protected void PreLoadExecute(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
