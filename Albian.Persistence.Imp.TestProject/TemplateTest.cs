@@ -5,6 +5,7 @@ using Albian.ObjectModel;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System;
 
 namespace Albian.Persistence.Imp.TestProject
 {
@@ -480,12 +481,13 @@ namespace Albian.Persistence.Imp.TestProject
         public void CreateTest()
         {
             IOrder order = new Order();
-            order.Buyer = "buyer";
-            order.Id = "id";
-            order.Money = 2;
-            order.Name = "name";
-            order.Seller = "seller";
+            order.Buyer = "xiaoj";
+            order.Id = Guid.NewGuid().ToString();
+            order.Money = 40;
+            order.Name = "fucking";
+            order.Seller = "5173";
             Template.Create<IAlbianObject>(order);
+            //Template.Create<Order>();
             Assert.Inconclusive("没有找到能够满足 T 的类型约束的相应类型参数。请以适当的类型参数来调用 CreateTestHelper<T>()。");
         }
 
@@ -498,5 +500,32 @@ namespace Albian.Persistence.Imp.TestProject
             Template target = new Template();
             Assert.Inconclusive("TODO: 实现用来验证目标的代码");
         }
+
+        //public bool Tran()
+        //{
+        //    DbConnection conn1;
+        //    DbConnection conn2;
+        //    DbTransaction tran1 = conn1.BeginTransaction();
+        //    DbTransaction tran2 = conn2.BeginTransaction();
+        //    try
+        //    {
+        //    //    DbTransaction tran1 = conn1.BeginTransaction();
+        //    //    DbTransaction tran2 = conn2.BeginTransaction();
+        //        conn1.CreateCommand().ExecuteNonQuery();
+        //        conn2.CreateCommand().ExecuteNonQuery();
+        //        tran1.Commit();
+        //        tran2.Commit();
+        //    }
+        //    catch
+        //    {
+        //        tran1.Rollback();
+        //        tran2.Rollback();
+        //    }
+        //    finally
+        //    {
+        //        conn1.Dispose();
+        //        conn2.Dispose();
+        //    }
+        //}
     }
 }
