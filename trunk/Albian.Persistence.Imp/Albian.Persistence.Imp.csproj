@@ -74,6 +74,9 @@
     <Compile Include="ConvertToDatabaseStyle.cs" />
     <Compile Include="ConvertToDbType.cs" />
     <Compile Include="ConvertToPermissionMode.cs" />
+    <Compile Include="DTC\ITransactionClusterScope.cs" />
+    <Compile Include="DTC\TransactionClusterScope.cs" />
+    <Compile Include="DTC\TransactionClusterState.cs" />
     <Compile Include="Model\FakeCommandAttribute.cs" />
     <Compile Include="Model\MemberAttribute.cs" />
     <Compile Include="Model\ObjectAttribute.cs" />
@@ -118,9 +121,6 @@
       <Project>{12EC6673-7DAF-4396-93BE-02232371B9AF}</Project>
       <Name>Albian.XmlParser</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Execution\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

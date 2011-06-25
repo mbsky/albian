@@ -105,21 +105,30 @@ namespace Albian.Persistence.Imp.Command
                     Logger.Warn("The database connectionString is empty.");
                 throw new ArgumentNullException("connectionString");
             }
-            switch (dbStyle)
+            try
             {
-                case DatabaseStyle.MySql:
-                    {
-                        return new MySqlConnection(connectionString);
-                    }
-                case DatabaseStyle.Oracle:
-                    {
-                        return new OracleConnection(connectionString);
-                    }
-                case DatabaseStyle.SqlServer:
-                default:
-                    {
-                        return new SqlConnection(connectionString);
-                    }
+                switch (dbStyle)
+                {
+                    case DatabaseStyle.MySql:
+                        {
+                            return new MySqlConnection(connectionString);
+                        }
+                    case DatabaseStyle.Oracle:
+                        {
+                            return new OracleConnection(connectionString);
+                        }
+                    case DatabaseStyle.SqlServer:
+                    default:
+                        {
+                            return new SqlConnection(connectionString);
+                        }
+                }
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Create the connection is error.Message:{0}.",exc.Message);
+                throw exc;
             }
         }
     }
