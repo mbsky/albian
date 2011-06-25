@@ -74,9 +74,9 @@
     <Compile Include="ConvertToDatabaseStyle.cs" />
     <Compile Include="ConvertToDbType.cs" />
     <Compile Include="ConvertToPermissionMode.cs" />
-    <Compile Include="DTC\ITransactionClusterScope.cs" />
-    <Compile Include="DTC\TransactionClusterScope.cs" />
-    <Compile Include="DTC\TransactionClusterState.cs" />
+    <Compile Include="TransactionCluster\ITransactionClusterScope.cs" />
+    <Compile Include="TransactionCluster\TransactionClusterScope.cs" />
+    <Compile Include="TransactionCluster\TransactionClusterState.cs" />
     <Compile Include="Model\FakeCommandAttribute.cs" />
     <Compile Include="Model\MemberAttribute.cs" />
     <Compile Include="Model\ObjectAttribute.cs" />
