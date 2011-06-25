@@ -8,7 +8,7 @@ using System.Text;
 using Albian.Persistence.Context;
 using log4net;
 
-namespace Albian.Persistence.Imp.DTC
+namespace Albian.Persistence.Imp.TransactionCluster
 {
     public class TransactionClusterScope :ITransactionClusterScope
     {
@@ -21,20 +21,21 @@ namespace Albian.Persistence.Imp.DTC
 
         public void Execute(ITask task)
         {
+            IDictionary<string, IStorageContext> contexts = task.Context;
             _state = TransactionClusterState.NoStarted;
             try
             {
                 _state = TransactionClusterState.Opening;
 
-                PreExecute(task.Context);
+                PreLoadExecute(contexts);
 
                 _state = TransactionClusterState.OpenedAndRuning;
 
-                ExecuteHandler(task.Context);
+                ExecuteHandler(contexts);
 
                 _state = TransactionClusterState.RunnedAndCommiting;
 
-                Executed(task.Context);
+                Executed(contexts);
 
                 _state = TransactionClusterState.Commited;
             }
@@ -46,16 +47,16 @@ namespace Albian.Persistence.Imp.DTC
                     return;
                 }
                 _state = TransactionClusterState.Rollbacking;
-                ExceptionHandler(task.Context);
+                ExceptionHandler(contexts);
                 _state = TransactionClusterState.Rollbacked;
             }
             finally
             {
-                UnLoad(task.Context);
+                UnLoadExecute(contexts);
             }
         }
 
-        private void UnLoad(IDictionary<string, IStorageContext> storageContexts)
+        private void UnLoadExecute(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -113,7 +114,7 @@ namespace Albian.Persistence.Imp.DTC
             }
         }
 
-        private void PreExecute(IDictionary<string, IStorageContext> storageContexts)
+        private void PreLoadExecute(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
