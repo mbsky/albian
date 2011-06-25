@@ -15,7 +15,7 @@ using System.Data.Common;
 
 namespace Albian.Persistence.Imp.Command
 {
-    public class TaskBuilder
+    public class TaskBuilder : ITaskBuilder
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

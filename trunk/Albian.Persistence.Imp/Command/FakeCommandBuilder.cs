@@ -16,7 +16,7 @@ using log4net;
 
 namespace Albian.Persistence.Imp.Command
 {
-    public class FakeCommandBuilder
+    public class FakeCommandBuilder : IFakeCommandBuilder
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -101,7 +101,8 @@ namespace Albian.Persistence.Imp.Command
                                                                                        fakeCommandAttrribute.CommandText,
                                                                                        fakeCommandAttrribute.Paras
                                                                                        }
-                                                                               }
+                                                                               },
+                                                             StorageName = fakeCommandAttrribute.StorageName,
                                                          };
                     storageContexts.Add(fakeCommandAttrribute.StorageName, storageContext);
                 }
@@ -191,7 +192,7 @@ namespace Albian.Persistence.Imp.Command
             return fakeCmd;
         }
 
-        private string GetTableFullName<T>(IRoutingAttribute routing, T target) where T : IAlbianObject
+        protected string GetTableFullName<T>(IRoutingAttribute routing, T target) where T : IAlbianObject
         {
             SeparatedHandle<T> handler = SeparatedManager.GetEvent<T>(routing.Name,
                                                                       AssemblyManager.GetFullTypeName(typeof (T)));
