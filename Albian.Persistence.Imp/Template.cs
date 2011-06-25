@@ -5,6 +5,7 @@ using Albian.ObjectModel;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Model;
+using Albian.Persistence.Imp.DTC;
 
 namespace Albian.Persistence.Imp
 {
@@ -19,8 +20,12 @@ namespace Albian.Persistence.Imp
         public static int Create<T>(T entity)
             where T : IAlbianObject
         {
-            FakeCommandBuilder builder = new FakeCommandBuilder();
-            IDictionary<string,IStorageContext> value = builder.GenerateSingleCreateStorage<T>(entity);
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildTaskForSingleObject<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            tran.Execute(task);
+            //FakeCommandBuilder builder = new FakeCommandBuilder();
+            //IDictionary<string,IStorageContext> value = builder.GenerateSingleCreateStorage<T>(entity);
             return 0;
         }
 
