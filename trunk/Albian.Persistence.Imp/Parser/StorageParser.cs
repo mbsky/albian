@@ -207,6 +207,10 @@ namespace Albian.Persistence.Imp.Parser
             {
                 sbString.AppendFormat("User ID={0};Password={1};", storageAttribute.Uid, storageAttribute.Password);
             }
+            if (0 != storageAttribute.Timeout)
+            {
+                sbString.AppendFormat("Connection Timeout={0}",storageAttribute.Timeout);
+            }
             return sbString.ToString();
         }
     }
