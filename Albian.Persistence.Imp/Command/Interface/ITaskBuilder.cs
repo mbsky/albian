@@ -5,7 +5,7 @@ namespace Albian.Persistence.Imp.Command
 {
     public interface ITaskBuilder
     {
-        ITask BuildTaskForSingleObject<T>(T target)
+        ITask BuildCreateTask<T>(T target)
             where T :IAlbianObject;
     }
 }

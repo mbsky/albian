@@ -92,7 +92,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\AssemblyManager.cs" />
     <Compile Include="Reflection\ReflectMember.cs" />
-    <Compile Include="SeparatedManager.cs" />
+    <Compile Include="HashAlbianObjectManager.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Command\FakeCommandBuilder.cs" />
     <Compile Include="Command\StorageContextBuilder.cs" />

@@ -8,6 +8,7 @@ using System.Text;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.Parser;
+using Albian.Persistence.Model;
 using Albian.Pool.DbConnectionPool;
 using Albian.Pool.Imp.DbConnectionPool;
 using log4net;
@@ -151,13 +152,13 @@ namespace Albian.Persistence.Imp.TransactionCluster
                 if (ConnectionState.Open != storageContext.Connection.State)
                     storageContext.Connection.Open();
                 storageContext.Transaction = storageContext.Connection.BeginTransaction(IsolationLevel.ReadUncommitted);;
-                foreach (KeyValuePair<string, DbParameter[]> fake in storageContext.FakeCommand)
+                foreach (IFakeCommandAttribute fc in storageContext.FakeCommand)
                 {
                     IDbCommand cmd = storageContext.Connection.CreateCommand();
-                    cmd.CommandText = fake.Key;
+                    cmd.CommandText = fc.CommandText;
                     cmd.CommandType = CommandType.Text;
                     cmd.Transaction = storageContext.Transaction;
-                    foreach (DbParameter para in fake.Value)
+                    foreach (DbParameter para in fc.Paras)
                     {
                         cmd.Parameters.Add(para);
                     }
