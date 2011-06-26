@@ -6,6 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Albian.Persistence.Context;
+using Albian.Persistence.Imp.Command;
+using Albian.Persistence.Imp.Parser;
+using Albian.Pool.DbConnectionPool;
+using Albian.Pool.Imp.DbConnectionPool;
 using log4net;
 
 namespace Albian.Persistence.Imp.TransactionCluster
@@ -69,9 +73,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             {
 
                 IStorageContext storageContext = context.Value;
-                if(ConnectionState.Closed != storageContext.Connection.State)
-                    storageContext.Connection.Close();
-                storageContext.Connection.Dispose();
+                //storageContext.Connection.Dispose();
                 try
                 {
                     foreach (IDbCommand cmd in context.Value.Command)
@@ -83,6 +85,18 @@ namespace Albian.Persistence.Imp.TransactionCluster
                     storageContext.Transaction.Dispose();
                     storageContext.Transaction = null;
                     storageContext.FakeCommand = null;
+                    if (ConnectionState.Closed != storageContext.Connection.State)
+                        storageContext.Connection.Close();
+                    
+                    if (storageContext.Storage.Pooling)
+                    {
+                        DbConnectionPoolManager.RetutnConnection(storageContext.StorageName, storageContext.Connection);
+                    }
+                    else
+                    {
+                        storageContext.Connection.Dispose();
+                    }
+                    storageContext.Connection = null;
                 }
                 catch
                 {
@@ -126,6 +140,14 @@ namespace Albian.Persistence.Imp.TransactionCluster
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
                 IStorageContext storageContext = context.Value;
+                string sConnection =  StorageParser.BuildConnectionString(storageContext.Storage);
+                storageContext.Connection =
+                    storageContext.Storage.Pooling 
+                    ?
+                    DbConnectionPoolManager.GetConnection(storageContext.StorageName, sConnection)
+                    :
+                     DatabaseFactory.GetDbConnection(storageContext.Storage.DatabaseStyle, sConnection);
+
                 if (ConnectionState.Open != storageContext.Connection.State)
                     storageContext.Connection.Open();
                 storageContext.Transaction = storageContext.Connection.BeginTransaction(IsolationLevel.ReadUncommitted);;

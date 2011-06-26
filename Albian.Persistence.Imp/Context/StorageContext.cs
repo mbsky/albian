@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using Albian.Persistence.Context;
+using Albian.Persistence.Model;
 
 namespace Albian.Persistence.Imp.Context
 {
@@ -11,10 +12,11 @@ namespace Albian.Persistence.Imp.Context
     {
         private IList<IDbCommand> _command = new List<IDbCommand>();
         private IDbConnection _connection;
-        private string _connectionString;
+        //private string _connectionString;
         private IDictionary<string, DbParameter[]> _fakeCommand; // = new Dictionary<string,DbParameter[]>();
         private string _storageName;
         private IDbTransaction _transaction;
+        private IStorageAttribute _storage;
 
         #region IStorageContext Members
 
@@ -29,12 +31,16 @@ namespace Albian.Persistence.Imp.Context
             get { return _fakeCommand; }
             set { _fakeCommand = value; }
         }
-
-        public virtual string ConnectionString
+        public IStorageAttribute Storage 
         {
-            get { return _connectionString; }
-            set { _connectionString = value; }
+            get { return _storage; }
+            set { _storage = value; }
         }
+        //public virtual string ConnectionString
+        //{
+        //    get { return _connectionString; }
+        //    set { _connectionString = value; }
+        //}
 
         public virtual IDbConnection Connection
         {
