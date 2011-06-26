@@ -16,7 +16,7 @@ namespace Albian.Persistence.Imp.Command
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IDictionary<string, IStorageContext> GenerateSingleCreateStorage<T>(T target)
+        public IDictionary<string, IStorageContext> GenerateCreateStorage<T>(T target)
             where T : IAlbianObject
         {
             if (null == target)
@@ -45,7 +45,7 @@ namespace Albian.Persistence.Imp.Command
             }
             IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
             IFakeCommandBuilder builder = new FakeCommandBuilder();
-            IDictionary<string, IStorageContext> storageContexts = builder.BuildCreateFakeCommandByRoutings(target, properties, objectAttribute);
+            IDictionary<string, IStorageContext> storageContexts = builder.GenerateFakeCommandByRoutings(target, properties, objectAttribute, builder.BuildCreateFakeCommandByRouting);
 
             if (0 == storageContexts.Count)//no the storage context
             {
@@ -54,6 +54,12 @@ namespace Albian.Persistence.Imp.Command
                 return null;
             }
             return storageContexts;
+        }
+
+        public IDictionary<string, IStorageContext> GenerateCreateStorage<T>(IList<T> target)
+             where T : IAlbianObject
+        {
+            return null;
         }
     }
 }

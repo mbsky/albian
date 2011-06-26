@@ -21,11 +21,9 @@ namespace Albian.Persistence.Imp
             where T : IAlbianObject
         {
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildTaskForSingleObject<T>(entity);
+            ITask task = builder.BuildCreateTask<T>(entity);
             ITransactionClusterScope tran = new TransactionClusterScope();
             tran.Execute(task);
-            //FakeCommandBuilder builder = new FakeCommandBuilder();
-            //IDictionary<string,IStorageContext> value = builder.GenerateSingleCreateStorage<T>(entity);
             return 0;
         }
 

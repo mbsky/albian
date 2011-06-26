@@ -13,7 +13,8 @@ namespace Albian.Persistence.Imp.Context
         private IList<IDbCommand> _command = new List<IDbCommand>();
         private IDbConnection _connection;
         //private string _connectionString;
-        private IDictionary<string, DbParameter[]> _fakeCommand; // = new Dictionary<string,DbParameter[]>();
+        //private IDictionary<string, DbParameter[]> _fakeCommand; // = new Dictionary<string,DbParameter[]>();
+        private IList<IFakeCommandAttribute> _fakeCommand;
         private string _storageName;
         private IDbTransaction _transaction;
         private IStorageAttribute _storage;
@@ -26,7 +27,7 @@ namespace Albian.Persistence.Imp.Context
             set { _storageName = value; }
         }
 
-        public virtual IDictionary<string, DbParameter[]> FakeCommand
+        public virtual IList<IFakeCommandAttribute> FakeCommand
         {
             get { return _fakeCommand; }
             set { _fakeCommand = value; }
