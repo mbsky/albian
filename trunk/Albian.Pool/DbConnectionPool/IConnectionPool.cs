@@ -4,20 +4,19 @@ namespace Albian.Pool.DbConnectionPool
     /// <summary>
     /// 对象池接口
     /// </summary>
-    public interface IConnectionPool<T>
-        where T :IDbConnection
+    public interface IConnectionPool
     {
         /// <summary>
         /// 得到对象.
         /// </summary>
 
         /// <returns></returns>
-        T GetObject(string connectionString);
+        IDbConnection GetObject(string connectionString);
 
         /// <summary>
         /// 将使用完毕的对象返回到对象池.
         /// </summary>
-        void ReturnObject(T target);
+        void ReturnObject(IDbConnection target);
 
         /// <summary>
         /// 关闭对象池并释放池中所有的资源
@@ -38,6 +37,6 @@ namespace Albian.Pool.DbConnectionPool
         /// 强行创建一个对象
         /// </summary>
         /// <returns></returns>
-        T RescueObject(string connectionString);
+        IDbConnection RescueObject(string connectionString);
     }
 }

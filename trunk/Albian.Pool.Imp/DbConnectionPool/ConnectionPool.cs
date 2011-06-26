@@ -11,12 +11,12 @@ namespace Albian.Pool.Imp.DbConnectionPool
     /// <summary>
     ///  对象池
     /// </summary>
-    public class ConnectionPool<T> : IConnectionPool<T> where T : IDbConnection, new()
+    public class ConnectionPool<T> : IConnectionPool where T : IDbConnection, new()
     {
         private readonly IPoolableConnectionFactory<T> _factory;
-        private IList<T> _busy = new List<T>();
+        private IList<IDbConnection> _busy = new List<IDbConnection>();
         private bool _closed;
-        private IList<T> _free = new List<T>();
+        private IList<IDbConnection> _free = new List<IDbConnection>();
         private static object locker = new object();
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private int _minSize = 15;
@@ -48,7 +48,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
         /// <param name="ipAddress">The ip address.</param>
         /// <param name="port">The port.</param>
         /// <returns></returns>
-        public T GetObject(string connectionString)
+        public IDbConnection GetObject(string connectionString)
         {
             return DoGetObject(connectionString);
         }
@@ -56,9 +56,9 @@ namespace Albian.Pool.Imp.DbConnectionPool
         /// <summary>
         /// 将使用完毕的对象返回到对象池.
         /// </summary>
-        public void ReturnObject(T target)
+        public void ReturnObject(IDbConnection target)
         {
-            DoReturnObject(target);
+            DoReturnObject((T)target);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
             }
         }
 
-        protected T DoGetObject(string connectionString)
+        protected IDbConnection DoGetObject(string connectionString)
         {
             bool isLock = false;
             try
@@ -118,7 +118,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
                         Logger.Warn("对象池锁阻塞，无法取得对象，对象池自行创建一个短连接对象。");
                     if (_currentSize < _maxSize)
                     {
-                        T target = RescueObject(connectionString);
+                        IDbConnection target = RescueObject(connectionString);
                         _currentSize++;
                         return target;
                     }
@@ -132,15 +132,15 @@ namespace Albian.Pool.Imp.DbConnectionPool
                 while (_free.Count > 0)
                 {
                     int i = _free.Count - 1;
-                    T o = _free[i];
+                    IDbConnection o = _free[i];
                     _free.RemoveAt(i);
-                    _factory.ActivateObject(o, connectionString);
-                    if (!_factory.ValidateObject(o)) continue;
+                    _factory.ActivateObject((T)o, connectionString);
+                    if (!_factory.ValidateObject((T)o)) continue;
 
                     _busy.Add(o);
                     if (null != Logger)
                         Logger.InfoFormat("连接池状态：现在空闲对象长度为:{0},忙碌对象长度为{1}.", NumIdle, NumActive);
-                    return o;
+                    return (T)o;
                 }
 
                 if (null != Logger)
@@ -203,7 +203,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
         /// </summary>
         private void DoClose()
         {
-            _free = new List<T>();
+            _free = new List<IDbConnection>();
             _closed = true;
         }
 
@@ -211,7 +211,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
         /// 强行创建一个对象
         /// </summary>
         /// <returns></returns>
-        public T RescueObject(string connectionString)
+        public IDbConnection RescueObject(string connectionString)
         {
             return DoRescueObject(connectionString);
         }

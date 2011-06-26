@@ -27,14 +27,14 @@ namespace Albian.Pool.Imp.DbConnectionPool
             {
                 case DatabaseStyle.MySql:
                     {
-                        IConnectionPool<MySqlConnection> pool = 
+                        IConnectionPool pool = 
                             new ConnectionPool<MySqlConnection>(new MySqlConnectionFactory(),minSize,maxSize);
                         ConnectionPoolCached.InsertOrUpdate(storageName,pool);
                         break;
                     }
                 case DatabaseStyle.Oracle:
                     {
-                        IConnectionPool<OracleConnection> pool =
+                        IConnectionPool pool =
                             new ConnectionPool<OracleConnection>(new OracleConnectionFactory(), minSize, maxSize);
                         ConnectionPoolCached.InsertOrUpdate(storageName, pool);
                         break;
@@ -42,7 +42,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
                 case DatabaseStyle.SqlServer:
                 default:
                     {
-                        IConnectionPool<SqlConnection> pool =
+                        IConnectionPool pool =
                             new ConnectionPool<SqlConnection>(new SqlServerConnectionFactory(), minSize, maxSize);
                         ConnectionPoolCached.InsertOrUpdate(storageName, pool);
                         break;
@@ -55,7 +55,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
         /// </summary>
         /// <remarks>
         /// </remarks>
-        public static IConnectionPool<IDbConnection> GetPool(string stroageName)
+        public static IConnectionPool GetPool(string stroageName)
         {
              object obj = ConnectionPoolCached.Get(stroageName);
              if (null == obj)
@@ -63,12 +63,12 @@ namespace Albian.Pool.Imp.DbConnectionPool
                  Logger.Warn("the pool is null.");
                  return null; ;
              }
-             return (IConnectionPool<IDbConnection>) obj;
+             return (IConnectionPool) obj;
         }
 
         public static IDbConnection GetConnection(string storageName,string connectionString)
         {
-            IConnectionPool<IDbConnection> pool = GetPool(storageName);
+            IConnectionPool pool = GetPool(storageName);
             if (null == pool)
             {
                 if (null != Logger)
@@ -100,7 +100,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
                 }
                 throw new ArgumentNullException("connection");
             }
-            IConnectionPool<IDbConnection> pool = GetPool(storageName);
+            IConnectionPool pool = GetPool(storageName);
             if (null == pool)
             {
                 if (null != Logger)
