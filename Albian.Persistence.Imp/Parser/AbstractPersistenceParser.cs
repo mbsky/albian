@@ -19,7 +19,7 @@ namespace Albian.Persistence.Imp.Parser
             try
             {
                 XmlDocument doc = XmlFileParser.LoadXml(filePath);
-                XmlNodeList nodes = XmlFileParser.Analyze(doc, "Objects");
+                XmlNodeList nodes = XmlFileParser.Analyze(doc, "AlbianObjects");
                 if (1 != nodes.Count) //root node
                 {
                     throw new Exception("Analyze the Objects node is error in the Persistence.config");

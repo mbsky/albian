@@ -23,7 +23,7 @@ namespace Albian.Persistence.Imp.Parser
                 throw new ArgumentNullException("entitiesNode");
             }
             IList<IObjectAttribute> list = new List<IObjectAttribute>();
-            XmlNodeList entityNodes = entitiesNode.SelectNodes("Object");
+            XmlNodeList entityNodes = entitiesNode.SelectNodes("AlbianObject");
             if (null == entityNodes || 0 == entityNodes.Count)
             {
                 throw new Exception("Parser Object nodes is error in the Persistence.config.");
