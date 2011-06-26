@@ -127,7 +127,7 @@ namespace Albian.Persistence.Imp.Command
             catch (Exception exc)
             {
                 if (null != Logger)
-                    Logger.ErrorFormat("Create the connection is error.Message:{0}.",exc.Message);
+                    Logger.ErrorFormat("Create the connection is error.Message:{0}.", exc.Message);
                 throw exc;
             }
         }

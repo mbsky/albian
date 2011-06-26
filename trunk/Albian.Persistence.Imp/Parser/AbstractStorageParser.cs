@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using Albian.Persistence.Model;
+using Albian.Pool.Imp.DbConnectionPool;
 using Albian.XmlParser;
+using log4net;
 
 namespace Albian.Persistence.Imp.Parser
 {
     public abstract class AbstractStorageParser : IStorageParser
     {
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         #region IStorageParser Members
 
         public void Init(string filePath)
@@ -25,7 +30,18 @@ namespace Albian.Persistence.Imp.Parser
                     throw new Exception("Analyze the Storages node is error in the Storage.config");
                 }
 
-                ParserStorages(nodes[0]);
+                IDictionary<string,IStorageAttribute> dic = ParserStorages(nodes[0]);
+                if (null == dic)
+                {
+                    if (null != Logger)
+                        Logger.Error("no storage attribute in the config file.");
+                    throw new Exception("no storage attribute in the config file.");
+                }
+                foreach (KeyValuePair<string, IStorageAttribute> kv in dic)
+                {
+                    if(kv.Value.Pooling)
+                        DbConnectionPoolManager.CreatePool(kv.Value.Name, kv.Value.DatabaseStyle, kv.Value.MinPoolSize, kv.Value.MaxPoolSize);
+                }
             }
             catch (Exception exc)
             {

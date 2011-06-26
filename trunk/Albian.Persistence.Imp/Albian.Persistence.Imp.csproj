@@ -120,6 +120,14 @@
       <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
       <Name>Albian.Persistence</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Albian.Pool.Imp\Albian.Pool.Imp.csproj">
+      <Project>{BA7B8D85-E93B-4F9B-8F5B-712B143BE591}</Project>
+      <Name>Albian.Pool.Imp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Pool\Albian.Pool.csproj">
+      <Project>{DAD452D0-5723-4A9B-8177-C3D07954770E}</Project>
+      <Name>Albian.Pool</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Albian.XmlParser\Albian.XmlParser.csproj">
       <Project>{12EC6673-7DAF-4396-93BE-02232371B9AF}</Project>
       <Name>Albian.XmlParser</Name>

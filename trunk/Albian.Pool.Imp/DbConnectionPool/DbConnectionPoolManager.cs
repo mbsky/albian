@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Data.OracleClient;
 using System.Data.SqlClient;
@@ -10,7 +11,7 @@ using Albian.Pool.Imp.DbConnectionPool.Albian.Persistence.Imp.Cache;
 
 namespace Albian.Pool.Imp.DbConnectionPool
 {
-    internal sealed class DbConnectionPoolManager
+    public sealed class DbConnectionPoolManager
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -64,5 +65,52 @@ namespace Albian.Pool.Imp.DbConnectionPool
              }
              return (IConnectionPool<IDbConnection>) obj;
         }
-  }
+
+        public static IDbConnection GetConnection(string storageName,string connectionString)
+        {
+            IConnectionPool<IDbConnection> pool = GetPool(storageName);
+            if (null == pool)
+            {
+                if (null != Logger)
+                {
+                    Logger.ErrorFormat("The {0} pool is empty.", storageName);
+                }
+                return null;
+                //throw new Exception(string.Format("The {0} pool is empty.", storageContext.StorageName));
+            }
+            IDbConnection connection = pool.GetObject(connectionString);
+            if (null == connection)
+            {
+                if (null != Logger)
+                {
+                    Logger.ErrorFormat("The connection is empty from the {0} pool.", storageName);
+                }
+                //throw new Exception(string.Format("The connection is empty from the {0} pool.", storageContext.StorageName));
+            }
+            return connection;
+        }
+
+        public static void RetutnConnection(string storageName, IDbConnection connection)
+        {
+            if (null == connection)
+            {
+                if (null != Logger)
+                {
+                    Logger.ErrorFormat("The connection is empty from the {0} pool.", storageName);
+                }
+                throw new ArgumentNullException("connection");
+            }
+            IConnectionPool<IDbConnection> pool = GetPool(storageName);
+            if (null == pool)
+            {
+                if (null != Logger)
+                {
+                    Logger.ErrorFormat("The {0} pool is empty.", storageName);
+                }
+                return;
+            }
+           pool.ReturnObject(connection);
+        }
+
+    }
 }

@@ -36,8 +36,8 @@ namespace Albian.Persistence.Imp.Command
                     return null;
                 }
                 IStorageAttribute storage = (IStorageAttribute)oStorage;
-                storageContext.ConnectionString = StorageParser.BuildConnectionString(storage);
-                storageContext.Connection = DatabaseFactory.GetDbConnection(storage.DatabaseStyle, storageContext.ConnectionString);
+                storageContext.Storage = storage;// StorageParser.BuildConnectionString(storage);
+                //storageContext.Connection = DatabaseFactory.GetDbConnection(storage.DatabaseStyle, storageContext.ConnectionString);
                
             }
             return task;
