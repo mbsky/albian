@@ -4,8 +4,8 @@ namespace Albian.Pool.DbConnectionPool
     /// <summary>
     /// 对象池接口
     /// </summary>
-    public interface IObjectPool<T>
-        where T :IDbConnection, new()
+    public interface IConnectionPool<T>
+        where T :IDbConnection
     {
         /// <summary>
         /// 得到对象.

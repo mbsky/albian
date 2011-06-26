@@ -11,16 +11,18 @@ namespace Albian.Pool.Imp.DbConnectionPool
     /// <summary>
     ///  对象池
     /// </summary>
-    public class ObjectPool<T> : IObjectPool<T> where T : IDbConnection, new()
+    public class ConnectionPool<T> : IConnectionPool<T> where T : IDbConnection, new()
     {
-        private readonly IPoolableObjectFactory<T> _factory;
+        private readonly IPoolableConnectionFactory<T> _factory;
         private IList<T> _busy = new List<T>();
         private bool _closed;
         private IList<T> _free = new List<T>();
         private static object locker = new object();
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public ObjectPool(IPoolableObjectFactory<T> factory, int size)
+        private int _minSize = 15;
+        private int _maxSize = 30;
+        private int _currentSize = 0;
+        public ConnectionPool(IPoolableConnectionFactory<T> factory, int minSize,int maxSize)
         {
             if (null == factory)
             {
@@ -29,13 +31,16 @@ namespace Albian.Pool.Imp.DbConnectionPool
                 throw new ArgumentNullException("factory", "对象创建工厂不能为空！");
             }
             _factory = factory;
-            InitItems(size);
+            _minSize = minSize;
+            _maxSize = maxSize;
+            InitItems(minSize);
+            _currentSize = minSize;
 
             if (null != Logger)
-                Logger.InfoFormat("对象池已经创建，对象池长度为：{0}", size);
+                Logger.InfoFormat("对象池已经创建，对象池初始长度为：{0}，最大长度为{1}", _minSize,_maxSize);
         }
 
-        #region IObjectPool Members
+        #region IConnectionPool Members
 
         /// <summary>
         /// Gets the object.
@@ -111,7 +116,17 @@ namespace Albian.Pool.Imp.DbConnectionPool
                 {
                     if (null != Logger)
                         Logger.Warn("对象池锁阻塞，无法取得对象，对象池自行创建一个短连接对象。");
-                    return RescueObject(connectionString);
+                    if (_currentSize < _maxSize)
+                    {
+                        T target = RescueObject(connectionString);
+                        _currentSize++;
+                        return target;
+                    }
+                    else
+                    {
+                        Logger.Warn("对象池锁阻塞，无法取得对象，并且池内size已经达到最大限制，无法自行创建一个短连接对象。");
+                        throw new Exception("The poolsize is overflow.");
+                    }
                 }
                 isLock = true;
                 while (_free.Count > 0)
@@ -168,12 +183,6 @@ namespace Albian.Pool.Imp.DbConnectionPool
                 if (null != Logger) Logger.Info("连接池已经关闭，放回对象被释放！");
                 return true;
             }
-            if (null != target)
-            {
-                _factory.DestroyObject(target);
-                if (null != Logger) Logger.InfoFormat("此对象不属于该连接池");
-                return true;
-            }
             lock (locker)
             {
                 if (_busy.Contains(target))
@@ -211,7 +220,6 @@ namespace Albian.Pool.Imp.DbConnectionPool
         {
             T obj = _factory.CreateObject();
             _factory.ActivateObject(obj, connectionString);
-            //obj.IsFromPool = false;
             return obj;
         }
     }

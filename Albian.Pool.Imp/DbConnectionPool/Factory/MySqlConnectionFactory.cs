@@ -1,40 +1,35 @@
-using System;
+ï»¿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using Albian.Pool.DbConnectionPool;
 using log4net;
+using MySql.Data.MySqlClient;
 
-namespace FastDFS.Client.Component
+namespace Albian.Pool.Imp.DbConnectionPool
 {
-    /// <summary>
-    /// Á¬½Ó³Ø´´½¨¹¤³§
-    /// </summary>
-    public class TcpConnectionFactory<T> : IPoolableObjectFactory<T>
-        where T : IDbConnection, new()
+    public class MySqlConnectionFactory : IPoolableConnectionFactory<MySqlConnection>
     {
-
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         /// <summary>
-        /// ´´½¨¶ÔÏó
+        /// åˆ›å»ºå¯¹è±¡
         /// </summary>
-        public T CreateObject()
+        public MySqlConnection CreateObject()
         {
-            T obj = Activator.CreateInstance<T>();
-            //obj.ConnectionString = connectionString;
-            //obj.IsFromPool = true;
-            //obj.BatchId = FastDFSService.BatchId;
+            MySqlConnection obj = Activator.CreateInstance<MySqlConnection>();
             return obj;
         }
 
         /// <summary>
-        /// Ïú»Ù¶ÔÏó.
+        /// é”€æ¯å¯¹è±¡.
         /// </summary>
-        public void DestroyObject(T obj)
+        public void DestroyObject(MySqlConnection obj)
         {
             if (ConnectionState.Closed != obj.State)
             {
                 obj.Close();
-                //obj.Close();
             }
             if (obj is IDisposable)
             {
@@ -43,17 +38,17 @@ namespace FastDFS.Client.Component
         }
 
         /// <summary>
-        /// ¼ì²é²¢È·±£¶ÔÏóµÄ°²È«
+        /// æ£€æŸ¥å¹¶ç¡®ä¿å¯¹è±¡çš„å®‰å…¨
         /// </summary>
-        public bool ValidateObject(T obj)
+        public bool ValidateObject(MySqlConnection obj)
         {
             return null != obj;
         }
 
         /// <summary>
-        /// ¼¤»î¶ÔÏó³ØÖĞ´ıÓÃ¶ÔÏó. 
+        /// æ¿€æ´»å¯¹è±¡æ± ä¸­å¾…ç”¨å¯¹è±¡. 
         /// </summary>
-        public void ActivateObject(T obj,string connectionString)
+        public void ActivateObject(MySqlConnection obj, string connectionString)
         {
             try
             {
@@ -62,16 +57,16 @@ namespace FastDFS.Client.Component
                 if (ConnectionState.Open != obj.State)
                     obj.Open();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
-                if (null != Logger) Logger.WarnFormat("Á¬½Ó³Ø¼¤»î¶ÔÏóÊ±·¢ÉúÒì³£,Òì³£ĞÅÏ¢Îª:{0}", exc.Message);
+                if (null != Logger) Logger.WarnFormat("è¿æ¥æ± æ¿€æ´»å¯¹è±¡æ—¶å‘ç”Ÿå¼‚å¸¸,å¼‚å¸¸ä¿¡æ¯ä¸º:{0}", exc.Message);
             }
         }
 
         /// <summary>
-        /// Ğ¶ÔØÄÚ´æÖĞÕıÔÚÊ¹ÓÃµÄ¶ÔÏó.
+        /// å¸è½½å†…å­˜ä¸­æ­£åœ¨ä½¿ç”¨çš„å¯¹è±¡.
         /// </summary>
-        public void PassivateObject(T obj)
+        public void PassivateObject(MySqlConnection obj)
         {
             if (ConnectionState.Closed != obj.State) obj.Close();
         }

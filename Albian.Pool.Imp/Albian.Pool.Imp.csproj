@@ -35,10 +35,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Reference\dll\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Reference\dll\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -49,11 +54,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbConnectionPool\ObjectPool.cs" />
-    <Compile Include="DbConnectionPool\PoolCached.cs" />
+    <Compile Include="DbConnectionPool\Factory\MySqlConnectionFactory.cs" />
+    <Compile Include="DbConnectionPool\ConnectionPool.cs" />
+    <Compile Include="DbConnectionPool\Factory\OracleConnectionFactory.cs" />
+    <Compile Include="DbConnectionPool\ConnectionPoolCached.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DbConnectionPool\TcpConnectionFactory.cs" />
-    <Compile Include="DbConnectionPool\TcpConnectionPoolManager.cs" />
+    <Compile Include="DbConnectionPool\Factory\SqlServerConnectionFactory.cs" />
+    <Compile Include="DbConnectionPool\DbConnectionPoolManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Albian.Cached.Imp\Albian.Cached.Imp.csproj">
@@ -63,6 +70,10 @@
     <ProjectReference Include="..\Albian.Cached\Albian.Cached.csproj">
       <Project>{C842F310-52A3-4111-BD4A-65A2798B929B}</Project>
       <Name>Albian.Cached</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
+      <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
+      <Name>Albian.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\Albian.Pool\Albian.Pool.csproj">
       <Project>{DAD452D0-5723-4A9B-8177-C3D07954770E}</Project>

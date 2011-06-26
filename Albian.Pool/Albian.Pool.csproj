@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbConnectionPool\IConnectionPool.cs" />
-    <Compile Include="DbConnectionPool\IPoolableObjectFactory.cs" />
+    <Compile Include="DbConnectionPool\IPoolableConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
