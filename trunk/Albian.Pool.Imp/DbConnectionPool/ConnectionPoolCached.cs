@@ -10,7 +10,7 @@ namespace Albian.Pool.Imp.DbConnectionPool
 {
     namespace Albian.Persistence.Imp.Cache
     {
-        public class PoolCache
+        public class ConnectionPoolCached
         {
             private static readonly ICached _cache = new StandingCached();
 

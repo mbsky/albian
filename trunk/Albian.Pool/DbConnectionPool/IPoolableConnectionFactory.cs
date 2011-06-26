@@ -4,7 +4,7 @@ namespace Albian.Pool.DbConnectionPool
     /// <summary>
     /// 对象池化工厂
     /// </summary>
-    public interface IPoolableObjectFactory<T>
+    public interface IPoolableConnectionFactory<T>
         where T :IDbConnection,new()
     {
         /// <summary>
