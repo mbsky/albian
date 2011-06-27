@@ -9,6 +9,6 @@ namespace Albian.Persistence.Imp.TransactionCluster
     interface ITransactionClusterScope
     {
         TransactionClusterState State { get;}
-        void Execute(ITask task);
+        bool Execute(ITask task);
     }
 }

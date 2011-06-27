@@ -54,19 +54,12 @@ namespace Albian.Persistence.Imp.Reflection
                                                        DBType = ConvertToDbType.Convert(propertyInfo.PropertyType),
                                                        //GeneratorMode = GeneratorMode.Custom,
                                                        IsSave = true,
-                                                       AllowNull = IsNullableType(propertyInfo.PropertyType)
+                                                       AllowNull = Utils.IsNullableType(propertyInfo.PropertyType)
                                                    };
             //MemberCache.InsertOrUpdate(memberAttribute.Name, memberAttribute);
             return memberAttribute;
         }
 
         #endregion
-
-        private static bool IsNullableType(Type type)
-        {
-            return (type.IsGenericType && type.
-                                              GetGenericTypeDefinition().Equals
-                                              (typeof (Nullable<>)));
-        }
     }
 }

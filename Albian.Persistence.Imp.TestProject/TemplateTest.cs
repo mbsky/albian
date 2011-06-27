@@ -446,13 +446,30 @@ namespace Albian.Persistence.Imp.TestProject
         /// <summary>
         ///Create 的测试
         ///</summary>
-        public void CreateTest1Helper<T>()
-            where T : IAlbianObject
+        [TestMethod()]
+        public void CreateTest1Helper()
+            //where T : IAlbianObject
         {
-            IList<T> entity = null; // TODO: 初始化为适当的值
+            IOrder order = new Order();
+            order.Buyer = "xiaoj";
+            order.Id = Guid.NewGuid().ToString();
+            order.Money = 40;
+            order.Name = "fucking";
+            order.Seller = "5173";
+
+            IBizOffer order1 = new BizOffer();
+            order1.Buyer = "xi11aoj";
+            order1.Id = Guid.NewGuid().ToString();
+            order1.Money = 401;
+            order1.Name = "fucki111ng";
+            order1.Seller = "5171113";
+
+            IList<IAlbianObject> list = new List<IAlbianObject>(); // TODO: 初始化为适当的值
+            list.Add(order);
+            list.Add(order1);
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Create<T>(entity);
+            actual = Template.Create<IAlbianObject>(list);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }

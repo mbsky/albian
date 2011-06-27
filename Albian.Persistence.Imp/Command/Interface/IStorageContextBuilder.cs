@@ -11,7 +11,7 @@ namespace Albian.Persistence.Imp.Command
     {
         IDictionary<string, IStorageContext> GenerateCreateStorage<T>(T target)
             where T : IAlbianObject;
-        IDictionary<string, IStorageContext> GenerateCreateStorage<T>(IList<T> target)
-            where T : IAlbianObject;
+        //IDictionary<string, IStorageContext> GenerateCreateStorage<T>(IList<T> target)
+        //    where T : IAlbianObject;
     }
 }

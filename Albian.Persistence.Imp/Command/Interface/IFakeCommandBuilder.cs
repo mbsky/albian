@@ -10,6 +10,12 @@ using Albian.Persistence.Model;
 
 namespace Albian.Persistence.Imp.Command
 {
+
+    public delegate IDictionary<string, IStorageContext> GenerateStorageContextsHandler<T>(T target,
+                                                                    BuildFakeCommandByRoutingsHandler<T> buildFakeCommandByRoutingsHandler,
+                                                                    BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler)
+            where T : IAlbianObject;
+
     public delegate IDictionary<string, IStorageContext> BuildFakeCommandByRoutingsHandler<T>(T target, 
                                                                                     PropertyInfo[] properties, 
                                                                                     IObjectAttribute objectAttribute,
@@ -38,4 +44,7 @@ namespace Albian.Persistence.Imp.Command
                                                                                  PropertyInfo[] properties)
             where T : IAlbianObject;
     }
+
+   
+
 }

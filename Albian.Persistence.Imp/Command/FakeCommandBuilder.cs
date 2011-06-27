@@ -146,7 +146,7 @@ namespace Albian.Persistence.Imp.Command
             }
 
             //create the hash table name
-            string tableFullName = GetTableFullName(routing, target);
+            string tableFullName = Utils.GetTableFullName(routing, target);
 
             //build the command text
             IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
@@ -185,18 +185,6 @@ namespace Albian.Persistence.Imp.Command
                                                     StorageName = routing.StorageName
                                                 };
             return fakeCmd;
-        }
-
-        protected string GetTableFullName<T>(IRoutingAttribute routing, T target) where T : IAlbianObject
-        {
-            HashAlbianObjectHandler<T> handler = HashAlbianObjectManager.GetHandler<T>(routing.Name,
-                                                                      AssemblyManager.GetFullTypeName(typeof (T)));
-            string tableName = null == handler
-                                   ? routing.TableName
-                                   : string.Format("{0}{1}", routing.TableName, handler(target));
-            return "dbo" == routing.Owner || string.IsNullOrEmpty(routing.Owner)
-                       ? tableName
-                       : string.Format("[{0}].[{1}]", routing.Owner, tableName);
         }
     }
 }

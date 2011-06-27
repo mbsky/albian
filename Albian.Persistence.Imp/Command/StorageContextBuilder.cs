@@ -47,7 +47,7 @@ namespace Albian.Persistence.Imp.Command
             IFakeCommandBuilder builder = new FakeCommandBuilder();
             IDictionary<string, IStorageContext> storageContexts = builder.GenerateFakeCommandByRoutings(target, properties, objectAttribute, builder.BuildCreateFakeCommandByRouting);
 
-            if (0 == storageContexts.Count)//no the storage context
+            if (null == storageContexts || 0 == storageContexts.Count)//no the storage context
             {
                 if (null != Logger)
                     Logger.Warn("There is no storage contexts of the object.");
@@ -56,10 +56,10 @@ namespace Albian.Persistence.Imp.Command
             return storageContexts;
         }
 
-        public IDictionary<string, IStorageContext> GenerateCreateStorage<T>(IList<T> target)
-             where T : IAlbianObject
-        {
-            return null;
-        }
+        //public IDictionary<string, IStorageContext> GenerateCreateStorage<T>(IList<T> target)
+        //     where T : IAlbianObject
+        //{
+        //    return null;
+        //}
     }
 }
