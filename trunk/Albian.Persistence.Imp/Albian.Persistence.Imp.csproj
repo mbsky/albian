@@ -98,6 +98,7 @@
     <Compile Include="Command\StorageContextBuilder.cs" />
     <Compile Include="Command\TaskBuilder.cs" />
     <Compile Include="Command\DatabaseFactory.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\Persistence.config" />

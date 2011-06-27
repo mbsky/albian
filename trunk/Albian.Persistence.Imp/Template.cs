@@ -30,6 +30,10 @@ namespace Albian.Persistence.Imp
         public static int Create<T>(IList<T> entity)
             where T : IAlbianObject
         {
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildCreateTask<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            tran.Execute(task);
             return 0;
         }
 

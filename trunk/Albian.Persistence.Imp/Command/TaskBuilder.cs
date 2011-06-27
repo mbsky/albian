@@ -19,28 +19,6 @@ namespace Albian.Persistence.Imp.Command
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        //protected ITask GenerateTask()
-        //{
-        //    //ITask task = new Task();
-        //    IDictionary<string, IStorageContext> dic = new Dictionary<string, IStorageContext>();
-        //    IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
-        //    dic = fakeBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
-        //    foreach (KeyValuePair<string, IStorageContext> context in dic)
-        //    {
-        //        IStorageContext storageContext = context.Value;
-        //        object oStorage = StorageCache.Get(context.Key);
-        //        if (null == oStorage)
-        //        {
-        //            if (null != Logger)
-        //                Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
-        //            return null;
-        //        }
-        //        IStorageAttribute storage = (IStorageAttribute)oStorage;
-        //        storageContext.Storage = storage;
-        //    }
-        //    //return task;
-        //}
-
         public ITask BuildCreateTask<T>(T target)
             where T :IAlbianObject
         {
@@ -70,50 +48,47 @@ namespace Albian.Persistence.Imp.Command
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             foreach (T o in target)
             {
-                IDictionary<string,IStorageContext> dic = fakeBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
-                if(null == dic)
+                IDictionary<string,IStorageContext> storageContexts = fakeBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
+                if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if(null != Logger)
                         Logger.Error("The storagecontexts is empty.");
                     throw new Exception("The storagecontexts is null.");
                 }
-                if(null == task.Context)
+                if(null == task.Context || 0 == task.Context.Count)
                 {
-                    task.Context = dic;
+                    task.Context = storageContexts;
                     continue;
                 }
-                //foreach(KeyValuePair<string,IStorageContext> c in dic)
-                //{
-                //    if(task.Context.ContainsKey(c.Key))
-                //    {
-                //        //IDictionary<string,DbParameter[]> fc = task.Context[c.Key].FakeCommand;
-                //        if(null == fc)
-                //        {
-                //            task.Context[c.Key].FakeCommand = c.Value.FakeCommand;
-                //            break;
-                //        }
-                //        //task.Context[c.Key].FakeCommand.Add
-                //    }
-                //    else
-                //    {
-                //    }
-                //}
-
+                foreach (KeyValuePair<string, IStorageContext> storageContext in storageContexts)
+                {
+                    if (task.Context.ContainsKey(storageContext.Key))
+                    {
+                        task.Context[storageContext.Key].FakeCommand = task.Context.ContainsKey(storageContext.Key)
+                                                               ? Utils.Concat(task.Context[storageContext.Key].FakeCommand,
+                                                                        storageContext.Value.FakeCommand)
+                                                               : storageContext.Value.FakeCommand;
+                    }
+                    else
+                    {
+                        task.Context.Add(storageContext);
+                    }
+                }
             }
-            //task.Context = 
-            //foreach (KeyValuePair<string, IStorageContext> context in task.Context)
-            //{
-            //    IStorageContext storageContext = context.Value;
-            //    object oStorage = StorageCache.Get(context.Key);
-            //    if (null == oStorage)
-            //    {
-            //        if (null != Logger)
-            //            Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
-            //        return null;
-            //    }
-            //    IStorageAttribute storage = (IStorageAttribute)oStorage;
-            //    storageContext.Storage = storage;
-            //}
+
+            foreach (KeyValuePair<string, IStorageContext> context in task.Context)
+            {
+                IStorageContext storageContext = context.Value;
+                object oStorage = StorageCache.Get(context.Key);
+                if (null == oStorage)
+                {
+                    if (null != Logger)
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                    return null;
+                }
+                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                storageContext.Storage = storage;
+            }
             return task;
         }
     }

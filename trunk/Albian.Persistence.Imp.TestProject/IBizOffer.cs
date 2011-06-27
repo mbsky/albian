@@ -1,6 +1,8 @@
-﻿namespace Albian.Persistence.Imp.TestProject
+﻿using Albian.ObjectModel;
+
+namespace Albian.Persistence.Imp.TestProject
 {
-    public interface IBizOffer
+    public interface IBizOffer : IAlbianObject
     {
         string Id { get; set; }
         string Name { get; set; }

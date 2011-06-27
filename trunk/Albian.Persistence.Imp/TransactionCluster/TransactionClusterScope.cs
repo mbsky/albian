@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.Parser;
 using Albian.Persistence.Model;
-using Albian.Pool.DbConnectionPool;
 using Albian.Pool.Imp.DbConnectionPool;
 using log4net;
 
@@ -22,7 +19,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
         /// <summary>
         /// 当前事务集群的状态
         /// </summary>
-        public TransactionClusterState State 
+        public virtual TransactionClusterState State 
         {
             get { return _state; }
         }
@@ -31,8 +28,9 @@ namespace Albian.Persistence.Imp.TransactionCluster
         /// 自动执行事务，并且提交或者回滚
         /// </summary>
         /// <param name="task"></param>
-        public void Execute(ITask task)
+        public virtual bool Execute(ITask task)
         {
+            bool isSuccess = false;
             IDictionary<string, IStorageContext> contexts = task.Context;
             _state = TransactionClusterState.NoStarted;
             try
@@ -50,13 +48,14 @@ namespace Albian.Persistence.Imp.TransactionCluster
                 Executed(contexts);
 
                 _state = TransactionClusterState.Commited;
+                isSuccess = true;
             }
             catch (Exception exc)
             {
+                isSuccess = false;
                 if (null != Logger)
                 {
                     Logger.ErrorFormat("Execute the cluster transaction scope is error.info:{0}",exc.Message);
-                    return;
                 }
                 _state = TransactionClusterState.Rollbacking;
                 ExceptionHandler(contexts);
@@ -66,9 +65,10 @@ namespace Albian.Persistence.Imp.TransactionCluster
             {
                 UnLoadExecute(contexts);
             }
+            return isSuccess;
         }
 
-        protected void UnLoadExecute(IDictionary<string, IStorageContext> storageContexts)
+        protected virtual void UnLoadExecute(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -108,7 +108,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        protected void Executed(IDictionary<string, IStorageContext> storageContexts)
+        protected virtual void Executed(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -116,7 +116,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        protected void ExceptionHandler(IDictionary<string, IStorageContext> storageContexts)
+        protected virtual void ExceptionHandler(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -124,11 +124,10 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        protected void ExecuteHandler(IDictionary<string, IStorageContext> storageContexts)
+        protected virtual void ExecuteHandler(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
-                IStorageContext storageContext = context.Value;
                 foreach (IDbCommand cmd in context.Value.Command)
                 {
                     cmd.ExecuteNonQuery();
@@ -136,7 +135,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             }
         }
 
-        protected void PreLoadExecute(IDictionary<string, IStorageContext> storageContexts)
+        protected virtual void PreLoadExecute(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
@@ -151,7 +150,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
 
                 if (ConnectionState.Open != storageContext.Connection.State)
                     storageContext.Connection.Open();
-                storageContext.Transaction = storageContext.Connection.BeginTransaction(IsolationLevel.ReadUncommitted);;
+                storageContext.Transaction = storageContext.Connection.BeginTransaction(IsolationLevel.ReadUncommitted);
                 foreach (IFakeCommandAttribute fc in storageContext.FakeCommand)
                 {
                     IDbCommand cmd = storageContext.Connection.CreateCommand();
