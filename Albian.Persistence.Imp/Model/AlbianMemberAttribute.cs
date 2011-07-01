@@ -5,7 +5,8 @@ using Albian.Persistence.Model;
 namespace Albian.Persistence.Imp.Model
 {
     [Serializable]
-    public class MemberAttribute : IMemberAttribute
+    //[AttributeUsage(AttributeTargets.Property)]
+    public class AlbianMemberAttribute : IMemberAttribute
     {
         private bool _allowNull = true;
         private DbType _dbType = DbType.String;

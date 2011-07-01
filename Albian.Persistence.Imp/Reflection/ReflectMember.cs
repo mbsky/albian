@@ -46,7 +46,7 @@ namespace Albian.Persistence.Imp.Reflection
 
         public IMemberAttribute ReflectProperty(PropertyInfo propertyInfo)
         {
-            IMemberAttribute memberAttribute = new MemberAttribute
+            IMemberAttribute memberAttribute = new AlbianMemberAttribute
                                                    {
                                                        Name = propertyInfo.Name,
                                                        PrimaryKey = false,

@@ -186,5 +186,253 @@ namespace Albian.Persistence.Imp.Command
                                                 };
             return fakeCmd;
         }
+
+        public IFakeCommandAttribute BuildModifyFakeCommandByRouting<T>(PermissionMode permission, T target,
+                                                                      IRoutingAttribute routing,
+                                                                      IObjectAttribute objectAttribute,
+                                                                      PropertyInfo[] properties)
+          where T : IAlbianObject
+        {
+            if (null == routing)
+            {
+                throw new ArgumentNullException("routing");
+            }
+            if (null == properties || 0 == properties.Length)
+            {
+                throw new ArgumentNullException("properties");
+            }
+            if (null == objectAttribute)
+            {
+                throw new ArgumentNullException("objectAttribute");
+            }
+            if (0 == (permission & routing.Permission))
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("The routing permission {0} is no enough.", permission);
+                return null;
+            }
+
+            IList<DbParameter> paras = new List<DbParameter>();
+
+            //create the connection string
+            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            if (null == storageAttr)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
+                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+            }
+
+            //create the hash table name
+            string tableFullName = Utils.GetTableFullName(routing, target);
+
+            //build the command text
+            IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
+            IDictionary<string,IMemberAttribute> pks = objectAttribute.PrimaryKeys;
+            if (null == pks || 0 == pks.Count)
+            {
+                throw new Exception("Can not Update the Database,the pks is null or empty.");
+            }
+
+            StringBuilder sbPKs = new StringBuilder();
+            StringBuilder sbCols = new StringBuilder();
+            StringBuilder sbUpdate = new StringBuilder();
+
+            foreach (PropertyInfo property in properties)
+            {
+                object value = property.GetValue(target, null);
+                if (null == value)
+                {
+                    continue;
+                }
+                IMemberAttribute member = members[property.Name];
+                if (!member.IsSave)
+                {
+                    continue;
+                }
+
+                string paraName = DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
+
+                if (member.PrimaryKey)
+                {
+                    sbPKs.AppendFormat("AND {0}={1} ", member.FieldName, paraName);
+                    paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+                    continue;
+                }
+
+                sbCols.AppendFormat("{0}={1},", member.FieldName, paraName);
+                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+            }
+            int colsLen = sbCols.Length;
+            if (0 < colsLen)
+            {
+                sbCols.Remove(colsLen - 1, 1);
+            }
+
+            sbUpdate.AppendFormat("UPDATE {0} SET {1} WHERE 1=1 {2} ", tableFullName, sbCols, sbPKs);
+
+            IFakeCommandAttribute fakeCmd = new FakeCommandAttribute
+            {
+                CommandText = sbUpdate.ToString(),
+                Paras = ((List<DbParameter>)paras).ToArray(),
+                StorageName = routing.StorageName
+            };
+            return fakeCmd;
+        }
+
+        public IFakeCommandAttribute BuildDeleteFakeCommandByRouting<T>(PermissionMode permission, T target,
+                                                                      IRoutingAttribute routing,
+                                                                      IObjectAttribute objectAttribute,
+                                                                      PropertyInfo[] properties)
+          where T : IAlbianObject
+        {
+            if (null == routing)
+            {
+                throw new ArgumentNullException("routing");
+            }
+            if (null == properties || 0 == properties.Length)
+            {
+                throw new ArgumentNullException("properties");
+            }
+            if (null == objectAttribute)
+            {
+                throw new ArgumentNullException("objectAttribute");
+            }
+            if (0 == (permission & routing.Permission))
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("The routing permission {0} is no enough.", permission);
+                return null;
+            }
+
+            StringBuilder sbDelete = new StringBuilder();
+            StringBuilder sbPKs = new StringBuilder();
+
+            IList<DbParameter> paras = new List<DbParameter>();
+
+            //create the connection string
+            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            if (null == storageAttr)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
+                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+            }
+
+            //create the hash table name
+            string tableFullName = Utils.GetTableFullName(routing, target);
+
+            //build the command text
+            IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
+            foreach (PropertyInfo property in properties)
+            {
+                object value = property.GetValue(target, null);
+                if (null == value)
+                {
+                    continue;
+                }
+                IMemberAttribute member = members[property.Name];
+                if (!member.PrimaryKey)
+                {
+                    continue;
+                }
+
+                string paraName = DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
+
+                sbPKs.AppendFormat(" AND {0}={1}", member.FieldName, paraName);
+                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+            }
+
+            sbDelete.AppendFormat("DELETE FROM {0} WHERE 1=1 {1} ", tableFullName, sbPKs);
+            IFakeCommandAttribute fakeCmd = new FakeCommandAttribute
+            {
+                CommandText = sbDelete.ToString(),
+                Paras = ((List<DbParameter>)paras).ToArray(),
+                StorageName = routing.StorageName
+            };
+            return fakeCmd;
+        }
+
+        public IFakeCommandAttribute BuildSaveFakeCommandByRouting<T>(PermissionMode permission, T target,
+                                                                      IRoutingAttribute routing,
+                                                                      IObjectAttribute objectAttribute,
+                                                                      PropertyInfo[] properties)
+          where T : IAlbianObject
+        {
+            if (null == routing)
+            {
+                throw new ArgumentNullException("routing");
+            }
+            if (null == properties || 0 == properties.Length)
+            {
+                throw new ArgumentNullException("properties");
+            }
+            if (null == objectAttribute)
+            {
+                throw new ArgumentNullException("objectAttribute");
+            }
+            if (0 == (permission & routing.Permission))
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("The routing permission {0} is no enough.", permission);
+                return null;
+            }
+
+            var sbInsert = new StringBuilder();
+            var sbCols = new StringBuilder();
+            var sbValues = new StringBuilder();
+
+            IList<DbParameter> paras = new List<DbParameter>();
+
+            //create the connection string
+            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            if (null == storageAttr)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
+                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+            }
+
+            //create the hash table name
+            string tableFullName = Utils.GetTableFullName(routing, target);
+
+            //build the command text
+            IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
+            foreach (PropertyInfo property in properties)
+            {
+                object value = property.GetValue(target, null);
+                if (null == value)
+                {
+                    continue;
+                }
+                IMemberAttribute member = members[property.Name];
+                if (!member.IsSave)
+                {
+                    continue;
+                }
+                sbCols.AppendFormat("{0},", member.FieldName);
+                string paraName = DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
+                sbValues.AppendFormat("{0},", paraName);
+                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+            }
+            int colsLen = sbCols.Length;
+            if (0 < colsLen)
+            {
+                sbCols.Remove(colsLen - 1, 1);
+            }
+            int valLen = sbValues.Length;
+            if (0 < valLen)
+            {
+                sbValues.Remove(valLen - 1, 1);
+            }
+            sbInsert.AppendFormat("INSERT INTO {0} ({1}) VALUES({2}) ", tableFullName, sbCols, sbValues);
+            IFakeCommandAttribute fakeCmd = new FakeCommandAttribute
+            {
+                CommandText = sbInsert.ToString(),
+                Paras = ((List<DbParameter>)paras).ToArray(),
+                StorageName = routing.StorageName
+            };
+            return fakeCmd;
+        }
     }
 }

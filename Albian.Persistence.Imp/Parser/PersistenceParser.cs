@@ -47,7 +47,7 @@ namespace Albian.Persistence.Imp.Parser
             {
                 throw new Exception("The interface config item is empty or null in Persistence.config");
             }
-            IObjectAttribute obj = new ObjectAttribute
+            IObjectAttribute obj = new AlbianObjectAttribute
                                        {
                                            Implement = imp.ToString(),
                                            Interface = itf.ToString()
