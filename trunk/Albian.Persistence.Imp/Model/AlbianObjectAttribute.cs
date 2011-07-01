@@ -5,7 +5,7 @@ using Albian.Persistence.Model;
 namespace Albian.Persistence.Imp.Model
 {
     [Serializable]
-    public class ObjectAttribute : IObjectAttribute
+    public class AlbianObjectAttribute : IObjectAttribute
     {
         private string _implement = string.Empty;
         private string _interface = string.Empty;
