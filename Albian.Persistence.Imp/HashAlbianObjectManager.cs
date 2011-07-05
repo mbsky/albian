@@ -5,14 +5,13 @@ using Albian.ObjectModel;
 namespace Albian.Persistence.Imp
 {
     [Serializable]
-    public delegate string HashAlbianObjectHandler<T>(T target)
-        where T : IAlbianObject;
+    public delegate string HashAlbianObjectHandler<T>(T target) where T : IAlbianObject;
 
     public class HashAlbianObjectManager
     {
         private static readonly Hashtable _hashAlbianObjectHandlers = Hashtable.Synchronized(new Hashtable());
 
-        public static void RegisterHandler<T>(string routingName, string typeFullName, HashAlbianObjectHandler<T> separatedEvent)
+        public static void RegisterHandler<T>(string routingName, string typeFullName, HashAlbianObjectHandler<T> splitHandler)
             where T : IAlbianObject
         {
             if (string.IsNullOrEmpty(routingName))
@@ -23,9 +22,9 @@ namespace Albian.Persistence.Imp
             {
                 throw new ArgumentNullException("typeFullName");
             }
-            if (null == separatedEvent)
+            if (null == splitHandler)
                 return;
-            _hashAlbianObjectHandlers.Add(string.Format("{0}{1}", typeFullName, routingName), separatedEvent);
+            _hashAlbianObjectHandlers.Add(string.Format("{0}{1}", typeFullName, routingName), splitHandler);
         }
 
         public static HashAlbianObjectHandler<T> GetHandler<T>(string routingName, string typeFullName)
