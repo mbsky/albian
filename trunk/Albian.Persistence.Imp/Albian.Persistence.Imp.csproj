@@ -77,6 +77,9 @@
     <Compile Include="ConvertToDatabaseStyle.cs" />
     <Compile Include="ConvertToDbType.cs" />
     <Compile Include="ConvertToPermissionMode.cs" />
+    <Compile Include="Model\AlbianObjectFilter.cs" />
+    <Compile Include="Model\FilterCondition.cs" />
+    <Compile Include="Model\OrderByCondition.cs" />
     <Compile Include="TransactionCluster\ITransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterState.cs" />
@@ -93,7 +96,7 @@
     <Compile Include="Reflection\AssemblyManager.cs" />
     <Compile Include="Reflection\ReflectMember.cs" />
     <Compile Include="HashAlbianObjectManager.cs" />
-    <Compile Include="Template.cs" />
+    <Compile Include="PersistenceService.cs" />
     <Compile Include="Command\FakeCommandBuilder.cs" />
     <Compile Include="Command\StorageContextBuilder.cs" />
     <Compile Include="Command\TaskBuilder.cs" />

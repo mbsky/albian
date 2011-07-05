@@ -84,7 +84,7 @@ namespace Albian.Persistence.Imp.TestProject
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.SaveAll<T>(entity);
+            actual = PersistenceService.SaveAll<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -104,7 +104,7 @@ namespace Albian.Persistence.Imp.TestProject
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.SaveAll<T>(entity);
+            actual = PersistenceService.SaveAll<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -124,7 +124,7 @@ namespace Albian.Persistence.Imp.TestProject
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Save<T>(entity);
+            actual = PersistenceService.Save<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -144,7 +144,7 @@ namespace Albian.Persistence.Imp.TestProject
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Save<T>(entity);
+            actual = PersistenceService.Save<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -164,7 +164,7 @@ namespace Albian.Persistence.Imp.TestProject
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Remove<T>(entity);
+            actual = PersistenceService.Remove<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -184,7 +184,7 @@ namespace Albian.Persistence.Imp.TestProject
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Remove<T>(entity);
+            actual = PersistenceService.Remove<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -204,7 +204,7 @@ namespace Albian.Persistence.Imp.TestProject
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.ModifyAll<T>(entity);
+            actual = PersistenceService.ModifyAll<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -224,7 +224,7 @@ namespace Albian.Persistence.Imp.TestProject
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.ModifyAll<T>(entity);
+            actual = PersistenceService.ModifyAll<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -244,7 +244,7 @@ namespace Albian.Persistence.Imp.TestProject
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Modify<T>(entity);
+            actual = PersistenceService.Modify<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -264,7 +264,7 @@ namespace Albian.Persistence.Imp.TestProject
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Modify<T>(entity);
+            actual = PersistenceService.Modify<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -287,7 +287,7 @@ namespace Albian.Persistence.Imp.TestProject
             DbParameter[] commandParameters = null; // TODO: 初始化为适当的值
             IList<T> expected = null; // TODO: 初始化为适当的值
             IList<T> actual;
-            actual = Template.Load<T>(storageName, cmdType, cmdText, commandParameters);
+            actual = PersistenceService.Load<T>(storageName, cmdType, cmdText, commandParameters);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -307,7 +307,7 @@ namespace Albian.Persistence.Imp.TestProject
             string storageName = string.Empty; // TODO: 初始化为适当的值
             IList<T> expected = null; // TODO: 初始化为适当的值
             IList<T> actual;
-            actual = Template.Load<T>(storageName);
+            actual = PersistenceService.Load<T>(storageName);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -329,7 +329,7 @@ namespace Albian.Persistence.Imp.TestProject
             DbParameter[] commandParameters = null; // TODO: 初始化为适当的值
             IList<T> expected = null; // TODO: 初始化为适当的值
             IList<T> actual;
-            actual = Template.Load<T>(cmdType, cmdText, commandParameters);
+            actual = PersistenceService.Load<T>(cmdType, cmdText, commandParameters);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -348,7 +348,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             IList<T> expected = null; // TODO: 初始化为适当的值
             IList<T> actual;
-            actual = Template.Load<T>();
+            actual = PersistenceService.Load<T>();
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -370,7 +370,7 @@ namespace Albian.Persistence.Imp.TestProject
             DbParameter[] commandParameters = null; // TODO: 初始化为适当的值
             T expected = new T(); // TODO: 初始化为适当的值
             T actual;
-            actual = Template.Find<T>(cmdType, cmdText, commandParameters);
+            actual = PersistenceService.Find<T>(cmdType, cmdText, commandParameters);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -393,7 +393,7 @@ namespace Albian.Persistence.Imp.TestProject
             DbParameter[] commandParameters = null; // TODO: 初始化为适当的值
             T expected = new T(); // TODO: 初始化为适当的值
             T actual;
-            actual = Template.Find<T>(storageName, cmdType, cmdText, commandParameters);
+            actual = PersistenceService.Find<T>(storageName, cmdType, cmdText, commandParameters);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -412,7 +412,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             T expected = new T(); // TODO: 初始化为适当的值
             T actual;
-            actual = Template.Find<T>();
+            actual = PersistenceService.Find<T>();
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -432,7 +432,7 @@ namespace Albian.Persistence.Imp.TestProject
             string storageName = string.Empty; // TODO: 初始化为适当的值
             T expected = new T(); // TODO: 初始化为适当的值
             T actual;
-            actual = Template.Find<T>(storageName);
+            actual = PersistenceService.Find<T>(storageName);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -469,7 +469,7 @@ namespace Albian.Persistence.Imp.TestProject
             list.Add(order1);
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Create<IAlbianObject>(list);
+            actual = PersistenceService.Create<IAlbianObject>(list);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -489,7 +489,7 @@ namespace Albian.Persistence.Imp.TestProject
             T entity = new T(); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
             int actual;
-            actual = Template.Create<T>(entity);
+            actual = PersistenceService.Create<T>(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
         }
@@ -503,7 +503,7 @@ namespace Albian.Persistence.Imp.TestProject
             order.Money = 40;
             order.Name = "fucking";
             order.Seller = "5173";
-            Template.Create<IAlbianObject>(order);
+            PersistenceService.Create<IAlbianObject>(order);
             //Template.Create<Order>();
             Assert.Inconclusive("没有找到能够满足 T 的类型约束的相应类型参数。请以适当的类型参数来调用 CreateTestHelper<T>()。");
         }
@@ -514,7 +514,7 @@ namespace Albian.Persistence.Imp.TestProject
         [TestMethod()]
         public void TemplateConstructorTest()
         {
-            Template target = new Template();
+            PersistenceService target = new PersistenceService();
             Assert.Inconclusive("TODO: 实现用来验证目标的代码");
         }
 
