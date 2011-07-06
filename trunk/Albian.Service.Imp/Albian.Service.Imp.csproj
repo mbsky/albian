@@ -45,7 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractAlbianService.cs" />
+    <Compile Include="AlbianServiceAttrbuite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceRouter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config\Service.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Albian.Service\Albian.Service.csproj">
+      <Project>{172EC4B7-2BD0-4899-B466-8FCBB0721D28}</Project>
+      <Name>Albian.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
