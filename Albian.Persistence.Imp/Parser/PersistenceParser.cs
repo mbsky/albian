@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Albian.Kernel;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Model;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
-using Albian.XmlParser;
 
 namespace Albian.Persistence.Imp.Parser
 {

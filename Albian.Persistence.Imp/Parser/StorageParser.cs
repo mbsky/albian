@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using Albian.Kernel;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Model;
 using Albian.Persistence.Model;
-using Albian.XmlParser;
 
 namespace Albian.Persistence.Imp.Parser
 {

@@ -80,6 +80,7 @@
     <Compile Include="Model\AlbianObjectFilter.cs" />
     <Compile Include="Model\FilterCondition.cs" />
     <Compile Include="Model\OrderByCondition.cs" />
+    <Compile Include="PersistenceException.cs" />
     <Compile Include="TransactionCluster\ITransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterState.cs" />
@@ -116,6 +117,10 @@
       <Project>{C842F310-52A3-4111-BD4A-65A2798B929B}</Project>
       <Name>Albian.Cached</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Albian.Kernel\Albian.Kernel.csproj">
+      <Project>{5EF37887-AADF-4753-A1F2-BAA45135DAF4}</Project>
+      <Name>Albian.Kernel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Albian.ObjectModel\Albian.ObjectModel.csproj">
       <Project>{21EDF711-2FDA-49C5-85B4-5A83D3768591}</Project>
       <Name>Albian.ObjectModel</Name>
@@ -131,10 +136,6 @@
     <ProjectReference Include="..\Albian.Pool\Albian.Pool.csproj">
       <Project>{DAD452D0-5723-4A9B-8177-C3D07954770E}</Project>
       <Name>Albian.Pool</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.XmlParser\Albian.XmlParser.csproj">
-      <Project>{12EC6673-7DAF-4396-93BE-02232371B9AF}</Project>
-      <Name>Albian.XmlParser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
