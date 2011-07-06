@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using Albian.Kernel;
 using Albian.Persistence.Model;
-using Albian.XmlParser;
 
 namespace Albian.Persistence.Imp.Parser
 {

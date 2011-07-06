@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
+using Albian.Kernel;
 using Albian.Persistence.Model;
 using Albian.Pool.Imp.DbConnectionPool;
-using Albian.XmlParser;
 using log4net;
 
 namespace Albian.Persistence.Imp.Parser

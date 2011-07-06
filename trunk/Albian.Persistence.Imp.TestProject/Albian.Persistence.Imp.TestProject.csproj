@@ -87,10 +87,6 @@
       <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
       <Name>Albian.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Albian.XmlParser\Albian.XmlParser.csproj">
-      <Project>{12EC6673-7DAF-4396-93BE-02232371B9AF}</Project>
-      <Name>Albian.XmlParser</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="config\Persistence.config">
