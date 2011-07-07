@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Albian.Kernel.ThreadPool;
 
 namespace Albian.Kernel
 {
@@ -13,7 +14,5 @@ namespace Albian.Kernel
             get { return _appid; }
             set { _appid = value; }
         }
-
-
     }
 }
