@@ -77,6 +77,12 @@
     <Compile Include="ConvertToDatabaseStyle.cs" />
     <Compile Include="ConvertToDbType.cs" />
     <Compile Include="ConvertToPermissionMode.cs" />
+    <Compile Include="ConnectionPool\ConnectionPool.cs" />
+    <Compile Include="ConnectionPool\ConnectionPoolCached.cs" />
+    <Compile Include="ConnectionPool\DbConnectionPoolManager.cs" />
+    <Compile Include="ConnectionPool\Factory\MySqlConnectionFactory.cs" />
+    <Compile Include="ConnectionPool\Factory\OracleConnectionFactory.cs" />
+    <Compile Include="ConnectionPool\Factory\SqlServerConnectionFactory.cs" />
     <Compile Include="Model\AlbianObjectFilter.cs" />
     <Compile Include="Model\FilterCondition.cs" />
     <Compile Include="Model\OrderByCondition.cs" />
@@ -128,14 +134,6 @@
     <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
       <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
       <Name>Albian.Persistence</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.Pool.Imp\Albian.Pool.Imp.csproj">
-      <Project>{BA7B8D85-E93B-4F9B-8F5B-712B143BE591}</Project>
-      <Name>Albian.Pool.Imp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.Pool\Albian.Pool.csproj">
-      <Project>{DAD452D0-5723-4A9B-8177-C3D07954770E}</Project>
-      <Name>Albian.Pool</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

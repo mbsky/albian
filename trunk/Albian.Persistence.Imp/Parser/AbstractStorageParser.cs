@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using Albian.Kernel;
+using Albian.Persistence.Imp.ConnectionPool;
 using Albian.Persistence.Model;
-using Albian.Pool.Imp.DbConnectionPool;
 using log4net;
 
 namespace Albian.Persistence.Imp.Parser
