@@ -7,9 +7,15 @@ namespace Albian.Service.Imp
 {
     public class AlbianServiceAttrbuite : IAlbianServiceAttrbuite
     {
+        private string _id = string.Empty;
         private string _implement = string.Empty;
-
         private string _interface = string.Empty;
+
+        public string Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
 
         public string Implement
         {

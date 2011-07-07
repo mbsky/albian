@@ -29,10 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Pool", "Albian.Pool\Albian.Pool.csproj", "{DAD452D0-5723-4A9B-8177-C3D07954770E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Pool.Imp", "Albian.Pool.Imp\Albian.Pool.Imp.csproj", "{BA7B8D85-E93B-4F9B-8F5B-712B143BE591}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Para", "Albian.Para\Albian.Para.csproj", "{2116FE8B-0939-403B-975C-8AC806FC070E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Para.Imp", "Albian.Para.Imp\Albian.Para.Imp.csproj", "{07C7E698-1742-4AD5-8E7F-01117F549A8B}"
@@ -100,14 +96,6 @@ Global
 		{04AC70C0-213F-43BC-89F3-B29FB2E6EAAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04AC70C0-213F-43BC-89F3-B29FB2E6EAAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04AC70C0-213F-43BC-89F3-B29FB2E6EAAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAD452D0-5723-4A9B-8177-C3D07954770E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAD452D0-5723-4A9B-8177-C3D07954770E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAD452D0-5723-4A9B-8177-C3D07954770E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAD452D0-5723-4A9B-8177-C3D07954770E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA7B8D85-E93B-4F9B-8F5B-712B143BE591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA7B8D85-E93B-4F9B-8F5B-712B143BE591}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA7B8D85-E93B-4F9B-8F5B-712B143BE591}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA7B8D85-E93B-4F9B-8F5B-712B143BE591}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2116FE8B-0939-403B-975C-8AC806FC070E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2116FE8B-0939-403B-975C-8AC806FC070E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2116FE8B-0939-403B-975C-8AC806FC070E}.Release|Any CPU.ActiveCfg = Release|Any CPU
