@@ -52,12 +52,17 @@
     <Compile Include="AlbianKernelAttribute.cs" />
     <Compile Include="AlbianKernelException.cs" />
     <Compile Include="BootService.cs" />
+    <Compile Include="Compression\Compress.cs" />
     <Compile Include="IdGenerator.cs" />
     <Compile Include="Parser\AbstractKernelParser.cs" />
     <Compile Include="Parser\IKernelParser.cs" />
     <Compile Include="Parser\KernelParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ThreadPool\IThreadPool.cs" />
+    <Compile Include="ThreadPool\ThreadPool.cs" />
+    <Compile Include="ThreadPool\ThreadPoolManager.cs" />
+    <Compile Include="ThreadPool\WorkItem.cs" />
     <Compile Include="XmlFileParser.cs" />
   </ItemGroup>
   <ItemGroup>
