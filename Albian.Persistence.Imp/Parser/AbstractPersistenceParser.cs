@@ -6,7 +6,7 @@ using Albian.Persistence.Model;
 
 namespace Albian.Persistence.Imp.Parser
 {
-    public abstract class AbstractPersistenceParser : IPersistenceParser
+    public abstract class AbstractPersistenceParser : IXmlParser
     {
         #region IPersistenceParser Members
 

@@ -9,7 +9,7 @@ using log4net;
 
 namespace Albian.Persistence.Imp.Parser
 {
-    public abstract class AbstractStorageParser : IStorageParser
+    public abstract class AbstractStorageParser : IXmlParser
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

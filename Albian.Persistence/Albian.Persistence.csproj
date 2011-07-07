@@ -54,9 +54,7 @@
     <Compile Include="Enum\RelationalOperators.cs" />
     <Compile Include="Enum\SortStyle.cs" />
     <Compile Include="Enum\PermissionMode.cs" />
-    <Compile Include="IPersistenceParser.cs" />
     <Compile Include="IStorageContextBuilder.cs" />
-    <Compile Include="IStorageParser.cs" />
     <Compile Include="ITaskBuilder.cs" />
     <Compile Include="Model\IAlbianObjectFilter.cs" />
     <Compile Include="Model\IFakeCommandAttribute.cs" />

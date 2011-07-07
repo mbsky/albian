@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using Albian.Kernel;
 using Albian.ObjectModel;
 using Albian.Persistence.Imp.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,7 +35,7 @@ namespace Albian.Persistence.Imp.TestProject
             string filePath = "Persistence.config"; // TODO: 初始化为适当的值
             target.Init(filePath);
             string storageFile = "Storage.config";
-            IStorageParser storage = new StorageParser();
+            IXmlParser storage = new StorageParser();
             storage.Init(storageFile);
         }
 
