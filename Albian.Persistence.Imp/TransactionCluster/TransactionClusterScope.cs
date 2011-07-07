@@ -5,9 +5,9 @@ using System.Data.Common;
 using System.Reflection;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
+using Albian.Persistence.Imp.ConnectionPool;
 using Albian.Persistence.Imp.Parser;
 using Albian.Persistence.Model;
-using Albian.Pool.Imp.DbConnectionPool;
 using log4net;
 
 namespace Albian.Persistence.Imp.TransactionCluster
