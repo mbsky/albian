@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Reflection;
 using System.Text;
-using Albian.ObjectModel;
 using Albian.Persistence.Context;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Cache;
@@ -378,61 +377,11 @@ namespace Albian.Persistence.Imp.Command
                 return null;
             }
 
-            var sbInsert = new StringBuilder();
-            var sbCols = new StringBuilder();
-            var sbValues = new StringBuilder();
-
-            IList<DbParameter> paras = new List<DbParameter>();
-
-            //create the connection string
-            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
-            if (null == storageAttr)
-            {
-                if (null != Logger)
-                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
-                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
-            }
-
-            //create the hash table name
-            string tableFullName = Utils.GetTableFullName(routing, target);
-
-            //build the command text
-            IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
-            foreach (PropertyInfo property in properties)
-            {
-                object value = property.GetValue(target, null);
-                if (null == value)
-                {
-                    continue;
-                }
-                IMemberAttribute member = members[property.Name];
-                if (!member.IsSave)
-                {
-                    continue;
-                }
-                sbCols.AppendFormat("{0},", member.FieldName);
-                string paraName = DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
-                sbValues.AppendFormat("{0},", paraName);
-                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
-            }
-            int colsLen = sbCols.Length;
-            if (0 < colsLen)
-            {
-                sbCols.Remove(colsLen - 1, 1);
-            }
-            int valLen = sbValues.Length;
-            if (0 < valLen)
-            {
-                sbValues.Remove(valLen - 1, 1);
-            }
-            sbInsert.AppendFormat("INSERT INTO {0} ({1}) VALUES({2}) ", tableFullName, sbCols, sbValues);
-            IFakeCommandAttribute fakeCmd = new FakeCommandAttribute
-            {
-                CommandText = sbInsert.ToString(),
-                Paras = ((List<DbParameter>)paras).ToArray(),
-                StorageName = routing.StorageName
-            };
-            return fakeCmd;
+            return target.IsNew 
+                    ? 
+                    BuildCreateFakeCommandByRouting<T>(permission, target, routing, objectAttribute, properties) 
+                    : 
+                    BuildModifyFakeCommandByRouting<T>(permission, target, routing, objectAttribute, properties);
         }
     }
 }

@@ -14,5 +14,12 @@
         public string Seller { get; set; }
 
         #endregion
+
+        #region IAlbianObject 成员
+
+
+        public bool IsNew { get; set; }
+
+        #endregion
     }
 }

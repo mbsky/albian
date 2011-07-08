@@ -1,6 +1,4 @@
-﻿using Albian.ObjectModel;
-
-namespace Albian.Persistence.Imp.TestProject
+﻿namespace Albian.Persistence.Imp.TestProject
 {
     public interface IBizOffer : IAlbianObject
     {
