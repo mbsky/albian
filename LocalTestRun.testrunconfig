@@ -2,6 +2,7 @@
 <TestRunConfiguration name="本地测试运行" id="252826cd-44b1-412a-a7db-f09a9192d523" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
   <Description>这是本地测试运行的默认测试运行配置。</Description>
   <Deployment>
+    <DeploymentItem filename="Albian.Sercice.Imp.TestProject\config\" />
     <DeploymentItem filename="Albian.Persistence.Imp.TestProject\config\" />
   </Deployment>
   <TestTypeSpecific>
