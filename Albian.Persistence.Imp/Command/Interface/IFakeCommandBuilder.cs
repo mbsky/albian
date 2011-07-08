@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Albian.ObjectModel;
 using Albian.Persistence.Context;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Model;
@@ -43,6 +42,23 @@ namespace Albian.Persistence.Imp.Command
                                                                                  IObjectAttribute objectAttribute,
                                                                                  PropertyInfo[] properties)
             where T : IAlbianObject;
+
+        IFakeCommandAttribute BuildModifyFakeCommandByRouting<T>(PermissionMode permission, T target,
+                                                                       IRoutingAttribute routing,
+                                                                       IObjectAttribute objectAttribute,
+                                                                       PropertyInfo[] properties)
+            where T : IAlbianObject;
+
+        IFakeCommandAttribute BuildDeleteFakeCommandByRouting<T>(PermissionMode permission, T target,
+                                                                      IRoutingAttribute routing,
+                                                                      IObjectAttribute objectAttribute,
+                                                                      PropertyInfo[] properties)
+           where T : IAlbianObject;
+        IFakeCommandAttribute BuildSaveFakeCommandByRouting<T>(PermissionMode permission, T target,
+                                                                      IRoutingAttribute routing,
+                                                                      IObjectAttribute objectAttribute,
+                                                                      PropertyInfo[] properties)
+           where T : IAlbianObject;
     }
 
    

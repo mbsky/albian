@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using Albian.ObjectModel;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.TransactionCluster;
@@ -12,59 +11,75 @@ namespace Albian.Persistence.Imp
 {
     public static class PersistenceService
     {
-        public static int Create<T>(T entity)
+        public static bool Create<T>(T entity)
             where T : IAlbianObject
         {
             TaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildCreateTask<T>(entity);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            tran.Execute(task);
-            return 0;
+            return tran.Execute(task);
         }
 
-        public static int Create<T>(IList<T> entity)
+        public static bool Create<T>(IList<T> entity)
             where T : IAlbianObject
         {
             TaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildCreateTask<T>(entity);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            tran.Execute(task);
-            return 0;
+            return tran.Execute(task);
         }
 
-        public static int Modify<T>(T entity)
+        public static bool Modify<T>(T entity)
             where T : IAlbianObject
         {
-            return 0;
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildModifyTask<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            return tran.Execute(task);
         }
 
-        public static int Modify<T>(IList<T> entity)
+        public static bool Modify<T>(IList<T> entity)
             where T : IAlbianObject
         {
-            return 0;
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildModifyTask<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            return tran.Execute(task);
         }
 
-        public static int Remove<T>(T entity)
+        public static bool Remove<T>(T entity)
             where T : IAlbianObject
         {
-            return 0;
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildDeleteTask<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            return tran.Execute(task);
         }
 
 
-        public static int Remove<T>(IList<T> entity)
+        public static bool Remove<T>(IList<T> entity)
             where T : IAlbianObject
         {
-            return 0;
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildDeleteTask<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            return tran.Execute(task);
         }
 
-        public static int Save<T>(T entity) where T : IAlbianObject
+        public static bool Save<T>(T entity) where T : IAlbianObject
         {
-            return 0;
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildSaveTask<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            return tran.Execute(task);
         }
 
-        public static int Save<T>(IList<T> entity) where T : IAlbianObject
+        public static bool Save<T>(IList<T> entity) where T : IAlbianObject
         {
-            return 0;
+            TaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildSaveTask<T>(entity);
+            ITransactionClusterScope tran = new TransactionClusterScope();
+            return tran.Execute(task);
         }
         
 

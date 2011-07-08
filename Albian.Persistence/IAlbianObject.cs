@@ -1,4 +1,4 @@
-﻿namespace Albian.ObjectModel
+﻿namespace Albian.Persistence
 {
     /// <summary>
     /// 实体签名接口

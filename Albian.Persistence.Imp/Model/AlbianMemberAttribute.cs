@@ -5,16 +5,16 @@ using Albian.Persistence.Model;
 namespace Albian.Persistence.Imp.Model
 {
     [Serializable]
-    //[AttributeUsage(AttributeTargets.Property)]
-    public class AlbianMemberAttribute : IMemberAttribute
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
+    public class AlbianMemberAttribute : Attribute, IMemberAttribute
     {
         private bool _allowNull = true;
-        private DbType _dbType = DbType.String;
+        private DbType _dbType = DbType.Object;
         private string _fieldName = string.Empty;
         private bool _isSave = true;
         private int _length = 200;
         private string _name = string.Empty;
-        private bool _primaryKey;
+        private bool _primaryKey = false;
 
         #region IMemberAttribute Members
 

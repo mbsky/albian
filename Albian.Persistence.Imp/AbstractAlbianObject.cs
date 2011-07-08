@@ -1,6 +1,7 @@
 ﻿using System;
+using Albian.Persistence.Imp.Model;
 
-namespace Albian.ObjectModel.Imp
+namespace Albian.Persistence.Imp
 {
     [Serializable]
     public abstract class AbstractAlbianObject : IAlbianObject
@@ -10,12 +11,15 @@ namespace Albian.ObjectModel.Imp
         private string _id = string.Empty;
         private bool _isNew = false;
 
-        public string Id
+        [AlbianMemberAttribute(PrimaryKey=true)]
+        public virtual string Id
         {
             get { return _id; }
             set { _id = value; }
         }
-        public bool IsNew
+
+        [AlbianMemberAttribute(IsSave = false)]
+        public virtual bool IsNew
         {
             get { return _isNew; }
             set { _isNew = value; }

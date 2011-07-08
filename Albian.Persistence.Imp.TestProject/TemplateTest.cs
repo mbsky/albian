@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using Albian.Kernel;
-using Albian.ObjectModel;
 using Albian.Persistence.Imp.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -109,7 +108,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Save(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
@@ -129,7 +128,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Save(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
@@ -149,7 +148,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Remove(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
@@ -169,7 +168,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Remove(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
@@ -229,7 +228,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             T entity = default(T); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Modify(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
@@ -249,7 +248,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             IList<T> entity = null; // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Modify(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
@@ -454,7 +453,7 @@ namespace Albian.Persistence.Imp.TestProject
             list.Add(order);
             list.Add(order1);
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Create(list);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
@@ -474,7 +473,7 @@ namespace Albian.Persistence.Imp.TestProject
         {
             var entity = new T(); // TODO: 初始化为适当的值
             int expected = 0; // TODO: 初始化为适当的值
-            int actual;
+            bool actual;
             actual = PersistenceService.Create(entity);
             Assert.AreEqual(expected, actual);
             Assert.Inconclusive("验证此测试方法的正确性。");
