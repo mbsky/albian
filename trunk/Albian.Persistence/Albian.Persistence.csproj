@@ -54,6 +54,7 @@
     <Compile Include="Enum\RelationalOperators.cs" />
     <Compile Include="Enum\SortStyle.cs" />
     <Compile Include="Enum\PermissionMode.cs" />
+    <Compile Include="IAlbianObject.cs" />
     <Compile Include="IStorageContextBuilder.cs" />
     <Compile Include="ITaskBuilder.cs" />
     <Compile Include="Model\IAlbianObjectFilter.cs" />
@@ -66,12 +67,6 @@
     <Compile Include="Model\IRoutingAttribute.cs" />
     <Compile Include="Model\IStorageAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Albian.ObjectModel\Albian.ObjectModel.csproj">
-      <Project>{21EDF711-2FDA-49C5-85B4-5A83D3768591}</Project>
-      <Name>Albian.ObjectModel</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
