@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -12,72 +13,122 @@ namespace Albian.Persistence.Imp
 {
     public static class PersistenceService
     {
-        public static bool Create<T>(T entity)
+        public static bool Create<T>(T albianObject)
             where T : IAlbianObject
         {
+            if (null == albianObject)
+            {
+                throw new ArgumentNullException("albianObject");
+            }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildCreateTask<T>(entity);
+            ITask task = builder.BuildCreateTask<T>(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
 
-        public static bool Create<T>(IList<T> entity)
+        public static bool Create<T>(IList<T> albianObjects)
             where T : IAlbianObject
         {
+            if (null == albianObjects)
+            {
+                throw new ArgumentNullException("albianObjects");
+            }
+            if (0 == albianObjects.Count)
+            {
+                throw new ArgumentException("albianObject count is 0.");
+            }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildCreateTask<T>(entity);
+            ITask task = builder.BuildCreateTask<T>(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
 
-        public static bool Modify<T>(T entity)
+        public static bool Modify<T>(T albianObject)
             where T : IAlbianObject
         {
+            if (null == albianObject)
+            {
+                throw new ArgumentNullException("albianObject");
+            }
+
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildModifyTask<T>(entity);
+            ITask task = builder.BuildModifyTask<T>(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
 
-        public static bool Modify<T>(IList<T> entity)
+        public static bool Modify<T>(IList<T> albianObjects)
             where T : IAlbianObject
         {
+            if (null == albianObjects)
+            {
+                throw new ArgumentNullException("albianObjects");
+            }
+            if (0 == albianObjects.Count)
+            {
+                throw new ArgumentException("albianObject count is 0.");
+            }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildModifyTask<T>(entity);
+            ITask task = builder.BuildModifyTask<T>(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
 
-        public static bool Remove<T>(T entity)
+        public static bool Remove<T>(T albianObject)
             where T : IAlbianObject
         {
+            if (null == albianObject)
+            {
+                throw new ArgumentNullException("albianObject");
+            }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildDeleteTask<T>(entity);
+            ITask task = builder.BuildDeleteTask<T>(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
 
-        public static bool Remove<T>(IList<T> entity)
+        public static bool Remove<T>(IList<T> albianObjects)
             where T : IAlbianObject
         {
+            if (null == albianObjects)
+            {
+                throw new ArgumentNullException("albianObjects");
+            }
+            if (0 == albianObjects.Count)
+            {
+                throw new ArgumentException("albianObject count is 0.");
+            }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildDeleteTask<T>(entity);
+            ITask task = builder.BuildDeleteTask<T>(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
 
-        public static bool Save<T>(T entity) where T : IAlbianObject
+        public static bool Save<T>(T albianObject) where T : IAlbianObject
         {
+            if (null == albianObject)
+            {
+                throw new ArgumentNullException("albianObject");
+            }
+
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildSaveTask<T>(entity);
+            ITask task = builder.BuildSaveTask<T>(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
 
-        public static bool Save<T>(IList<T> entity) where T : IAlbianObject
+        public static bool Save<T>(IList<T> albianObjects) where T : IAlbianObject
         {
+            if (null == albianObjects)
+            {
+                throw new ArgumentNullException("albianObjects");
+            }
+            if (0 == albianObjects.Count)
+            {
+                throw new ArgumentException("albianObject count is 0.");
+            }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildSaveTask<T>(entity);
+            ITask task = builder.BuildSaveTask<T>(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
@@ -86,6 +137,18 @@ namespace Albian.Persistence.Imp
         public static T FindObject<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoFindObject<T>(routingName, where);
 
         }
@@ -93,18 +156,51 @@ namespace Albian.Persistence.Imp
         public static T FindObject<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoFindObject<T>(PersistenceParser.DefaultRoutingName,where); 
         }
 
         public static T FindObject<T>(IDbCommand cmd)
             where T : IAlbianObject, new()
         {
+            if (null == cmd)
+            {
+                throw new ArgumentNullException("cmd");
+            }
             return DoFindObject<T>(cmd);
         }
 
         public static IList<T> FindObjects<T>(int top, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (0 == top)
+            {
+                throw new ArgumentException("The 'top' is 0.");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
+
             return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, top, where, orderby);
         }
 
@@ -112,60 +208,196 @@ namespace Albian.Persistence.Imp
         public static IList<T> FindObjects<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, null);
         }
 
         public static IList<T> FindObjects<T>(IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
+
             return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, orderby);
         }
 
         public static IList<T> FindObjects<T>(IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
+
             return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, 0, null, orderby);
         }
 
         public static IList<T> FindObjects<T>(string routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
+
             return DoFindObjects<T>(routingName, 0, where, orderby);
         }
 
         public static IList<T> FindObjects<T>(string routingName, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
             return DoFindObjects<T>(routingName, 0, null, orderby);; 
         }
 
         public static IList<T> FindObjects<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+           
             return DoFindObjects<T>(routingName, 0, where, null);;
         }
 
         public static IList<T> FindObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (0 == top)
+            {
+                throw new ArgumentException("The 'top' is 0.");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
             return DoFindObjects<T>(routingName,top,where,orderby);
         }
 
         public static IList<T> FindObjects<T>(string routingName, int top, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (0 == top)
+            {
+                throw new ArgumentException("The 'top' is 0.");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoFindObjects<T>(routingName, top, where, null);
         }
 
         public static IList<T> FindObjects<T>(IDbCommand cmd)
             where T : IAlbianObject, new()
         {
+            if (null == cmd)
+            {
+                throw new ArgumentNullException("cmd");
+            }
             return DoFindObjects<T>(cmd);
         }
 
         public static T LoadObject<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoLoadObject<T>(routingName, where); ;
 
         }
@@ -173,72 +405,225 @@ namespace Albian.Persistence.Imp
         public static T LoadObject<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoLoadObject<T>(PersistenceParser.DefaultRoutingName, where);
         }
 
         public static T LoadObject<T>(IDbCommand cmd)
             where T : IAlbianObject, new()
         {
+            if (null == cmd)
+            {
+                throw new ArgumentNullException("cmd");
+            }
             return DoLoadObject<T>(cmd);
         }
 
         public static IList<T> LoadObjects<T>(int top, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (0 == top)
+            {
+                throw new ArgumentException("The 'top' is 0.");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
             return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, top, where, orderby);
         }
 
         public static IList<T> LoadObjects<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, null);
         }
 
         public static IList<T> LoadObjects<T>(IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
             return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, orderby);
         }
 
         public static IList<T> LoadObjects<T>(IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
+
             return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, 0, null, orderby);
         }
 
         public static IList<T> LoadObjects<T>(string routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
             return DoLoadObjects<T>(routingName, 0, where, orderby);
         }
 
         public static IList<T> LoadObjects<T>(string routingName, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
             return DoLoadObjects<T>(routingName, 0, null, orderby);
         }
 
         public static IList<T> LoadObjects<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoLoadObjects<T>(routingName, 0, where, null);
         }
 
         public static IList<T> LoadObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (0 == top)
+            {
+                throw new ArgumentException("The 'top' is 0.");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
+            if (null == orderby)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == orderby.Length)
+            {
+                throw new ArgumentException("orderby length is 0.");
+            }
             return DoLoadObjects<T>(routingName, top, where, orderby);
         }
 
         public static IList<T> LoadObjects<T>(string routingName, int top, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (0 == top)
+            {
+                throw new ArgumentException("The 'top' is 0.");
+            }
+            if (null == where)
+            {
+                throw new ArgumentNullException("where");
+            }
+            if (0 == where.Length)
+            {
+                throw new ArgumentException("where length is 0.");
+            }
             return DoLoadObjects<T>(routingName, top, where, null);
         }
 
         public static IList<T> LoadObjects<T>(IDbCommand cmd)
             where T : IAlbianObject, new()
         {
+            if (null == cmd)
+            {
+                throw new ArgumentNullException("cmd");
+            }
             return DoLoadObjects<T>(cmd);
         }
 
