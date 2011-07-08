@@ -17,7 +17,7 @@ namespace Albian.Service.Imp
         public static void Start()
         {
             IXmlParser parser = new ServiceConfigParser();
-            parser.Init("config/Service.config");
+            parser.Init("Service.config");
             IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceCached.Get(AbstractServiceConfigParser.ServiceKey);
             bool isSuccess = true;
             IDictionary<string, IAlbianServiceAttrbuite> failServicesInfos = new Dictionary<string, IAlbianServiceAttrbuite>();

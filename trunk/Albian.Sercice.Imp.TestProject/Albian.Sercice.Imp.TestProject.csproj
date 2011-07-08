@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{04AC70C0-213F-43BC-89F3-B29FB2E6EAAB}</ProjectGuid>
+    <ProjectGuid>{3DD9C820-B6F1-4090-9CF2-6E32CC6968D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Albian.Persistence.Imp.TestProject</RootNamespace>
-    <AssemblyName>Albian.Persistence.Imp.TestProject</AssemblyName>
+    <RootNamespace>Albian.Sercice.Imp.TestProject</RootNamespace>
+    <AssemblyName>Albian.Sercice.Imp.TestProject</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,10 +36,6 @@
       <HintPath>..\Reference\dll\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Reference\dll\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -48,20 +44,18 @@
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractPersistenceParserTest.cs" />
-    <Compile Include="BizOffer.cs" />
-    <Compile Include="IBizOffer.cs" />
-    <Compile Include="IOrder.cs" />
-    <Compile Include="Order.cs" />
+    <Compile Include="IService.cs" />
+    <Compile Include="IServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemplateTest.cs" />
+    <Compile Include="ServiceRouterTest.cs" />
+    <Compile Include="ServiceT.cs" />
+    <Compile Include="ServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
@@ -79,18 +73,6 @@
       <Project>{5EF37887-AADF-4753-A1F2-BAA45135DAF4}</Project>
       <Name>Albian.Kernel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Albian.ObjectModel\Albian.ObjectModel.csproj">
-      <Project>{21EDF711-2FDA-49C5-85B4-5A83D3768591}</Project>
-      <Name>Albian.ObjectModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.Persistence.Imp\Albian.Persistence.Imp.csproj">
-      <Project>{376313F1-1886-4690-8E93-9B4ACE705868}</Project>
-      <Name>Albian.Persistence.Imp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
-      <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
-      <Name>Albian.Persistence</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Albian.Service.Imp\Albian.Service.Imp.csproj">
       <Project>{6FFE6140-824B-4F0B-855C-3B76EE64D6DE}</Project>
       <Name>Albian.Service.Imp</Name>
@@ -101,12 +83,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\Persistence.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="config\Storage.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="config\Service.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
