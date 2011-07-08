@@ -6,6 +6,7 @@ using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.TransactionCluster;
 using Albian.Persistence.Model;
+using Albian.Persistence.Imp.Parser;
 
 namespace Albian.Persistence.Imp
 {
@@ -56,7 +57,6 @@ namespace Albian.Persistence.Imp
             return tran.Execute(task);
         }
 
-
         public static bool Remove<T>(IList<T> entity)
             where T : IAlbianObject
         {
@@ -81,302 +81,351 @@ namespace Albian.Persistence.Imp
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
-        
 
-
-        public static T FindObject<T>(string routingName, string[] propertyNames, IFilterCondition[] where)
-            where T : IAlbianObject,new()
-        {
-            return default(T);
-        }
 
         public static T FindObject<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObject<T>(routingName, where);
 
-        }
-
-        public static T FindObject<T>(string[] propertyNames, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
         }
 
         public static T FindObject<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObject<T>(PersistenceParser.DefaultRoutingName,where); 
         }
 
         public static T FindObject<T>(IDbCommand cmd)
             where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObject<T>(cmd);
         }
 
-
-        public static T FindObjects<T>(string routingName, int top,string[] propertyNames, IFilterCondition[] where,IOrderByCondition[] orderby)
+        public static IList<T> FindObjects<T>(int top, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, top, where, orderby);
         }
 
-        public static T FindObjects<T>(int top, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+
+        public static IList<T> FindObjects<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, null);
         }
 
-        public static T FindObjects<T>(int top,IFilterCondition[] where, IOrderByCondition[] orderby)
+        public static IList<T> FindObjects<T>(IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, orderby);
         }
 
-        public static T FindObjects<T>(int top, string[] propertyNames, IFilterCondition[] where)
+        public static IList<T> FindObjects<T>(IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObjects<T>(PersistenceParser.DefaultRoutingName, 0, null, orderby);
         }
 
-        public static T FindObjects<T>(int top, string[] propertyNames, IOrderByCondition[] orderby)
+        public static IList<T> FindObjects<T>(string routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObjects<T>(routingName, 0, where, orderby);
         }
 
-        public static T FindObjects<T>(IFilterCondition[] where)
+        public static IList<T> FindObjects<T>(string routingName, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObjects<T>(routingName, 0, null, orderby);; 
         }
 
-        public static T FindObjects<T>(string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        public static IList<T> FindObjects<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoFindObjects<T>(routingName, 0, where, null);;
         }
 
-        public static T FindObjects<T>(string[] propertyNames, IOrderByCondition[] orderby)
+        public static IList<T> FindObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+             where T : IAlbianObject, new()
+        {
+            return DoFindObjects<T>(routingName,top,where,orderby);
+        }
+
+        public static IList<T> FindObjects<T>(string routingName, int top, IFilterCondition[] where)
+             where T : IAlbianObject, new()
+        {
+            return DoFindObjects<T>(routingName, top, where, null);
+        }
+
+        public static IList<T> FindObjects<T>(IDbCommand cmd)
             where T : IAlbianObject, new()
         {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string[] propertyNames, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string routingName,string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string routingName, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string routingName, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string routingName, int top, string[] propertyNames, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(string routingName, int top, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-        public static T FindObjects<T>(IDbCommand cmd)
-            where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
-
-
-        public static T LoadObject<T>(string routingName, string[] propertyNames, IFilterCondition[] where)
-           where T : IAlbianObject, new()
-        {
-            return default(T);
+            return DoFindObjects<T>(cmd);
         }
 
         public static T LoadObject<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObject<T>(routingName, where); ;
 
-        }
-
-        public static T LoadObject<T>(string[] propertyNames, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
         }
 
         public static T LoadObject<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObject<T>(PersistenceParser.DefaultRoutingName, where);
         }
 
         public static T LoadObject<T>(IDbCommand cmd)
             where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObject<T>(cmd);
         }
 
-        public static T LoadObjects<T>(string routingName, int top, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        public static IList<T> LoadObjects<T>(int top, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, top, where, orderby);
         }
 
-        public static T LoadObjects<T>(int top, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        public static IList<T> LoadObjects<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, null);
         }
 
-        public static T LoadObjects<T>(int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+        public static IList<T> LoadObjects<T>(IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, 0, where, orderby);
         }
 
-        public static T LoadObjects<T>(int top, string[] propertyNames, IFilterCondition[] where)
+        public static IList<T> LoadObjects<T>(IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObjects<T>(PersistenceParser.DefaultRoutingName, 0, null, orderby);
         }
 
-        public static T LoadObjects<T>(int top, string[] propertyNames, IOrderByCondition[] orderby)
+        public static IList<T> LoadObjects<T>(string routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObjects<T>(routingName, 0, where, orderby);
         }
 
-        public static T LoadObjects<T>(IFilterCondition[] where)
+        public static IList<T> LoadObjects<T>(string routingName, IOrderByCondition[] orderby)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObjects<T>(routingName, 0, null, orderby);
         }
 
-        public static T LoadObjects<T>(string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        public static IList<T> LoadObjects<T>(string routingName, IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
-            return default(T);
+            return DoLoadObjects<T>(routingName, 0, where, null);
         }
 
-        public static T LoadObjects<T>(string[] propertyNames, IOrderByCondition[] orderby)
+        public static IList<T> LoadObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+             where T : IAlbianObject, new()
+        {
+            return DoLoadObjects<T>(routingName, top, where, orderby);
+        }
+
+        public static IList<T> LoadObjects<T>(string routingName, int top, IFilterCondition[] where)
+             where T : IAlbianObject, new()
+        {
+            return DoLoadObjects<T>(routingName, top, where, null);
+        }
+
+        public static IList<T> LoadObjects<T>(IDbCommand cmd)
+            where T : IAlbianObject, new()
+        {
+            return DoLoadObjects<T>(cmd);
+        }
+
+
+        private static T DoFindObject<T>(string routingName, IFilterCondition[] where)
             where T : IAlbianObject, new()
         {
             return default(T);
         }
 
-        public static T LoadObjects<T>(string[] propertyNames, IFilterCondition[] where)
-             where T : IAlbianObject, new()
+        private static T DoFindObject<T>(IDbCommand cmd)
+           where T : IAlbianObject, new()
         {
             return default(T);
         }
 
-        public static T LoadObjects<T>(IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
+        private static IList<T> DoFindObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+          where T : IAlbianObject, new()
+        {
+            return new List<T>();
+        }
+
+        private static IList<T> DoFindObjects<T>(IDbCommand cmd)
+          where T : IAlbianObject, new()
+        {
+            return new List<T>();
+        }
+
+        private static T DoLoadObject<T>(string routingName, IFilterCondition[] where)
+           where T : IAlbianObject, new()
         {
             return default(T);
         }
 
-        public static T LoadObjects<T>(IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
+        private static T DoLoadObject<T>(IDbCommand cmd)
+           where T : IAlbianObject, new()
         {
             return default(T);
         }
 
-        public static T LoadObjects<T>(string routingName, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
+        private static IList<T> DoLoadObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+          where T : IAlbianObject, new()
         {
-            return default(T);
+            return new List<T>();
         }
 
-        public static T LoadObjects<T>(string routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
+        private static IList<T> DoLoadObjects<T>(IDbCommand cmd)
+          where T : IAlbianObject, new()
         {
-            return default(T);
+            return new List<T>();
         }
 
-        public static T LoadObjects<T>(string routingName, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
+        #region no impl method
 
-        public static T LoadObjects<T>(string routingName, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
+        //public static T FindObject<T>(string routingName, string[] propertyNames, IFilterCondition[] where)
+        //    where T : IAlbianObject,new()
+        //{
+        //    return default(T);
+        //}
 
-        public static T LoadObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
+        //public static T FindObject<T>(string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
 
-        public static T LoadObjects<T>(string routingName, int top, string[] propertyNames, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
+        //public static T FindObjects<T>(string routingName, int top,string[] propertyNames, IFilterCondition[] where,IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
 
-        public static T LoadObjects<T>(string routingName, int top, IFilterCondition[] where)
-             where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
+        //public static T FindObjects<T>(int top, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
 
-        public static T LoadObjects<T>(IDbCommand cmd)
-            where T : IAlbianObject, new()
-        {
-            return default(T);
-        }
+        //public static T FindObjects<T>(int top, string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T FindObjects<T>(int top, string[] propertyNames, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T FindObjects<T>(string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T FindObjects<T>(string[] propertyNames, IOrderByCondition[] orderby)
+        //    where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T FindObjects<T>(string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+        //public static T FindObjects<T>(string routingName,string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T FindObjects<T>(string routingName, int top, string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObject<T>(string routingName, string[] propertyNames, IFilterCondition[] where)
+        //   where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObject<T>(string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObjects<T>(string routingName, int top, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObjects<T>(int top, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObjects<T>(int top, string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObjects<T>(int top, string[] propertyNames, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObjects<T>(string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObjects<T>(string[] propertyNames, IOrderByCondition[] orderby)
+        //    where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+        //public static T LoadObjects<T>(string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
 
 
+        //public static T LoadObjects<T>(string routingName, string[] propertyNames, IFilterCondition[] where, IOrderByCondition[] orderby)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
 
+        //public static T LoadObjects<T>(string routingName, int top, string[] propertyNames, IFilterCondition[] where)
+        //     where T : IAlbianObject, new()
+        //{
+        //    return default(T);
+        //}
+
+
+        #endregion
     }
 }
