@@ -213,5 +213,18 @@ namespace Albian.Persistence.Imp.Parser
             }
             return sbString.ToString();
         }
+
+        public static IStorageAttribute GetStorage(string storageName)
+        {
+            if (null == storageName)
+            {
+                throw new ArgumentNullException("storageName");
+            }
+            if (!StorageCache.Exist(storageName))
+            {
+                return null;
+            }
+            return (IStorageAttribute) StorageCache.Get(storageName);
+        }
     }
 }
