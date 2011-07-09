@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Reflection;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
@@ -10,6 +8,7 @@ using Albian.Persistence.Imp.TransactionCluster;
 using Albian.Persistence.Model;
 using Albian.Persistence.Imp.Parser;
 using log4net;
+using Albian.Persistence.Imp.Query;
 
 namespace Albian.Persistence.Imp
 {
@@ -637,6 +636,8 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                T target = DoLoadObject<T>(routingName, where);
+                return target;
             }
             catch (Exception exc)
             {
@@ -651,6 +652,8 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                T target = DoLoadObject<T>(cmd);
+                return target;
             }
             catch (Exception exc)
             {
@@ -665,6 +668,8 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                IList<T> target = DoLoadObjects<T>(routingName,top, where,orderby);
+                return target;
             }
             catch (Exception exc)
             {
@@ -679,6 +684,8 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                IList<T> target = DoLoadObjects<T>(cmd);
+                return target;
             }
             catch (Exception exc)
             {
@@ -693,12 +700,15 @@ namespace Albian.Persistence.Imp
         {
             try
             {
-
+                ITaskBuilder taskBuilder = new TaskBuilder();
+                ITask task = taskBuilder.BuildQueryTask<T>(routingName, 0, where, null);
+                IQueryCluster query = new QueryCluster();
+                return query.QueryObject<T>(task);
             }
             catch (Exception exc)
             {
                 if (null != Logger)
-                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                    Logger.ErrorFormat("load Object is error..info:{0}.", exc.Message);
                 throw exc;
             }
         }
@@ -708,11 +718,13 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                IQueryCluster query = new QueryCluster();
+                return query.QueryObject<T>(cmd);
             }
             catch (Exception exc)
             {
                 if (null != Logger)
-                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                    Logger.ErrorFormat("load Object is error..info:{0}.", exc.Message);
                 throw exc;
             }
         }
@@ -722,6 +734,10 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                ITaskBuilder taskBuilder = new TaskBuilder();
+                ITask task = taskBuilder.BuildQueryTask<T>(routingName, top, where, orderby);
+                IQueryCluster query = new QueryCluster();
+                return query.QueryObjects<T>(task);
             }
             catch (Exception exc)
             {
@@ -736,10 +752,8 @@ namespace Albian.Persistence.Imp
         {
             try
             {
-                using (IDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                {
-                    //dr.
-                }
+                IQueryCluster query = new QueryCluster();
+                return query.QueryObjects<T>(cmd);
             }
             catch (Exception exc)
             {

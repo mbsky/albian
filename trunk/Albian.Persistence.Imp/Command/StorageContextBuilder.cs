@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Cache;
+using Albian.Persistence.Imp.Context;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 using log4net;
@@ -15,8 +16,8 @@ namespace Albian.Persistence.Imp.Command
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IDictionary<string, IStorageContext> GenerateCreateStorage<T>(T target)
-            where T : IAlbianObject
+        public IDictionary<string, IStorageContext> GenerateStorageContexts<T>(T target, BuildFakeCommandByRoutingsHandler<T> buildFakeCommandByRoutingsHandler, BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler)
+         where T : IAlbianObject
         {
             if (null == target)
             {
@@ -43,10 +44,9 @@ namespace Albian.Persistence.Imp.Command
                 throw new Exception("The object attribute is null");
             }
             IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
-            IFakeCommandBuilder builder = new FakeCommandBuilder();
-            IDictionary<string, IStorageContext> storageContexts = builder.GenerateFakeCommandByRoutings(target, properties, objectAttribute, builder.BuildCreateFakeCommandByRouting);
+            IDictionary<string, IStorageContext> storageContexts = buildFakeCommandByRoutingsHandler(target, properties, objectAttribute, buildFakeCommandByRoutingHandler);
 
-            if (null == storageContexts || 0 == storageContexts.Count)//no the storage context
+            if (0 == storageContexts.Count)//no the storage context
             {
                 if (null != Logger)
                     Logger.Warn("There is no storage contexts of the object.");
@@ -55,10 +55,29 @@ namespace Albian.Persistence.Imp.Command
             return storageContexts;
         }
 
-        //public IDictionary<string, IStorageContext> GenerateCreateStorage<T>(IList<T> target)
-        //     where T : IAlbianObject
-        //{
-        //    return null;
-        //}
+        public IDictionary<string, IStorageContext> GenerateStorageContexts<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+          where T : IAlbianObject
+        {
+            IDictionary<string, IStorageContext> storageContexts = new Dictionary<string, IStorageContext>();
+            IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
+            IFakeCommandAttribute fakeCommandAttrribute =fakeBuilder.GenerateQuery<T>(rountingName, top, where, orderby);
+
+            if (null == fakeCommandAttrribute)//the PermissionMode is not enough
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("The permission is not enough in the {0} routing.", rountingName);
+                throw new PersistenceException(string.Format("The permission is not enough in the {0} routing.", rountingName));
+            }
+
+            IStorageContext storageContext = new StorageContext
+            {
+                FakeCommand = new List<IFakeCommandAttribute>(),
+                StorageName = fakeCommandAttrribute.StorageName,
+            };
+            storageContext.FakeCommand.Add(fakeCommandAttrribute);
+            storageContexts.Add(fakeCommandAttrribute.StorageName, storageContext);
+            return storageContexts;
+        }
+
     }
 }

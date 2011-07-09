@@ -23,7 +23,8 @@ namespace Albian.Persistence.Imp.Command
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
-            task.Context = fakeBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings,fakeBuilder.BuildCreateFakeCommandByRouting);
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
+            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
@@ -45,9 +46,10 @@ namespace Albian.Persistence.Imp.Command
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string,IStorageContext> storageContexts = fakeBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if(null != Logger)
@@ -97,7 +99,8 @@ namespace Albian.Persistence.Imp.Command
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
-            task.Context = fakeBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildModifyFakeCommandByRouting);
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
+            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildModifyFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
@@ -119,9 +122,10 @@ namespace Albian.Persistence.Imp.Command
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string, IStorageContext> storageContexts = fakeBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildModifyFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildModifyFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if (null != Logger)
@@ -165,13 +169,13 @@ namespace Albian.Persistence.Imp.Command
             return task;
         }
 
-
         public ITask BuildRemoveTask<T>(T target)
             where T : IAlbianObject
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
-            task.Context = fakeBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildDeleteFakeCommandByRouting);
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
+            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildDeleteFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
@@ -193,9 +197,10 @@ namespace Albian.Persistence.Imp.Command
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string, IStorageContext> storageContexts = fakeBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildDeleteFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildDeleteFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if (null != Logger)
@@ -245,7 +250,8 @@ namespace Albian.Persistence.Imp.Command
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
-            task.Context = fakeBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildSaveFakeCommandByRouting);
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
+            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildSaveFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
@@ -267,9 +273,10 @@ namespace Albian.Persistence.Imp.Command
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string, IStorageContext> storageContexts = fakeBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildSaveFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildSaveFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if (null != Logger)
@@ -297,6 +304,31 @@ namespace Albian.Persistence.Imp.Command
                 }
             }
 
+            foreach (KeyValuePair<string, IStorageContext> context in task.Context)
+            {
+                IStorageContext storageContext = context.Value;
+                object oStorage = StorageCache.Get(context.Key);
+                if (null == oStorage)
+                {
+                    if (null != Logger)
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                    return null;
+                }
+                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                storageContext.Storage = storage;
+            }
+            return task;
+        }
+
+        public ITask BuildQueryTask<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+            where T:IAlbianObject
+        {
+            ITask task = new Task();
+            IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
+            IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
+            IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(rountingName, top, where, orderby);
+
+            task.Context = storageContexts;
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;

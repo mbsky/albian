@@ -30,10 +30,6 @@ namespace Albian.Persistence.Imp.Command
 
     public interface IFakeCommandBuilder
     {
-
-        IDictionary<string, IStorageContext> GenerateStorageContexts<T>(T target, BuildFakeCommandByRoutingsHandler<T> buildFakeCommandByRoutingsHandler, BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler)
-            where T : IAlbianObject;
-
         IDictionary<string, IStorageContext> GenerateFakeCommandByRoutings<T>(T target, PropertyInfo[] properties, IObjectAttribute objectAttribute,BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler)
             where T : IAlbianObject;
 
@@ -59,8 +55,8 @@ namespace Albian.Persistence.Imp.Command
                                                                       IObjectAttribute objectAttribute,
                                                                       PropertyInfo[] properties)
            where T : IAlbianObject;
+
+        IFakeCommandAttribute GenerateQuery<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+           where T : IAlbianObject;
     }
-
-   
-
 }
