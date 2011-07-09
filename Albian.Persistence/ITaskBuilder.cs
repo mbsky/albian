@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Albian.Persistence.Context;
+using Albian.Persistence.Model;
 
 namespace Albian.Persistence
 {
@@ -29,6 +30,8 @@ namespace Albian.Persistence
         ITask BuildSaveTask<T>(T target)
             where T : IAlbianObject;
 
+        ITask BuildQueryTask<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+            where T : IAlbianObject;
 
     }
 }

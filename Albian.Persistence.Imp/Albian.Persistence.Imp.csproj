@@ -88,6 +88,8 @@
     <Compile Include="Model\FilterCondition.cs" />
     <Compile Include="Model\OrderByCondition.cs" />
     <Compile Include="PersistenceException.cs" />
+    <Compile Include="Query\IQueryCluster.cs" />
+    <Compile Include="Query\QueryCluster.cs" />
     <Compile Include="TransactionCluster\ITransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterState.cs" />

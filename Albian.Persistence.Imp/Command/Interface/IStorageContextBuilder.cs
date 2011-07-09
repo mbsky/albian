@@ -8,9 +8,10 @@ namespace Albian.Persistence.Imp.Command
    
     public interface IStorageContextBuilder
     {
-        IDictionary<string, IStorageContext> GenerateCreateStorage<T>(T target)
+
+        IDictionary<string, IStorageContext> GenerateStorageContexts<T>(T target, BuildFakeCommandByRoutingsHandler<T> buildFakeCommandByRoutingsHandler, BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler)
             where T : IAlbianObject;
-        //IDictionary<string, IStorageContext> GenerateCreateStorage<T>(IList<T> target)
-        //    where T : IAlbianObject;
+        IDictionary<string, IStorageContext> GenerateStorageContexts<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+            where T : IAlbianObject;
     }
 }

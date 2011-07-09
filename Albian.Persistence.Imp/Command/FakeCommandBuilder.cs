@@ -19,45 +19,6 @@ namespace Albian.Persistence.Imp.Command
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IDictionary<string,IStorageContext> GenerateStorageContexts<T>(T target,BuildFakeCommandByRoutingsHandler<T> buildFakeCommandByRoutingsHandler,BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler)
-            where T : IAlbianObject
-        {
-            if (null == target)
-            {
-                throw new ArgumentNullException("target");
-            }
-
-            Type type = target.GetType();
-            string fullName = AssemblyManager.GetFullTypeName(target);
-            object oProperties = PropertyCache.Get(fullName);
-            PropertyInfo[] properties;
-            if (null == oProperties)
-            {
-                if (null != Logger)
-                    Logger.Warn("Get the object property info from cache is null.Reflection now and add to cache.");
-                properties = type.GetProperties();
-                PropertyCache.InsertOrUpdate(fullName,properties);
-            }
-            properties = (PropertyInfo[])oProperties;
-            object oAttribute = ObjectCache.Get(fullName);
-            if (null == oAttribute)
-            {
-                if (null != Logger)
-                    Logger.ErrorFormat("The {0} object attribute is null in the object cache.",fullName);
-                throw new Exception("The object attribute is null");
-            }
-            IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
-            IDictionary<string, IStorageContext> storageContexts = buildFakeCommandByRoutingsHandler(target, properties, objectAttribute,buildFakeCommandByRoutingHandler);
-
-            if (0 == storageContexts.Count)//no the storage context
-            {
-                if (null != Logger)
-                    Logger.Warn("There is no storage contexts of the object.");
-                return null;
-            }
-            return storageContexts;
-        }
-
         public IDictionary<string, IStorageContext> GenerateFakeCommandByRoutings<T>(T target, PropertyInfo[] properties, IObjectAttribute objectAttribute,BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler) 
             where T : IAlbianObject
         {
@@ -384,7 +345,7 @@ namespace Albian.Persistence.Imp.Command
                     BuildModifyFakeCommandByRouting<T>(permission, target, routing, objectAttribute, properties);
         }
 
-        public static string GenerateQuery<T>(string rountingName,int top, IFilterCondition[] where,IOrderByCondition[] orderby)
+        public IFakeCommandAttribute GenerateQuery<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
             where T : IAlbianObject
         {
             Type type =typeof(T);
@@ -408,6 +369,7 @@ namespace Albian.Persistence.Imp.Command
             StringBuilder sbSelect = new StringBuilder();
             StringBuilder sbCols = new StringBuilder();
             StringBuilder sbWhere = new StringBuilder();
+            StringBuilder sbOrderBy = new StringBuilder();
             IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
             IRoutingAttribute routing;
 
@@ -436,9 +398,24 @@ namespace Albian.Persistence.Imp.Command
 
                 foreach(IFilterCondition condition in where)//have better algorithm??
                 {
-                    if(condition.PropertyName == property.Name)
+                    if (condition.PropertyName == property.Name)
+                    {
                         property.SetValue(target, "", null); //Construct the splite object
+                        break;
+                    }
                 }
+                foreach (IOrderByCondition order in orderby)
+                {
+                    if (order.PropertyName == property.Name)
+                    {
+                        sbOrderBy.AppendFormat("{0} {1},", member.FieldName, System.Enum.GetName(typeof(SortStyle), order.SortStyle));
+                        break;
+                    }
+                }
+            }
+            if (0 != sbOrderBy.Length)
+            {
+                sbOrderBy.Remove(sbCols.Length, 1);
             }
             if (0 != sbCols.Length)
             {
@@ -465,8 +442,17 @@ namespace Albian.Persistence.Imp.Command
                 }
             }
             string tableFullName = Utils.GetTableFullName<T>(routing,target);
-            sbSelect.AppendFormat("SELECT {0} FROM {1} WHERE 1=1 {2}", sbCols, tableFullName, sbWhere);
-            return sbSelect.ToString();
+            sbSelect.AppendFormat("SELECT{0} {1} FROM {2} WHERE 1=1 {3}{4}", 
+                0 == top ? string.Empty : string.Format(" TOP {0}",top), 
+                sbCols, tableFullName, sbWhere,
+                0 == sbOrderBy.Length ? string.Empty : string.Format(" ORDER {0}",sbOrderBy));
+            IFakeCommandAttribute fakeCommand = new FakeCommandAttribute
+                                                    {
+                                                        CommandText = sbSelect.ToString(),
+                                                        Paras = ((List<DbParameter>)paras).ToArray(),
+                                                        StorageName = storageAttr.Name,
+                                                    };
+            return fakeCommand;
         }
     }
 }
