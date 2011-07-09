@@ -73,7 +73,6 @@
     <Compile Include="Cmd\SqlServer.cs" />
     <Compile Include="Command\Interface\IFakeCommandBuilder.cs" />
     <Compile Include="Command\Interface\IStorageContextBuilder.cs" />
-    <Compile Include="Command\Interface\ITaskBuilder.cs" />
     <Compile Include="Context\StorageContext.cs" />
     <Compile Include="Context\Task.cs" />
     <Compile Include="ConvertToDatabaseStyle.cs" />

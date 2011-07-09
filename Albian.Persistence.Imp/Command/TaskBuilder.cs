@@ -166,7 +166,7 @@ namespace Albian.Persistence.Imp.Command
         }
 
 
-        public ITask BuildDeleteTask<T>(T target)
+        public ITask BuildRemoveTask<T>(T target)
             where T : IAlbianObject
         {
             ITask task = new Task();
@@ -188,7 +188,7 @@ namespace Albian.Persistence.Imp.Command
             return task;
         }
 
-        public ITask BuildDeleteTask<T>(IList<T> target)
+        public ITask BuildRemoveTask<T>(IList<T> target)
              where T : IAlbianObject
         {
             ITask task = new Task();

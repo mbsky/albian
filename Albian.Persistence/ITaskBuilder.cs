@@ -5,40 +5,30 @@ namespace Albian.Persistence
 {
     public interface ITaskBuilder
     {
-        ITask BuildCreateTask<T>(IList<T> target)
-            where T : IAlbianObject;
-
         ITask BuildCreateTask<T>(T target)
             where T : IAlbianObject;
 
-        ITask BuildUpdateTask<T>(IList<T> target)
+        ITask BuildCreateTask<T>(IList<T> target)
             where T : IAlbianObject;
 
-        ITask BuildUpdateTask<T>(T target)
+        ITask BuildModifyTask<T>(IList<T> target)
             where T : IAlbianObject;
 
-        ITask BuildDeleteTask<T>(IList<T> target)
+        ITask BuildModifyTask<T>(T target)
             where T : IAlbianObject;
 
-        ITask BuildDeleteTask<T>(T target)
+        ITask BuildRemoveTask<T>(IList<T> target)
             where T : IAlbianObject;
 
-        ITask BuildLoadTask<T>(IList<T> target)
-            where T : IAlbianObject;
-
-        ITask BuildLoadTask<T>(T target)
-            where T : IAlbianObject;
-
-        ITask BuildLoadTask<T>(string routingName, IList<T> target)
-            where T : IAlbianObject;
-
-        ITask BuildLoadTask<T>(string routingName, T target)
+        ITask BuildRemoveTask<T>(T target)
             where T : IAlbianObject;
 
         ITask BuildSaveTask<T>(IList<T> target)
-            where T : IAlbianObject;
+           where T : IAlbianObject;
 
         ITask BuildSaveTask<T>(T target)
             where T : IAlbianObject;
+
+
     }
 }
