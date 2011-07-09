@@ -3,16 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Reflection;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.TransactionCluster;
 using Albian.Persistence.Model;
 using Albian.Persistence.Imp.Parser;
+using log4net;
 
 namespace Albian.Persistence.Imp
 {
     public static class PersistenceService
     {
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public static bool Create<T>(T albianObject)
             where T : IAlbianObject
         {
@@ -82,7 +86,7 @@ namespace Albian.Persistence.Imp
                 throw new ArgumentNullException("albianObject");
             }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildDeleteTask<T>(albianObject);
+            ITask task = builder.BuildRemoveTask<T>(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
@@ -99,7 +103,7 @@ namespace Albian.Persistence.Imp
                 throw new ArgumentException("albianObject count is 0.");
             }
             TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildDeleteTask<T>(albianObjects);
+            ITask task = builder.BuildRemoveTask<T>(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
@@ -127,8 +131,8 @@ namespace Albian.Persistence.Imp
             {
                 throw new ArgumentException("albianObject count is 0.");
             }
-            TaskBuilder builder = new TaskBuilder();
-            ITask task = builder.BuildSaveTask<T>(albianObjects);
+            ITaskBuilder builder = new TaskBuilder();
+            ITask task = builder.BuildSaveTask(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             return tran.Execute(task);
         }
@@ -631,49 +635,118 @@ namespace Albian.Persistence.Imp
         private static T DoFindObject<T>(string routingName, IFilterCondition[] where)
             where T : IAlbianObject, new()
         {
-            return default(T);
+            try
+            {
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                throw exc;
+            }
         }
 
         private static T DoFindObject<T>(IDbCommand cmd)
            where T : IAlbianObject, new()
         {
-            return default(T);
+            try
+            {
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.",exc.Message);
+                throw exc;
+            }
         }
 
         private static IList<T> DoFindObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
           where T : IAlbianObject, new()
         {
-            return new List<T>();
+            try
+            {
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                throw exc;
+            }
         }
 
         private static IList<T> DoFindObjects<T>(IDbCommand cmd)
           where T : IAlbianObject, new()
         {
-            return new List<T>();
+            try
+            {
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                throw exc;
+            }
         }
 
         private static T DoLoadObject<T>(string routingName, IFilterCondition[] where)
            where T : IAlbianObject, new()
         {
-            return default(T);
+            try
+            {
+
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                throw exc;
+            }
         }
 
         private static T DoLoadObject<T>(IDbCommand cmd)
            where T : IAlbianObject, new()
         {
-            return default(T);
+            try
+            {
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                throw exc;
+            }
         }
 
         private static IList<T> DoLoadObjects<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
           where T : IAlbianObject, new()
         {
-            return new List<T>();
+            try
+            {
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                throw exc;
+            }
         }
 
         private static IList<T> DoLoadObjects<T>(IDbCommand cmd)
           where T : IAlbianObject, new()
         {
-            return new List<T>();
+            try
+            {
+                using (IDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                {
+                    //dr.
+                }
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                throw exc;
+            }
         }
 
         #region no impl method

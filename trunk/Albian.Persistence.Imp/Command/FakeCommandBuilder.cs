@@ -383,5 +383,90 @@ namespace Albian.Persistence.Imp.Command
                     : 
                     BuildModifyFakeCommandByRouting<T>(permission, target, routing, objectAttribute, properties);
         }
+
+        public static string GenerateQuery<T>(string rountingName,int top, IFilterCondition[] where,IOrderByCondition[] orderby)
+            where T : IAlbianObject
+        {
+            Type type =typeof(T);
+            string fullName = AssemblyManager.GetFullTypeName(type);
+            object oProperties = PropertyCache.Get(fullName);
+            PropertyInfo[] properties;
+            if (null == oProperties)
+            {
+                if (null != Logger)
+                    Logger.Error("Get the object property info from cache is null.Reflection now and add to cache.");
+                throw new PersistenceException("object property is null in the cache.");
+            }
+            properties = (PropertyInfo[])oProperties;
+            object oAttribute = ObjectCache.Get(fullName);
+            if (null == oAttribute)
+            {
+                if (null != Logger)
+                    Logger.ErrorFormat("The {0} object attribute is null in the object cache.", fullName);
+                throw new Exception("The object attribute is null");
+            }
+            StringBuilder sbSelect = new StringBuilder();
+            StringBuilder sbCols = new StringBuilder();
+            StringBuilder sbWhere = new StringBuilder();
+            IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
+            IRoutingAttribute routing;
+
+            if(!objectAttribute.RoutingAttributes.TryGetValue(rountingName,out routing))
+            {
+                if(null != Logger)
+                    Logger.WarnFormat("There is not routing of the {} object.Albian use the default routing tempate.",rountingName);
+                routing = objectAttribute.RountingTemplate;
+            }
+
+            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            if (null == storageAttr)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
+                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+            }
+
+            IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
+            T target = (T) Activator.CreateInstance(typeof(T));
+            foreach (PropertyInfo property in properties)
+            {
+                IMemberAttribute member = members[property.Name];
+                if (!member.IsSave) continue;
+                sbCols.AppendFormat("{0},", member.FieldName);
+
+                foreach(IFilterCondition condition in where)//have better algorithm??
+                {
+                    if(condition.PropertyName == property.Name)
+                        property.SetValue(target, "", null); //Construct the splite object
+                }
+            }
+            if (0 != sbCols.Length)
+            {
+                sbCols.Remove(sbCols.Length, 1);
+            }
+            IList<DbParameter> paras = new List<DbParameter>();
+
+            if (null == where || 0 == where.Length)
+            {
+
+            }
+            else
+            {
+                foreach (IFilterCondition condition in where)
+                {
+                    IMemberAttribute member = members[condition.PropertyName];
+                    if (!member.IsSave) continue;
+                    sbWhere.AppendFormat(" {0} {1} {2} {3} ", Utils.GetRelationalOperators(condition.Relational),
+                                         member.FieldName, Utils.GetLogicalOperation(condition.Logical),
+                                         DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName));
+                    paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, member.FieldName, member.DBType,
+                                                             condition.Value, member.Length));
+
+                }
+            }
+            string tableFullName = Utils.GetTableFullName<T>(routing,target);
+            sbSelect.AppendFormat("SELECT {0} FROM {1} WHERE 1=1 {2}", sbCols, tableFullName, sbWhere);
+            return sbSelect.ToString();
+        }
     }
 }

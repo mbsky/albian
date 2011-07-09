@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 
@@ -35,6 +34,65 @@ namespace Albian.Persistence.Imp
             return (type.IsGenericType && type.
                                               GetGenericTypeDefinition().Equals
                                               (typeof (Nullable<>)));
+        }
+
+        public static string GetRelationalOperators(RelationalOperators opt)
+        {
+            switch (opt)
+            {
+                case RelationalOperators.And:
+                    {
+                        return "AND";
+                    }
+                case RelationalOperators.OR:
+                    {
+                        return "OR";
+                    }
+                default:
+                    {
+                        return "AND";
+                    }
+
+            }
+        }
+
+        public static string GetLogicalOperation(LogicalOperation opt)
+        {
+            switch (opt)
+            {
+                case LogicalOperation.Equal:
+                    {
+                        return "=";
+                    }
+                case LogicalOperation.Greater:
+                    {
+                        return ">";
+                    }
+                case LogicalOperation.GreaterOrEqual:
+                    {
+                        return ">=";
+                    }
+                case LogicalOperation.Is:
+                    {
+                        return "IS";
+                    }
+                case LogicalOperation.Less:
+                    {
+                        return "<";
+                    }
+                case LogicalOperation.LessOrEqual:
+                    {
+                        return "<=";
+                    }
+                case LogicalOperation.NotEqual:
+                    {
+                        return "<>";
+                    }
+                default:
+                    {
+                        return "=";
+                    }
+            }
         }
     }
 }
