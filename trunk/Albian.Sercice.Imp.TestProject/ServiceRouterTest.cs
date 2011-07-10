@@ -72,14 +72,20 @@ namespace Albian.Sercice.Imp.TestProject
         [TestMethod()]
         public void StartTest()
         {
-            ServiceRouter.Start();
-            IService service1 = ServiceRouter.GetService<IService>("Test1");
-            string val1 = service1.Say("sqy");
+            AlbianBootService.Start();
+            //ServiceRouter.Start();
+            //IService service1 = ServiceRouter.GetService<IService>("Test1");
+            //string val1 = service1.Say("sqy");
 
-            IServiceTest service = ServiceRouter.GetService<IServiceTest>("Test");
-            string val = service.Hello("Test");
+            //IServiceTest service = ServiceRouter.GetService<IServiceTest>("Test");
+            //string val = service.Hello("Test");
 
-            Assert.AreEqual("Test", val);
+            IIdService idService = ServiceRouter.GetService<IIdService>("IdService");
+            string id = idService.Generator();
+            Debug.Print(id);
+            Debug.Print(id.Length.ToString());
+
+            //Assert.AreEqual("Test", val);
         }
 
         /// <summary>
@@ -136,8 +142,8 @@ namespace Albian.Sercice.Imp.TestProject
         [TestMethod]
         public void IdGeneratorTest()
         {
-            Debug.Print(IdGenerator.Generator());
-            Debug.Print(IdGenerator.Generator("Test"));
+            //Debug.Print(IdGenerator.Generator());
+            //Debug.Print(IdGenerator.Generator("Test"));
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Albian.Kernel.Service.Impl
 {
-    public abstract class AbstractAlbianService
+    public abstract class AbstractAlbianService : IAlbianService
     {
         protected AbstractAlbianService()
         {
