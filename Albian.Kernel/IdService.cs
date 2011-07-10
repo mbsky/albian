@@ -22,11 +22,7 @@ namespace Albian.Kernel
         public string Generator(string mark)
         {
             if (10000 == idx) idx = 0;
-            string id = string.IsNullOrEmpty(mark) 
-                    ?
-                        string.Format("{0}_{1}_{2:0000}",Settings.AppId,DateTime.Now.ToString("yyyyMMddHHmmssffff"),idx)
-                    : 
-                        string.Format("{0}_{1}_{2}_{3:0000}", mark,Settings.AppId,DateTime.Now.ToString("yyyyMMddHHmmssffff"),idx);
+            string id = string.Format("{0}{1}{2}{3:0000}",Settings.AppId, mark.PadLeft(6, '0'), DateTime.Now.ToString("yyyyMMddHHmmssffff"), idx);
             idx++;
             return id; 
         }
