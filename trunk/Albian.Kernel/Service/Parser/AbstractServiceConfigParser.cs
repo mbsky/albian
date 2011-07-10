@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
-using Albian.Kernel.Service.Impl;
+using Albian.Kernel.Cached;
 using log4net;
 
 namespace Albian.Kernel.Service.Parser
@@ -31,7 +31,7 @@ namespace Albian.Kernel.Service.Parser
                 throw new ServiceException("There is not 'service' items in the service.config");
             }
             IDictionary<string, IAlbianServiceAttrbuite> services = ServicesParser(nodes);
-            ServiceCached.InsertOrUpdate(ServiceKey, services);
+            ServiceInfoCached.InsertOrUpdate(ServiceKey, services);
         }
 
         public abstract IDictionary<string, IAlbianServiceAttrbuite> ServicesParser(XmlNodeList nodes);

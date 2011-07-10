@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Albian.Kernel.Parser
+namespace Albian.Kernel.Parser.Impl
 {
     public class KernelParser : AbstractKernelParser
     {

@@ -6,9 +6,12 @@ using System.Text;
 using Albian.Cached;
 using Albian.Cached.Imp;
 
-namespace Albian.Kernel.Service.Impl
+namespace Albian.Kernel.Cached
 {
-    public class ServiceCached
+    /// <summary>
+    /// 从xml解析service的信息缓存
+    /// </summary>
+    public class ServiceInfoCached
     {
         private static readonly ICached _cache = new StandingCached();
 

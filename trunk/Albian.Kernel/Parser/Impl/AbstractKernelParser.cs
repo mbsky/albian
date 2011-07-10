@@ -7,7 +7,7 @@ using System.Xml;
 using Albian.Kernel.Service.Impl;
 using log4net;
 
-namespace Albian.Kernel.Parser
+namespace Albian.Kernel.Parser.Impl
 {
     public abstract class AbstractKernelParser :AbstractAlbianService, IKernelParser
     {

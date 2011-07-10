@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Albian.Service;
+using Albian.Kernel.Service;
 
 namespace Albian.Sercice.Imp.TestProject
 {

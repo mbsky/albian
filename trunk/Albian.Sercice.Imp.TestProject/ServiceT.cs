@@ -1,6 +1,6 @@
 using System;
-using Albian.Service;
-using Albian.Service.Imp;
+using Albian.Kernel.Service;
+using Albian.Kernel.Service.Impl;
 
 namespace Albian.Sercice.Imp.TestProject
 {
