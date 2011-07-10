@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Collections;
-using Albian.Kernel;
+using Albian.Kernel.Service.Parser;
 using log4net;
 
-namespace Albian.Service.Imp
+namespace Albian.Kernel.Service.Impl
 {
     [AlbianKernel]
     public class ServiceRouter
@@ -100,7 +100,7 @@ namespace Albian.Service.Imp
         /// <remarks>注意，该方法有未处理异常</remarks>
         /// <returns></returns>
         public static T GetService<T>(string id,bool isNew)
-             where T : IAlbianService
+            where T : IAlbianService
         {
             if (string.IsNullOrEmpty(id))
             {

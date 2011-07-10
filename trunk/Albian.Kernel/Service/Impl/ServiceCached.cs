@@ -6,7 +6,7 @@ using System.Text;
 using Albian.Cached;
 using Albian.Cached.Imp;
 
-namespace Albian.Service.Imp
+namespace Albian.Kernel.Service.Impl
 {
     public class ServiceCached
     {

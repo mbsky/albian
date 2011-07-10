@@ -49,16 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractAlbianService.cs" />
-    <Compile Include="AbstractServiceConfigParser.cs" />
+    <Compile Include="Service\Impl\AbstractAlbianService.cs" />
+    <Compile Include="Service\Parser\AbstractServiceConfigParser.cs" />
     <Compile Include="AlbianKernelAttribute.cs" />
     <Compile Include="AlbianKernelException.cs" />
-    <Compile Include="AlbianServiceAttrbuite.cs" />
+    <Compile Include="Service\Impl\AlbianServiceAttrbuite.cs" />
     <Compile Include="BootService.cs" />
     <Compile Include="Compression\Compress.cs" />
-    <Compile Include="Definition\IAlbianService.cs" />
-    <Compile Include="Definition\IAlbianServiceAttrbuite.cs" />
-    <Compile Include="Definition\ServiceState.cs" />
+    <Compile Include="Service\IAlbianService.cs" />
+    <Compile Include="Service\IAlbianServiceAttrbuite.cs" />
+    <Compile Include="Service\ServiceState.cs" />
     <Compile Include="IdService.cs" />
     <Compile Include="IIdService.cs" />
     <Compile Include="IXmlParser.cs" />
@@ -66,10 +66,10 @@
     <Compile Include="Parser\IKernelParser.cs" />
     <Compile Include="Parser\KernelParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceCached.cs" />
-    <Compile Include="ServiceConfigParser.cs" />
-    <Compile Include="ServiceException.cs" />
-    <Compile Include="ServiceRouter.cs" />
+    <Compile Include="Service\Impl\ServiceCached.cs" />
+    <Compile Include="Service\Parser\ServiceConfigParser.cs" />
+    <Compile Include="Service\ServiceException.cs" />
+    <Compile Include="Service\Impl\ServiceRouter.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ThreadPool\IThreadPool.cs" />
     <Compile Include="ThreadPool\ThreadPool.cs" />

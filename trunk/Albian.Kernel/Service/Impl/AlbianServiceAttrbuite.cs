@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Albian.Service.Imp
+namespace Albian.Kernel.Service.Impl
 {
     public class AlbianServiceAttrbuite : IAlbianServiceAttrbuite
     {
