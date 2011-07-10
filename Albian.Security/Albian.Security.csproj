@@ -45,8 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Impl\AbstractEncrypt.cs" />
+    <Compile Include="Impl\Encrypt.cs" />
     <Compile Include="IEncrypt.cs" />
+    <Compile Include="MD5Mode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Albian.Kernel\Albian.Kernel.csproj">
+      <Project>{5EF37887-AADF-4753-A1F2-BAA45135DAF4}</Project>
+      <Name>Albian.Kernel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
