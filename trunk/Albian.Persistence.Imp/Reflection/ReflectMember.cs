@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using Albian.Persistence.Imp.Cache;
-using Albian.Persistence.Imp.Model;
 using Albian.Persistence.Model;
 
 namespace Albian.Persistence.Imp.Reflection
@@ -21,19 +20,22 @@ namespace Albian.Persistence.Imp.Reflection
             }
             Type type = Type.GetType(typeFullName, true);
             defaultTableName = type.Name;
+            PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
 
-            PropertyInfo[] propertyInfos =
-                type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            //the interface
+            Type itf = type.GetInterface("IAlbianObject");//get the signature interface
+            PropertyInfo idInfo = itf.GetProperty("Id");
+            PropertyInfo isNewInfo = itf.GetProperty("IsNew");
+
             if (null == propertyInfos || 0 == propertyInfos.Length)
             {
                 throw new Exception(string.Format("Reflect the {0} property is error.", typeFullName));
             }
-            PropertyCache.InsertOrUpdate(typeFullName, propertyInfos);
 
             IDictionary<string, IMemberAttribute> memberAttributes = new Dictionary<string, IMemberAttribute>();
             foreach (PropertyInfo propertyInfo in propertyInfos)
             {
-                IMemberAttribute memberAttribute = ReflectProperty(propertyInfo);
+                IMemberAttribute memberAttribute = ReflectProperty(propertyInfo,idInfo,isNewInfo);
                 memberAttributes.Add(memberAttribute.Name, memberAttribute);
             }
             if (0 == memberAttributes.Count)
@@ -41,12 +43,22 @@ namespace Albian.Persistence.Imp.Reflection
                 return null;
             }
 
-            MemberCache.InsertOrUpdate(typeFullName, memberAttributes);
+            PropertyCache.InsertOrUpdate(typeFullName, propertyInfos);//just only have property 
+            MemberCache.InsertOrUpdate(typeFullName, memberAttributes);//parser object by member attributes
             return memberAttributes;
         }
 
-        public IMemberAttribute ReflectProperty(PropertyInfo propertyInfo)
+        public IMemberAttribute ReflectProperty(PropertyInfo propertyInfo,PropertyInfo idInfo,PropertyInfo isNewInfo)
         {
+
+            if (propertyInfo.Name == idInfo.Name)
+            {
+                propertyInfo = idInfo;
+            }
+            if (propertyInfo.Name == isNewInfo.Name)
+            {
+                propertyInfo = isNewInfo;
+            }
             object[] attrs = propertyInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true);
             IMemberAttribute memberAttribute;
             if (null == attrs || 0 == attrs.Length)

@@ -93,11 +93,6 @@
     <Compile Include="TransactionCluster\ITransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterState.cs" />
-    <Compile Include="Model\FakeCommandAttribute.cs" />
-    <Compile Include="Model\AlbianMemberAttribute.cs" />
-    <Compile Include="Model\AlbianObjectAttribute.cs" />
-    <Compile Include="Model\RoutingAttribute.cs" />
-    <Compile Include="Model\StorageAttribute.cs" />
     <Compile Include="Parser\AbstractPersistenceParser.cs" />
     <Compile Include="Parser\AbstractStorageParser.cs" />
     <Compile Include="Parser\PersistenceParser.cs" />

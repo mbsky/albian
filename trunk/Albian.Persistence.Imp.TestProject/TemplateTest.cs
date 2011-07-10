@@ -5,6 +5,7 @@ using System.Data.Common;
 using Albian.Kernel;
 using Albian.Persistence.Imp.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Albian.Persistence.Imp.Model;
 
 namespace Albian.Persistence.Imp.TestProject
 {
@@ -501,6 +502,17 @@ namespace Albian.Persistence.Imp.TestProject
         {
             //PersistenceService target = new PersistenceService();
             Assert.Inconclusive("TODO: 实现用来验证目标的代码");
+        }
+
+        [TestMethod()]
+        public void Select()
+        {
+            IOrder order = PersistenceService.LoadObject<Order>(new FilterCondition[] { new FilterCondition(){
+                Logical = Albian.Persistence.Enum.LogicalOperation.Equal,
+                PropertyName = "Id",
+                Relational = Albian.Persistence.Enum.RelationalOperators.And,
+                Value = "001",
+            }});
         }
 
         //public bool Tran()

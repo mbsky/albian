@@ -17,6 +17,6 @@ namespace Albian.Persistence.Model
         /// </summary>
         /// <param name="propertyInfo"></param>
         /// <returns></returns>
-        IMemberAttribute ReflectProperty(PropertyInfo propertyInfo);
+        //IMemberAttribute ReflectProperty(PropertyInfo propertyInfo);
     }
 }

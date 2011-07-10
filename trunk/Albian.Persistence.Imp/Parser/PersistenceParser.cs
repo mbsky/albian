@@ -4,7 +4,6 @@ using System.Xml;
 using Albian.Kernel;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Cache;
-using Albian.Persistence.Imp.Model;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 
@@ -86,16 +85,17 @@ namespace Albian.Persistence.Imp.Parser
         {
             IDictionary<string, IRoutingAttribute> routings = new Dictionary<string, IRoutingAttribute>();
             //set the default value when the routingnodes is not exist
+            
+            IRoutingAttribute defaultRouting = new RoutingAttribute()
+                                            {
+                                                Name = DefaultRoutingName,
+                                                Permission = PermissionMode.WR,
+                                                StorageName = StorageParser.DefaultStorageName,
+                                                TableName = defaultTableName,
+                                            };
+            routings.Add(DefaultRoutingName, defaultRouting);
             if (null == routingNodes || 0 == routingNodes.Count)
             {
-                IRoutingAttribute routing = new RoutingAttribute()
-                                                {
-                                                    Name = DefaultRoutingName,
-                                                    Permission = PermissionMode.WR,
-                                                    StorageName = StorageParser.DefaultStorageName,
-                                                    TableName = defaultTableName,
-                                                };
-                routings.Add(DefaultRoutingName, routing);
                 return routings;
             }
 
