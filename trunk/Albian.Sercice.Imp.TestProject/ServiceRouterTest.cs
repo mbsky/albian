@@ -1,6 +1,8 @@
 ﻿using Albian.Service.Imp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Albian.Service;
+using Albian.Kernel;
+using System.Diagnostics;
 
 namespace Albian.Sercice.Imp.TestProject
 {
@@ -129,6 +131,13 @@ namespace Albian.Sercice.Imp.TestProject
         {
             ServiceRouter target = new ServiceRouter();
             Assert.Inconclusive("TODO: 实现用来验证目标的代码");
+        }
+
+        [TestMethod]
+        public void IdGeneratorTest()
+        {
+            Debug.Print(IdGenerator.Generator());
+            Debug.Print(IdGenerator.Generator("Test"));
         }
     }
 }
