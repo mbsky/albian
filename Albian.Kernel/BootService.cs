@@ -7,10 +7,10 @@ namespace Albian.Kernel
 {
     public class BootService
     {
-        public static void Start()
-        {
-            IKernelParser kernelParser = new KernelParser();
-            kernelParser.ConfigParser("config\\Kernel.config");
-        }
+        //public static void Start()
+        //{
+        //    IKernelParser kernelParser = new KernelParser();
+        //    kernelParser.ConfigParser("config\\Kernel.config");
+        //}
     }
 }

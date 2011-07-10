@@ -4,11 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using Albian.Kernel.Service.Impl;
 using log4net;
 
 namespace Albian.Kernel.Parser
 {
-    public abstract class AbstractKernelParser : IKernelParser
+    public abstract class AbstractKernelParser :AbstractAlbianService, IKernelParser
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

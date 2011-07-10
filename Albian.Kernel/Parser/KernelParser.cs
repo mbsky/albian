@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Albian.Kernel.Parser;
 
-namespace Albian.Kernel
+namespace Albian.Kernel.Parser
 {
     public class KernelParser : AbstractKernelParser
     {
@@ -17,6 +16,12 @@ namespace Albian.Kernel
                 Settings.AppId = oAppId.ToString().Trim();
             }
             return;
+        }
+
+        public override void Loading()
+        {
+            ConfigParser("config\\Kernel.config");
+            base.Loading();
         }
     }
 }

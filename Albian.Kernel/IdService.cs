@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Albian.Service.Imp;
+using Albian.Kernel.Service.Impl;
 
 namespace Albian.Kernel
 {

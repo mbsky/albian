@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Albian.Kernel;
 using System.Xml;
+using Albian.Kernel.Service.Impl;
 using log4net;
 
-namespace Albian.Service.Imp
+namespace Albian.Kernel.Service.Parser
 {
     public abstract class AbstractServiceConfigParser :IXmlParser
     {

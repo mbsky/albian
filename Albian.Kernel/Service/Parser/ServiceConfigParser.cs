@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
-using Albian.Kernel;
+using Albian.Kernel.Service.Impl;
 using log4net;
 
-namespace Albian.Service.Imp
+namespace Albian.Kernel.Service.Parser
 {
     public class ServiceConfigParser : AbstractServiceConfigParser
     {
