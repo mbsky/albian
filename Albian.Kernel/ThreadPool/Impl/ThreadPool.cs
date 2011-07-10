@@ -6,7 +6,7 @@ using System.Threading;
 using log4net;
 
 
-namespace Albian.Kernel.ThreadPool
+namespace Albian.Kernel.ThreadPool.Impl
 {
     public class ThreadPool : IThreadPool
     {

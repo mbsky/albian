@@ -73,10 +73,11 @@
     <Compile Include="Service\Impl\ServiceRouter.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ThreadPool\IThreadPool.cs" />
-    <Compile Include="ThreadPool\ThreadPool.cs" />
-    <Compile Include="ThreadPool\ThreadPoolAttribute.cs" />
-    <Compile Include="ThreadPool\ThreadPoolManager.cs" />
-    <Compile Include="ThreadPool\WorkItem.cs" />
+    <Compile Include="ThreadPool\IThreadPoolService.cs" />
+    <Compile Include="ThreadPool\Impl\ThreadPool.cs" />
+    <Compile Include="ThreadPool\Impl\ThreadPoolAttribute.cs" />
+    <Compile Include="ThreadPool\Impl\ThreadPoolService.cs" />
+    <Compile Include="ThreadPool\Impl\WorkItem.cs" />
     <Compile Include="XmlFileParser.cs" />
   </ItemGroup>
   <ItemGroup>
