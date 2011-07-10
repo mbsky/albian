@@ -7,7 +7,6 @@ using Albian.Persistence.Context;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Context;
-using Albian.Persistence.Imp.Model;
 using Albian.Persistence.Imp.Parser;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
@@ -396,38 +395,41 @@ namespace Albian.Persistence.Imp.Command
                 if (!member.IsSave) continue;
                 sbCols.AppendFormat("{0},", member.FieldName);
 
-                foreach(IFilterCondition condition in where)//have better algorithm??
+                if (null != where)
                 {
-                    if (condition.PropertyName == property.Name)
+                    foreach (IFilterCondition condition in where) //have better algorithm??
                     {
-                        property.SetValue(target, "", null); //Construct the splite object
-                        break;
+                        if (condition.PropertyName == property.Name)
+                        {
+                            property.SetValue(target, "", null); //Construct the splite object
+                            break;
+                        }
                     }
                 }
-                foreach (IOrderByCondition order in orderby)
+                if (null != orderby)
                 {
-                    if (order.PropertyName == property.Name)
+                    foreach (IOrderByCondition order in orderby)
                     {
-                        sbOrderBy.AppendFormat("{0} {1},", member.FieldName, System.Enum.GetName(typeof(SortStyle), order.SortStyle));
-                        break;
+                        if (order.PropertyName == property.Name)
+                        {
+                            sbOrderBy.AppendFormat("{0} {1},", member.FieldName,
+                                                   System.Enum.GetName(typeof (SortStyle), order.SortStyle));
+                            break;
+                        }
                     }
                 }
             }
             if (0 != sbOrderBy.Length)
             {
-                sbOrderBy.Remove(sbCols.Length, 1);
+                sbOrderBy.Remove(sbCols.Length - 1, 1);
             }
             if (0 != sbCols.Length)
             {
-                sbCols.Remove(sbCols.Length, 1);
+                sbCols.Remove(sbCols.Length - 1, 1);
             }
             IList<DbParameter> paras = new List<DbParameter>();
 
-            if (null == where || 0 == where.Length)
-            {
-
-            }
-            else
+            if (null != where && 0 != where.Length)
             {
                 foreach (IFilterCondition condition in where)
                 {
@@ -438,7 +440,6 @@ namespace Albian.Persistence.Imp.Command
                                          DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName));
                     paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, member.FieldName, member.DBType,
                                                              condition.Value, member.Length));
-
                 }
             }
             string tableFullName = Utils.GetTableFullName<T>(routing,target);

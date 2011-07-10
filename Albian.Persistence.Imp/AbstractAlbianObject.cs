@@ -1,5 +1,5 @@
 ﻿using System;
-using Albian.Persistence.Imp.Model;
+using Albian.Persistence.Model;
 
 namespace Albian.Persistence.Imp
 {
@@ -11,14 +11,14 @@ namespace Albian.Persistence.Imp
         private string _id = string.Empty;
         private bool _isNew = false;
 
-        [AlbianMemberAttribute(PrimaryKey=true)]
+        [AlbianMember(PrimaryKey=true)]
         public virtual string Id
         {
             get { return _id; }
             set { _id = value; }
         }
 
-        [AlbianMemberAttribute(IsSave = false)]
+        [AlbianMember(IsSave = false)]
         public virtual bool IsNew
         {
             get { return _isNew; }

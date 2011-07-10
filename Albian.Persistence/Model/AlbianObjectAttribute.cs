@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Albian.Persistence.Model;
 
-namespace Albian.Persistence.Imp.Model
+namespace Albian.Persistence.Model
 {
     [Serializable]
     public class AlbianObjectAttribute : IObjectAttribute
