@@ -1,4 +1,4 @@
-using Albian.Service;
+using Albian.Kernel.Service;
 
 namespace Albian.Sercice.Imp.TestProject
 {

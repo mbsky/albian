@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Collections;
+using Albian.Kernel.Cached;
 using Albian.Kernel.Service.Parser;
 using log4net;
 
@@ -13,68 +14,7 @@ namespace Albian.Kernel.Service.Impl
     public class ServiceRouter
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private static Hashtable _services = Hashtable.Synchronized(new Hashtable());
-
-        public static void Start()
-        {
-            IXmlParser parser = new ServiceConfigParser();
-            parser.Init("Service.config");
-            IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceCached.Get(AbstractServiceConfigParser.ServiceKey);
-            bool isSuccess = true;
-            IDictionary<string, IAlbianServiceAttrbuite> failServicesInfos = new Dictionary<string, IAlbianServiceAttrbuite>();
-            int failCountBeforeTimes = 0;
-            while (true)
-            {
-                isSuccess = true;
-                if (0 != failServicesInfos.Count)
-                {
-                    if (failCountBeforeTimes == failServicesInfos.Count)
-                    {
-                        if (null != Logger)
-                        {
-                            Logger.ErrorFormat("Refer to each other when service loading!");
-                            foreach (KeyValuePair<string, IAlbianServiceAttrbuite> kv in failServicesInfos)
-                            {
-                                Logger.ErrorFormat("Refer to each other!Id:{0},impl:{1}", kv.Value.Id, kv.Value.Implement);
-                            }
-                            Logger.Error("Please examine the service id above the line!");
-                        }
-                        throw new ServiceException("Refer to each other!");
-                    }
-
-                    failCountBeforeTimes = failServicesInfos.Count;
-                    serviceInfos.Clear();
-                    foreach(KeyValuePair<string,IAlbianServiceAttrbuite> kv in failServicesInfos)
-                    {
-                        serviceInfos.Add(kv.Key,kv.Value);
-                    }
-                    failServicesInfos.Clear();
-                }
-
-                foreach (KeyValuePair<string, IAlbianServiceAttrbuite> kv in serviceInfos)
-                {
-                    try
-                    {
-                        Type impl = Type.GetType(kv.Value.Implement);
-                        IAlbianService service = (IAlbianService) Activator.CreateInstance(impl);
-                        service.State = ServiceState.Loading;
-                        service.Loading();
-                        service.State = ServiceState.Running;
-                        _services.Add(kv.Key, service);
-                    }
-                    catch
-                    {
-                        isSuccess = false;
-                        failServicesInfos.Add(kv.Key, kv.Value);
-                    }
-                }
-                if (isSuccess)
-                {
-                    break;
-                }
-            }
-        }
-
+        
         public static T GetService<T>(string id)
             where T: IAlbianService
         {
@@ -82,7 +22,7 @@ namespace Albian.Kernel.Service.Impl
             {
                 throw new ArgumentNullException("id");
             }
-            object service = _services[id];
+            object service = ServiceCached.Get(id);
             if (null == service)
             {
                 throw new ServiceException(string.Format("The {0} service is null.",id));
@@ -109,7 +49,7 @@ namespace Albian.Kernel.Service.Impl
             if (!isNew)
                 return GetService<T>(id);
 
-            IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceCached.Get(AbstractServiceConfigParser.ServiceKey);
+            IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(AbstractServiceConfigParser.ServiceKey);
             if (serviceInfos.ContainsKey(id))
             {
                 throw new ServiceException(string.Format("There is not {0} serice info.", id));

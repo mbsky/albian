@@ -1,6 +1,6 @@
-﻿using Albian.Service.Imp;
+﻿using Albian.Kernel.Service;
+using Albian.Kernel.Service.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Albian.Service;
 using Albian.Kernel;
 using System.Diagnostics;
 
