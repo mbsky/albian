@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Albian.Kernel.ThreadPool
+namespace Albian.Kernel.ThreadPool.Impl
 {
     public class ThreadPoolAttribute
     {

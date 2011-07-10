@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace Albian.Kernel.ThreadPool
+namespace Albian.Kernel.ThreadPool.Impl
 {
     internal struct WorkItem //值类型
     {
