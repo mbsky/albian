@@ -50,16 +50,19 @@ namespace Albian.Persistence.Imp.Reflection
 
         public IMemberAttribute ReflectProperty(PropertyInfo propertyInfo,PropertyInfo idInfo,PropertyInfo isNewInfo)
         {
+            object[] attrs = propertyInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true);
 
             if (propertyInfo.Name == idInfo.Name)
             {
-                propertyInfo = idInfo;
+                if(null == attrs || 0 == attrs.Length)
+                    attrs = idInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true); ;
             }
             if (propertyInfo.Name == isNewInfo.Name)
             {
-                propertyInfo = isNewInfo;
+                if (null == attrs || 0 == attrs.Length)
+                    attrs = isNewInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true); ;
             }
-            object[] attrs = propertyInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true);
+
             IMemberAttribute memberAttribute;
             if (null == attrs || 0 == attrs.Length)
             {

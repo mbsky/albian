@@ -87,14 +87,6 @@
       <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
       <Name>Albian.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Albian.Service.Imp\Albian.Service.Imp.csproj">
-      <Project>{6FFE6140-824B-4F0B-855C-3B76EE64D6DE}</Project>
-      <Name>Albian.Service.Imp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.Service\Albian.Service.csproj">
-      <Project>{172EC4B7-2BD0-4899-B466-8FCBB0721D28}</Project>
-      <Name>Albian.Service</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="config\Persistence.config">
