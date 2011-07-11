@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using Albian.Kernel.Cached;
-using Albian.Kernel.Cached.Impl;
+using System.Text;
 
-namespace Albian.Persistence.Imp.Cache
+namespace Albian.Kernel.Cached.Impl
 {
-    public static class MemberCache
+    /// <summary>
+    /// 从xml解析service的信息缓存
+    /// </summary>
+    public class ServiceInfoCached
     {
         private static readonly ICached _cache = new StandingCached();
 

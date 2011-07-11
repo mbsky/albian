@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Albian.Cached;
-using Albian.Cached.Imp;
+using Albian.Kernel.Cached;
+using Albian.Kernel.Cached.Impl;
 
 namespace Albian.Persistence.Imp.Cache
 {

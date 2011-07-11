@@ -49,7 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cached\ServiceCached.cs" />
+    <Compile Include="Cached\ICached.cs" />
+    <Compile Include="Cached\IExpiredCached.cs" />
+    <Compile Include="Cached\Impl\Cached.cs" />
+    <Compile Include="Cached\Impl\PreThreadCached.cs" />
+    <Compile Include="Cached\Impl\ServiceCached.cs" />
+    <Compile Include="Cached\Impl\StandingCached.cs" />
     <Compile Include="Service\Impl\AbstractAlbianService.cs" />
     <Compile Include="Service\Parser\AbstractServiceConfigParser.cs" />
     <Compile Include="AlbianKernelAttribute.cs" />
@@ -67,7 +72,7 @@
     <Compile Include="Parser\IKernelParser.cs" />
     <Compile Include="Parser\Impl\KernelParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Cached\ServiceInfoCached.cs" />
+    <Compile Include="Cached\Impl\ServiceInfoCached.cs" />
     <Compile Include="Service\Parser\ServiceConfigParser.cs" />
     <Compile Include="Service\ServiceException.cs" />
     <Compile Include="Service\Impl\ServiceRouter.cs" />
@@ -83,16 +88,6 @@
   <ItemGroup>
     <None Include="config\Kernel.config" />
     <None Include="config\Service.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Albian.Cached.Imp\Albian.Cached.Imp.csproj">
-      <Project>{0900A2D7-9898-4AAA-B093-6B085EA5BA79}</Project>
-      <Name>Albian.Cached.Imp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.Cached\Albian.Cached.csproj">
-      <Project>{C842F310-52A3-4111-BD4A-65A2798B929B}</Project>
-      <Name>Albian.Cached</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

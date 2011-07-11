@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Collections;
-using Albian.Kernel.Cached;
+using Albian.Kernel.Cached.Impl;
 using Albian.Kernel.Service.Parser;
 using log4net;
 

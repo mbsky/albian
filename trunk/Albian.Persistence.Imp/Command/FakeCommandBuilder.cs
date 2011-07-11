@@ -401,7 +401,7 @@ namespace Albian.Persistence.Imp.Command
                     {
                         if (condition.PropertyName == property.Name)
                         {
-                            property.SetValue(target, "", null); //Construct the splite object
+                            property.SetValue(target, condition.Value, null); //Construct the splite object
                             break;
                         }
                     }
