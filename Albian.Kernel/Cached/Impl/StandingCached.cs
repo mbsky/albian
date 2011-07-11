@@ -1,70 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Albian.Cached;
-using Albian.Cached.Imp;
+using System.Collections;
+using Albian.Kernel.Service.Impl;
 
-namespace Albian.Kernel.Cached
+namespace Albian.Kernel.Cached.Impl
 {
     /// <summary>
-    /// 从xml解析service的信息缓存
+    /// 不过期缓存
     /// </summary>
-    public class ServiceInfoCached
+    /// <remarks>注意：缓存项永不过期，需要手动更新</remarks>
+    public class StandingCached :AbstractAlbianService, ICached
     {
-        private static readonly ICached _cache = new StandingCached();
+        private readonly Hashtable cache = Hashtable.Synchronized(new Hashtable());
 
-        public static bool Exist(string key)
+        #region ICached Members
+
+        public bool Exist(string key)
         {
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException("key");
             }
-            return _cache.Exist(key);
+            return cache.ContainsKey(key);
         }
 
-        public static object Get(string key)
+        public object Get(string key)
         {
             if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentNullException("key");
             }
-            return _cache.Get(key);
+            return cache[key];
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void Insert(string key, object value)
-        {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentNullException("key");
-            }
-            if (null == value)
-            {
-                throw new ArgumentNullException("value");
-            }
-            _cache.Insert(key, value);
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void Remove(string key)
-        {
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentNullException("key");
-            }
-            _cache.Remove(key);
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void Remove()
-        {
-            _cache.Remove();
-        }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void Update(string key, object value)
+        public void Insert(string key, object value)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -74,11 +42,25 @@ namespace Albian.Kernel.Cached
             {
                 throw new ArgumentNullException("value");
             }
-            _cache.Update(key, value);
+            cache.Add(key, value);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public static void InsertOrUpdate(string key, object value)
+        public void Remove(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+            cache.Remove(key);
+        }
+
+        public void Remove()
+        {
+            cache.Clear();
+        }
+
+
+        public void Update(string key, object value)
         {
             if (string.IsNullOrEmpty(key))
             {
@@ -88,7 +70,29 @@ namespace Albian.Kernel.Cached
             {
                 throw new ArgumentNullException("value");
             }
-            _cache.InsertOrUpdate(key, value);
+            cache[key] = value;
         }
+
+        public void InsertOrUpdate(string key, object value)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException("key");
+            }
+            if (null == value)
+            {
+                throw new ArgumentNullException("value");
+            }
+            if (cache.ContainsKey(key))
+            {
+                cache[key] = value;
+            }
+            else
+            {
+                cache.Add(key, value);
+            }
+        }
+
+        #endregion
     }
 }

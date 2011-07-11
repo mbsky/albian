@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Albian.Cached;
-using Albian.Cached.Imp;
+using Albian.Kernel.Cached;
+using Albian.Kernel.Cached.Impl;
 
 namespace Albian.Persistence.Imp.ConnectionPool
 {

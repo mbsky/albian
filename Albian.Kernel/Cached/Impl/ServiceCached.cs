@@ -1,9 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
-using Albian.Cached;
-using Albian.Cached.Imp;
 
-namespace Albian.Kernel.Cached
+namespace Albian.Kernel.Cached.Impl
 {
     /// <summary>
     /// 所有的service的缓存

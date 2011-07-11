@@ -67,14 +67,6 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Albian.Cached.Imp\Albian.Cached.Imp.csproj">
-      <Project>{0900A2D7-9898-4AAA-B093-6B085EA5BA79}</Project>
-      <Name>Albian.Cached.Imp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Albian.Cached\Albian.Cached.csproj">
-      <Project>{C842F310-52A3-4111-BD4A-65A2798B929B}</Project>
-      <Name>Albian.Cached</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Albian.Kernel\Albian.Kernel.csproj">
       <Project>{5EF37887-AADF-4753-A1F2-BAA45135DAF4}</Project>
       <Name>Albian.Kernel</Name>

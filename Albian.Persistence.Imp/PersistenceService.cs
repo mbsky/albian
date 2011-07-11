@@ -642,7 +642,7 @@ namespace Albian.Persistence.Imp
             catch (Exception exc)
             {
                 if (null != Logger)
-                    Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
+                    Logger.ErrorFormat("Find Object is error.info:{0}.", exc.Message);
                 throw exc;
             }
         }

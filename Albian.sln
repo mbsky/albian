@@ -1,10 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Cached", "Albian.Cached\Albian.Cached.csproj", "{C842F310-52A3-4111-BD4A-65A2798B929B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Cached.Imp", "Albian.Cached.Imp\Albian.Cached.Imp.csproj", "{0900A2D7-9898-4AAA-B093-6B085EA5BA79}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Persistence", "Albian.Persistence\Albian.Persistence.csproj", "{911A7AEC-4D7C-4A61-88F9-7F8645735F92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Persistence.Imp", "Albian.Persistence.Imp\Albian.Persistence.Imp.csproj", "{376313F1-1886-4690-8E93-9B4ACE705868}"
@@ -46,14 +42,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C842F310-52A3-4111-BD4A-65A2798B929B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C842F310-52A3-4111-BD4A-65A2798B929B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C842F310-52A3-4111-BD4A-65A2798B929B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C842F310-52A3-4111-BD4A-65A2798B929B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0900A2D7-9898-4AAA-B093-6B085EA5BA79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0900A2D7-9898-4AAA-B093-6B085EA5BA79}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0900A2D7-9898-4AAA-B093-6B085EA5BA79}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0900A2D7-9898-4AAA-B093-6B085EA5BA79}.Release|Any CPU.Build.0 = Release|Any CPU
 		{911A7AEC-4D7C-4A61-88F9-7F8645735F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{911A7AEC-4D7C-4A61-88F9-7F8645735F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{911A7AEC-4D7C-4A61-88F9-7F8645735F92}.Release|Any CPU.ActiveCfg = Release|Any CPU

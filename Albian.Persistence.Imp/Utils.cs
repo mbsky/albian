@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
+using System.Data;
+using System.Text;
 
 namespace Albian.Persistence.Imp
 {
@@ -93,6 +95,62 @@ namespace Albian.Persistence.Imp
                         return "=";
                     }
             }
+        }
+
+        public static string GetCacheKey<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+             where T : IAlbianObject
+        {
+            StringBuilder sbKey = new StringBuilder();
+            sbKey.Append(AssemblyManager.GetFullTypeName(typeof(T)));
+            sbKey.Append(routingName);
+            if(0 != top)
+                sbKey.Append(top);
+            if (null != where)
+            {
+                foreach (IFilterCondition filter in where)
+                {
+                    sbKey.AppendFormat("{0}{1}{2}{3}", filter.Relational, filter.PropertyName, filter.Logical, DBNull.Value == filter.Value ? "NULL" : filter.Value);
+                }
+            }
+            if (null != orderby)
+            {
+                foreach (IOrderByCondition sort in orderby)
+                {
+                    sbKey.Append(sort.PropertyName).Append(sort.SortStyle);
+                }
+            }
+            return sbKey.ToString();
+        }
+
+        public static string GetCacheKey<T>(IDbCommand cmd)
+             where T : IAlbianObject
+        {
+            StringBuilder sbKey = new StringBuilder();
+            if (null != cmd.Connection)
+            {
+                sbKey.Append(cmd.Connection.ConnectionString);
+            }
+            if (string.IsNullOrEmpty(cmd.CommandText))
+            {
+                sbKey.Append(cmd.CommandText);
+            }
+            if (null != cmd.Parameters)
+            {
+                foreach(IDataParameter para in cmd.Parameters)
+                {
+                    sbKey.Append(para.ParameterName).Append(DBNull.Value == para.Value ? "NULL" : para.Value);
+                }
+            }
+
+            return sbKey.ToString();
+        }
+
+        public static string GetCacheKey<T>(T albianObject)
+            where T : IAlbianObject
+        {
+            StringBuilder sbKey = new StringBuilder();
+            sbKey.AppendFormat("{0}${1}", AssemblyManager.GetFullTypeName<T>(albianObject), albianObject.Id);
+            return sbKey.ToString();
         }
     }
 }
