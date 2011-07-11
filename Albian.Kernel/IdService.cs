@@ -10,7 +10,7 @@ namespace Albian.Kernel
     [AlbianKernel]
     public class IdService : AbstractAlbianService,IIdService
     {
-        private static int idx = 0;
+        private static int _idx = 0;
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public string Generator()
@@ -21,9 +21,9 @@ namespace Albian.Kernel
         [MethodImpl(MethodImplOptions.Synchronized)]
         public string Generator(string mark)
         {
-            if (10000 == idx) idx = 0;
-            string id = string.Format("{0}{1}{2}{3:0000}",Settings.AppId, mark.PadLeft(6, '0'), DateTime.Now.ToString("yyyyMMddHHmmssffff"), idx);
-            idx++;
+            if (10000 == _idx) _idx = 0;
+            string id = string.Format("{0}{1}{2}{3:0000}",Settings.AppId, mark.PadLeft(6, '0'), DateTime.Now.ToString("yyyyMMddHHmmssffff"), _idx);
+            _idx++;
             return id; 
         }
     }

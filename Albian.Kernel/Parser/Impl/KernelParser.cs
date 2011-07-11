@@ -20,7 +20,7 @@ namespace Albian.Kernel.Parser.Impl
 
         public override void Loading()
         {
-            ConfigParser("Kernel.config");
+            Init("Kernel.config");
             base.Loading();
         }
     }

@@ -5,11 +5,12 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using Albian.Kernel.Cached;
+using Albian.Kernel.Service.Impl;
 using log4net;
 
 namespace Albian.Kernel.Service.Parser
 {
-    public abstract class AbstractServiceConfigParser :IXmlParser
+    public abstract class AbstractServiceConfigParser : AbstractAlbianService, IXmlParser
     {
         public const string ServiceKey = "ALBIAN_ALL_SERVICE";
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

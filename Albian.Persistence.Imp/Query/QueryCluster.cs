@@ -8,7 +8,7 @@ using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.ConnectionPool;
-using Albian.Persistence.Imp.Parser;
+using Albian.Persistence.Imp.Parser.Impl;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 using log4net;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using Albian.Kernel;
-using Albian.Persistence.Imp.Parser;
+using Albian.Persistence.Imp.Parser.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Albian.Persistence.Imp.Model;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using Albian.Persistence.Imp.Parser;
+using Albian.Persistence.Imp.Parser.Impl;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Albian.Persistence.Imp.TestProject

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Xml;
 using Albian.Kernel;
+using Albian.Kernel.Service.Impl;
 using Albian.Persistence.Model;
 
-namespace Albian.Persistence.Imp.Parser
+namespace Albian.Persistence.Imp.Parser.Impl
 {
-    public abstract class AbstractPersistenceParser : IXmlParser
+    public abstract class AbstractPersistenceParser : AbstractAlbianService, IPersistenceParser
     {
         #region IPersistenceParser Members
 
