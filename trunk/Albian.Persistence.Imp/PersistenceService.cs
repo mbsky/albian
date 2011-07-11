@@ -4,9 +4,9 @@ using System.Data;
 using System.Reflection;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
+using Albian.Persistence.Imp.Parser.Impl;
 using Albian.Persistence.Imp.TransactionCluster;
 using Albian.Persistence.Model;
-using Albian.Persistence.Imp.Parser;
 using log4net;
 using Albian.Persistence.Imp.Query;
 

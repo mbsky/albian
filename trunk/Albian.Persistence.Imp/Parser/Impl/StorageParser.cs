@@ -6,10 +6,17 @@ using Albian.Kernel;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Model;
 
-namespace Albian.Persistence.Imp.Parser
+namespace Albian.Persistence.Imp.Parser.Impl
 {
     public class StorageParser : AbstractStorageParser
     {
+
+        public override void Loading()
+        {
+            Init("Storage.config");
+            base.Loading();
+        }
+
         public static string DefaultStorageName
         {
             get { return "DefaultStorage"; }

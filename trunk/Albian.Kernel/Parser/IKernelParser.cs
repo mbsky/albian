@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Albian.Kernel.Parser
 {
-    public interface IKernelParser
+    public interface IKernelParser : IXmlParser
     {
-        void ConfigParser(string path);
+        //void I(string path);
     }
 }

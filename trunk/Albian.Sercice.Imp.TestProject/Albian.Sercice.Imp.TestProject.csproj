@@ -36,6 +36,10 @@
       <HintPath>..\Reference\dll\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Reference\dll\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -72,6 +76,18 @@
     <ProjectReference Include="..\Albian.Kernel\Albian.Kernel.csproj">
       <Project>{5EF37887-AADF-4753-A1F2-BAA45135DAF4}</Project>
       <Name>Albian.Kernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence.Imp.TestProject\Albian.Persistence.Imp.TestProject.csproj">
+      <Project>{04AC70C0-213F-43BC-89F3-B29FB2E6EAAB}</Project>
+      <Name>Albian.Persistence.Imp.TestProject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence.Imp\Albian.Persistence.Imp.csproj">
+      <Project>{376313F1-1886-4690-8E93-9B4ACE705868}</Project>
+      <Name>Albian.Persistence.Imp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
+      <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
+      <Name>Albian.Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

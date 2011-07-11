@@ -9,11 +9,11 @@ using log4net;
 
 namespace Albian.Kernel.Parser.Impl
 {
-    public abstract class AbstractKernelParser :AbstractAlbianService, IKernelParser
+    public abstract class AbstractKernelParser : AbstractAlbianService, IKernelParser
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public void ConfigParser(string path)
+        public void Init(string path)
         {
             XmlDocument doc = XmlFileParser.LoadXml(path);
             XmlNodeList nodes = doc.SelectNodes("Kernel/Appid");

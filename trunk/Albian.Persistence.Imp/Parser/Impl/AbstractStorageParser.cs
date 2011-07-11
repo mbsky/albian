@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using Albian.Kernel;
+using Albian.Kernel.Service.Impl;
 using Albian.Persistence.Imp.ConnectionPool;
 using Albian.Persistence.Model;
 using log4net;
 
-namespace Albian.Persistence.Imp.Parser
+namespace Albian.Persistence.Imp.Parser.Impl
 {
-    public abstract class AbstractStorageParser : IXmlParser
+    public abstract class AbstractStorageParser : AbstractAlbianService, IStorageParser
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

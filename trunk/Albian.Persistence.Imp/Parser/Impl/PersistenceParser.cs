@@ -7,10 +7,17 @@ using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 
-namespace Albian.Persistence.Imp.Parser
+namespace Albian.Persistence.Imp.Parser.Impl
 {
     public class PersistenceParser : AbstractPersistenceParser
     {
+
+        public override void Loading()
+        {
+            Init("Persistence.config");
+            base.Loading();
+        }
+
         public static string DefaultRoutingName
         {
             get { return "DefaultRouting"; }
@@ -87,12 +94,12 @@ namespace Albian.Persistence.Imp.Parser
             //set the default value when the routingnodes is not exist
             
             IRoutingAttribute defaultRouting = new RoutingAttribute()
-                                            {
-                                                Name = DefaultRoutingName,
-                                                Permission = PermissionMode.WR,
-                                                StorageName = StorageParser.DefaultStorageName,
-                                                TableName = defaultTableName,
-                                            };
+                                                   {
+                                                       Name = DefaultRoutingName,
+                                                       Permission = PermissionMode.WR,
+                                                       StorageName = StorageParser.DefaultStorageName,
+                                                       TableName = defaultTableName,
+                                                   };
             routings.Add(DefaultRoutingName, defaultRouting);
             if (null == routingNodes || 0 == routingNodes.Count)
             {
