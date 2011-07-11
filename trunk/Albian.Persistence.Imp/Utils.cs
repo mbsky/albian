@@ -109,14 +109,14 @@ namespace Albian.Persistence.Imp
             {
                 foreach (IFilterCondition filter in where)
                 {
-                    sbKey.AppendFormat("{0}{1}{2}{3}", filter.Relational, filter.PropertyName, filter.Logical, DBNull.Value == filter.Value ? "NULL" : filter.Value);
+                    sbKey.AppendFormat("{0}{1}{2}{3}", filter.Relational, filter.PropertyName.ToLower(), filter.Logical, DBNull.Value == filter.Value ? "NULL" : filter.Value);
                 }
             }
             if (null != orderby)
             {
                 foreach (IOrderByCondition sort in orderby)
                 {
-                    sbKey.Append(sort.PropertyName).Append(sort.SortStyle);
+                    sbKey.Append(sort.PropertyName.ToLower()).Append(sort.SortStyle);
                 }
             }
             return sbKey.ToString();

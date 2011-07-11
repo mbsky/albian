@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using Albian.Kernel.Cached;
+using Albian.Kernel.Service.Impl;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.Parser.Impl;
@@ -636,7 +638,15 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = Utils.GetCacheKey<T>(routingName,0,where,null);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+                if (cachedService.Exist(cachedKey))
+                {
+                    return (T)cachedService.Get(cachedKey);
+                }
+
                 T target = DoLoadObject<T>(routingName, where);
+                cachedService.InsertOrUpdate(cachedKey,target);
                 return target;
             }
             catch (Exception exc)
@@ -652,7 +662,15 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = Utils.GetCacheKey<T>(cmd);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+                if (cachedService.Exist(cachedKey))
+                {
+                    return (T)cachedService.Get(cachedKey);
+                }
+
                 T target = DoLoadObject<T>(cmd);
+                cachedService.InsertOrUpdate(cachedKey, target);
                 return target;
             }
             catch (Exception exc)
@@ -668,7 +686,14 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = Utils.GetCacheKey<T>(routingName,top,where,orderby);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+                if (cachedService.Exist(cachedKey))
+                {
+                    return (IList<T>) cachedService.Get(cachedKey);
+                }
                 IList<T> target = DoLoadObjects<T>(routingName,top, where,orderby);
+                cachedService.InsertOrUpdate(cachedKey, target);
                 return target;
             }
             catch (Exception exc)
@@ -684,7 +709,14 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = Utils.GetCacheKey<T>(cmd);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+                if (cachedService.Exist(cachedKey))
+                {
+                    return (IList<T>)cachedService.Get(cachedKey);
+                }
                 IList<T> target = DoLoadObjects<T>(cmd);
+                cachedService.InsertOrUpdate(cachedKey, target);
                 return target;
             }
             catch (Exception exc)
