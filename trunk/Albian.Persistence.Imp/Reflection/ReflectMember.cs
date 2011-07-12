@@ -4,6 +4,7 @@ using System.Data;
 using System.Reflection;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Model;
+using Albian.Persistence.Model.Impl;
 
 namespace Albian.Persistence.Imp.Reflection
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Albian.Persistence.Enum;
 
-namespace Albian.Persistence.Model
+namespace Albian.Persistence.Model.Impl
 {
     [Serializable]
     public class StorageAttribute : IStorageAttribute

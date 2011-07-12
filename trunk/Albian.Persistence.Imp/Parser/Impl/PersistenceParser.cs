@@ -6,6 +6,7 @@ using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
+using Albian.Persistence.Model.Impl;
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {
@@ -70,6 +71,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
             }
             obj.RoutingAttributes = ParserRoutings(defaultTableName, entityNode.SelectNodes("Routings/Routing"));
             obj.MemberAttributes = ParserMembers(obj.Implement, entityNode.SelectNodes("Members/Member"));
+            obj.Cache = ParserCache(entityNode.SelectSingleNode("Cache"));
             IDictionary<string, IMemberAttribute> pks = new Dictionary<string, IMemberAttribute>();
             foreach (var member in obj.MemberAttributes)
             {
@@ -249,6 +251,31 @@ namespace Albian.Persistence.Imp.Parser.Impl
                 member.IsSave = bool.Parse(oIsSave.ToString().Trim());
             }
             return member;
+        }
+
+        protected override ICacheAttribute ParserCache(XmlNode node)
+        {
+            if (null == node)
+            {
+                new CacheAttribute()
+                {
+                    Enable = true,
+                    LifeTime = 300,
+                };
+            }
+            ICacheAttribute cache = new CacheAttribute();
+            object oEnable;
+            object oLifeTime;
+            if (XmlFileParser.TryGetAttributeValue(node, "Enable", out oEnable))
+            {
+                cache.Enable = string.IsNullOrEmpty(oEnable.ToString()) ? false :  bool.Parse(oEnable.ToString());
+            }
+            if (XmlFileParser.TryGetAttributeValue(node, "LifeTime", out oLifeTime))
+            {
+                cache.LifeTime = string.IsNullOrEmpty(oLifeTime.ToString()) ? 0 : int.Parse(oLifeTime.ToString());
+            }
+            return cache;
+
         }
     }
 }

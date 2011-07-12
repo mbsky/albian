@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Albian.Persistence.Model
+namespace Albian.Persistence.Model.Impl
 {
     [Serializable]
     public class AlbianObjectAttribute : IObjectAttribute
@@ -12,7 +12,7 @@ namespace Albian.Persistence.Model
         private IDictionary<string, IMemberAttribute> _primaryKeys; // new Dictionary<string, IMemberAttribute>();
         private IRoutingAttribute _rountingTemplate;
         private IDictionary<string, IRoutingAttribute> _routingAttributes; // new List<IRoutingAttribute>();
-
+        private ICacheAttribute _cache;
         #region IObjectAttribute Members
 
         /// <summary>
@@ -49,6 +49,12 @@ namespace Albian.Persistence.Model
         {
             get { return _interface; }
             set { _interface = value; }
+        }
+
+        public ICacheAttribute Cache
+        {
+            get { return _cache; }
+            set { _cache = value; }
         }
 
         public virtual IRoutingAttribute RountingTemplate

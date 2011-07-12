@@ -5,12 +5,14 @@ using System.Reflection;
 using Albian.Kernel.Cached;
 using Albian.Kernel.Service.Impl;
 using Albian.Persistence.Context;
+using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.Parser.Impl;
 using Albian.Persistence.Imp.TransactionCluster;
 using Albian.Persistence.Model;
 using log4net;
 using Albian.Persistence.Imp.Query;
+using Albian.Persistence.Imp.Model;
 
 namespace Albian.Persistence.Imp
 {
@@ -156,6 +158,50 @@ namespace Albian.Persistence.Imp
             }
             return DoFindObject<T>(routingName, where);
 
+        }
+
+        public static T FindObject<T>(string value)
+            where T : IAlbianObject,new()
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("value");
+            }
+            return DoFindObject<T>(PersistenceParser.DefaultRoutingName,new IFilterCondition[]
+            {
+                new FilterCondition()
+                {
+                    Logical = LogicalOperation.Equal,
+                    PropertyName = "Id",
+                    Relational = RelationalOperators.And,
+                    Value = value,
+                }
+            });
+
+        }
+
+        public static T FindObject<T>(string routingName, string value)
+            where T : IAlbianObject,new()
+        {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            return DoFindObject<T>(routingName, new IFilterCondition[]
+            {
+                new FilterCondition()
+                {
+                    Logical = LogicalOperation.Equal,
+                    PropertyName = "Id",
+                    Relational = RelationalOperators.And,
+                    Value = value,
+                }
+            });
         }
 
         public static T FindObject<T>(IFilterCondition[] where)
@@ -407,6 +453,52 @@ namespace Albian.Persistence.Imp
 
         }
 
+        public static T LoadObject<T>(string value)
+             where T : IAlbianObject, new()
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            return DoLoadObject<T>(PersistenceParser.DefaultRoutingName,  new IFilterCondition[]
+            {
+                new FilterCondition()
+                {
+                    Logical = LogicalOperation.Equal,
+                    PropertyName = "Id",
+                    Relational = RelationalOperators.And,
+                    Value = value,
+                }
+            });
+        }
+
+
+        public static T LoadObject<T>(string routingName, string value)
+             where T : IAlbianObject, new()
+        {
+            if (string.IsNullOrEmpty(routingName))
+            {
+                throw new ArgumentNullException("routingName");
+            }
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException("value");
+            }
+
+            return DoLoadObject<T>(routingName, new IFilterCondition[]
+            {
+                new FilterCondition()
+                {
+                    Logical = LogicalOperation.Equal,
+                    PropertyName = "Id",
+                    Relational = RelationalOperators.And,
+                    Value = value,
+                }
+            });
+        }
+
+
         public static T LoadObject<T>(IFilterCondition[] where)
              where T : IAlbianObject, new()
         {
@@ -638,8 +730,11 @@ namespace Albian.Persistence.Imp
         {
             try
             {
-                string cachedKey = Utils.GetCacheKey<T>(routingName,0,where,null);
+                string cachedKey = null != where && 1 == where.Length && "id" == where[0].PropertyName.ToLower()
+                                       ? Utils.GetCacheKey<T>(where[0].Value.ToString())//find by pk id
+                                       : Utils.GetCacheKey<T>(routingName, 0, where, null);
                 IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+
                 if (cachedService.Exist(cachedKey))
                 {
                     return (T)cachedService.Get(cachedKey);
@@ -732,10 +827,17 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = null != where && 1 == where.Length && "id" == where[0].PropertyName.ToLower()
+                                      ? Utils.GetCacheKey<T>(where[0].Value.ToString())//find by pk id
+                                      : Utils.GetCacheKey<T>(routingName, 0, where, null);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+
                 ITaskBuilder taskBuilder = new TaskBuilder();
                 ITask task = taskBuilder.BuildQueryTask<T>(routingName, 0, where, null);
                 IQueryCluster query = new QueryCluster();
-                return query.QueryObject<T>(task);
+                T target = query.QueryObject<T>(task);
+                cachedService.InsertOrUpdate(cachedKey, target);
+                return target;
             }
             catch (Exception exc)
             {
@@ -750,8 +852,13 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = Utils.GetCacheKey<T>(cmd);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+
                 IQueryCluster query = new QueryCluster();
-                return query.QueryObject<T>(cmd);
+                T target = query.QueryObject<T>(cmd);
+                cachedService.InsertOrUpdate(cachedKey, target);
+                return target;
             }
             catch (Exception exc)
             {
@@ -766,10 +873,16 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = Utils.GetCacheKey<T>(routingName, top, where, orderby);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+
                 ITaskBuilder taskBuilder = new TaskBuilder();
                 ITask task = taskBuilder.BuildQueryTask<T>(routingName, top, where, orderby);
                 IQueryCluster query = new QueryCluster();
-                return query.QueryObjects<T>(task);
+                IList<T> targets = query.QueryObjects<T>(task);
+                cachedService.InsertOrUpdate(cachedKey, targets);
+                return targets;
+
             }
             catch (Exception exc)
             {
@@ -784,8 +897,13 @@ namespace Albian.Persistence.Imp
         {
             try
             {
+                string cachedKey = Utils.GetCacheKey<T>(cmd);
+                IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("CachedService");
+
                 IQueryCluster query = new QueryCluster();
-                return query.QueryObjects<T>(cmd);
+                IList<T> targets = query.QueryObjects<T>(cmd);
+                cachedService.InsertOrUpdate(cachedKey, targets);
+                return targets;
             }
             catch (Exception exc)
             {

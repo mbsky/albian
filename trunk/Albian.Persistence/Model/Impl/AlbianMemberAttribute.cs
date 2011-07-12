@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace Albian.Persistence.Model
+namespace Albian.Persistence.Model.Impl
 {
     [Serializable]
     [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]

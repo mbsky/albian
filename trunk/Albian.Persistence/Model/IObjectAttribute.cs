@@ -23,6 +23,8 @@ namespace Albian.Persistence.Model
 
         string Interface { get; set; }
 
+        ICacheAttribute Cache { get; set; }
+
         IRoutingAttribute RountingTemplate { get; set; }
     }
 }

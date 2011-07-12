@@ -10,6 +10,7 @@ using Albian.Persistence.Imp.Context;
 using Albian.Persistence.Imp.Parser.Impl;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
+using Albian.Persistence.Model.Impl;
 using log4net;
 
 namespace Albian.Persistence.Imp.Command
