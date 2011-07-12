@@ -145,11 +145,11 @@ namespace Albian.Persistence.Imp
             return sbKey.ToString();
         }
 
-        public static string GetCacheKey<T>(T albianObject)
+        public static string GetCacheKey<T>(string idValue)
             where T : IAlbianObject
         {
             StringBuilder sbKey = new StringBuilder();
-            sbKey.AppendFormat("{0}${1}", AssemblyManager.GetFullTypeName<T>(albianObject), albianObject.Id);
+            sbKey.AppendFormat("{0}${1}", AssemblyManager.GetFullTypeName(typeof(T)), idValue);
             return sbKey.ToString();
         }
     }

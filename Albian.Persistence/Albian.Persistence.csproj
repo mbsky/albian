@@ -57,9 +57,11 @@
     <Compile Include="IAlbianObject.cs" />
     <Compile Include="IStorageContextBuilder.cs" />
     <Compile Include="ITaskBuilder.cs" />
-    <Compile Include="Model\AlbianMemberAttribute.cs" />
-    <Compile Include="Model\AlbianObjectAttribute.cs" />
-    <Compile Include="Model\FakeCommandAttribute.cs" />
+    <Compile Include="Model\ICacheAttribute.cs" />
+    <Compile Include="Model\Impl\AlbianMemberAttribute.cs" />
+    <Compile Include="Model\Impl\AlbianObjectAttribute.cs" />
+    <Compile Include="Model\Impl\CacheAttribute.cs" />
+    <Compile Include="Model\Impl\FakeCommandAttribute.cs" />
     <Compile Include="Model\IAlbianObjectFilter.cs" />
     <Compile Include="Model\IFakeCommandAttribute.cs" />
     <Compile Include="Model\IFilterCondition.cs" />
@@ -69,8 +71,8 @@
     <Compile Include="Model\IReflectMember.cs" />
     <Compile Include="Model\IRoutingAttribute.cs" />
     <Compile Include="Model\IStorageAttribute.cs" />
-    <Compile Include="Model\RoutingAttribute.cs" />
-    <Compile Include="Model\StorageAttribute.cs" />
+    <Compile Include="Model\Impl\RoutingAttribute.cs" />
+    <Compile Include="Model\Impl\StorageAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

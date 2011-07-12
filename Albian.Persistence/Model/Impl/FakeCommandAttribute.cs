@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Albian.Persistence.Model
+namespace Albian.Persistence.Model.Impl
 {
     public class FakeCommandAttribute : IFakeCommandAttribute
     {

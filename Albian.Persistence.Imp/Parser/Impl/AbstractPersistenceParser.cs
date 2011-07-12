@@ -49,5 +49,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
 
         protected abstract IDictionary<string, IRoutingAttribute> ParserRoutings(string defaultTableName,
                                                                                  XmlNodeList routingNodes);
+
+        protected abstract ICacheAttribute ParserCache(XmlNode node);
     }
 }

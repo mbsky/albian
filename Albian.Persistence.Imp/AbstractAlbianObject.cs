@@ -1,5 +1,5 @@
 ﻿using System;
-using Albian.Persistence.Model;
+using Albian.Persistence.Model.Impl;
 
 namespace Albian.Persistence.Imp
 {

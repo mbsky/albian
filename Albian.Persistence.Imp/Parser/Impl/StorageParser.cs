@@ -5,6 +5,7 @@ using System.Xml;
 using Albian.Kernel;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Model;
+using Albian.Persistence.Model.Impl;
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {
