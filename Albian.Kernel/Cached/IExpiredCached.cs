@@ -2,8 +2,8 @@
 {
     public interface IExpiredCached : ICached
     {
-        void Insert(string key, object value, long seconds);
-        void Update(string key, object value, long seconds);
-        void InsertOrUpdate(string key, object value, long seconds);
+        void Insert(string key, object value, int seconds);
+        void Update(string key, object value, int seconds);
+        void InsertOrUpdate(string key, object value, int seconds);
     }
 }
