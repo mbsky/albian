@@ -1,4 +1,8 @@
-﻿using Albian.Persistence.Enum;
+﻿#region
+
+using Albian.Persistence.Enum;
+
+#endregion
 
 namespace Albian.Persistence.Model
 {

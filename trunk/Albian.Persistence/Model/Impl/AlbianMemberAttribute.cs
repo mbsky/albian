@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data;
+
+#endregion
 
 namespace Albian.Persistence.Model.Impl
 {
     [Serializable]
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class AlbianMemberAttribute : Attribute, IMemberAttribute
     {
         private bool _allowNull = true;
@@ -13,7 +17,7 @@ namespace Albian.Persistence.Model.Impl
         private bool _isSave = true;
         private int _length = 200;
         private string _name = string.Empty;
-        private bool _primaryKey = false;
+        private bool _primaryKey;
 
         #region IMemberAttribute Members
 

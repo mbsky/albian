@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using Albian.Persistence.Enum;
+
+#endregion
 
 namespace Albian.Persistence.Model.Impl
 {

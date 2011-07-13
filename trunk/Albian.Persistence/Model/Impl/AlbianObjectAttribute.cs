@@ -1,18 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+
+#endregion
 
 namespace Albian.Persistence.Model.Impl
 {
     [Serializable]
     public class AlbianObjectAttribute : IObjectAttribute
     {
+        private ICacheAttribute _cache;
         private string _implement = string.Empty;
         private string _interface = string.Empty;
         private IDictionary<string, IMemberAttribute> _memberAttributes; //new Dictionary<string, IMemberAttribute>();
         private IDictionary<string, IMemberAttribute> _primaryKeys; // new Dictionary<string, IMemberAttribute>();
         private IRoutingAttribute _rountingTemplate;
         private IDictionary<string, IRoutingAttribute> _routingAttributes; // new List<IRoutingAttribute>();
-        private ICacheAttribute _cache;
+
         #region IObjectAttribute Members
 
         /// <summary>

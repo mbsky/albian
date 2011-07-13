@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Model;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Model
 {
     public class FilterCondition : IFilterCondition
     {
+        private LogicalOperation _logical = LogicalOperation.Equal;
         private string _propertyName;
 
+        private RelationalOperators _relational = RelationalOperators.And;
+        private Type _type;
         private object _value;
 
-        private Type _type;
-
-        private RelationalOperators _relational = RelationalOperators.And;
-
-        private LogicalOperation _logical = LogicalOperation.Equal;
+        #region IFilterCondition Members
 
         public RelationalOperators Relational
         {
@@ -48,5 +48,7 @@ namespace Albian.Persistence.Imp.Model
             get { return _logical; }
             set { _logical = value; }
         }
+
+        #endregion
     }
 }

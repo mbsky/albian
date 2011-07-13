@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using Albian.Persistence.Enum;
 using Albian.Persistence.Model;
+
+#endregion
 
 namespace Albian.Persistence.Context
 {

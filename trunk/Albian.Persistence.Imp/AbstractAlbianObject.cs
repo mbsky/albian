@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using Albian.Persistence.Model.Impl;
+
+#endregion
 
 namespace Albian.Persistence.Imp
 {
@@ -9,9 +13,9 @@ namespace Albian.Persistence.Imp
         #region Implementation of IAlbianObject
 
         private string _id = string.Empty;
-        private bool _isNew = false;
+        private bool _isNew;
 
-        [AlbianMember(PrimaryKey=true)]
+        [AlbianMember(PrimaryKey = true)]
         public virtual string Id
         {
             get { return _id; }

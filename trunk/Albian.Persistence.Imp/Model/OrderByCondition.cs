@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using Albian.Persistence.Enum;
 using Albian.Persistence.Model;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Model
 {
@@ -12,6 +12,8 @@ namespace Albian.Persistence.Imp.Model
         private string _propertyName;
 
         private SortStyle _sortStyle = SortStyle.Asc;
+
+        #region IOrderByCondition Members
 
         public virtual string PropertyName
         {
@@ -24,5 +26,7 @@ namespace Albian.Persistence.Imp.Model
             get { return _sortStyle; }
             set { _sortStyle = value; }
         }
+
+        #endregion
     }
 }

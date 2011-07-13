@@ -1,9 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using Albian.Persistence.Context;
 using Albian.Persistence.Model;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Context
 {
@@ -15,9 +18,9 @@ namespace Albian.Persistence.Imp.Context
         //private string _connectionString;
         //private IDictionary<string, DbParameter[]> _fakeCommand; // = new Dictionary<string,DbParameter[]>();
         private IList<IFakeCommandAttribute> _fakeCommand;
+        private IStorageAttribute _storage;
         private string _storageName;
         private IDbTransaction _transaction;
-        private IStorageAttribute _storage;
 
         #region IStorageContext Members
 
@@ -32,11 +35,13 @@ namespace Albian.Persistence.Imp.Context
             get { return _fakeCommand; }
             set { _fakeCommand = value; }
         }
-        public IStorageAttribute Storage 
+
+        public IStorageAttribute Storage
         {
             get { return _storage; }
             set { _storage = value; }
         }
+
         //public virtual string ConnectionString
         //{
         //    get { return _connectionString; }

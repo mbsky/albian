@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using Albian.Persistence.Context;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Context
 {

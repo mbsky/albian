@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using Albian.Kernel;
 using Albian.Kernel.Service.Impl;
 using Albian.Persistence.Model;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {

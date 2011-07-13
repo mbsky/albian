@@ -1,16 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Context;
-using Albian.Persistence.Imp.Parser;
-using log4net;
 using Albian.Persistence.Model;
-using System.Data.Common;
+using log4net;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Command
 {
@@ -18,45 +17,56 @@ namespace Albian.Persistence.Imp.Command
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        #region ITaskBuilder Members
+
         public ITask BuildCreateTask<T>(T target)
-            where T :IAlbianObject
+            where T : IAlbianObject
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
-            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
+            task.Context = storageContextBuilder.GenerateStorageContexts(target,
+                                                                         fakeBuilder.GenerateFakeCommandByRoutings,
+                                                                         fakeBuilder.BuildCreateFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
                 object oStorage = StorageCache.Get(context.Key);
-                if(null == oStorage)
+                if (null == oStorage)
                 {
-                    if(null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",storageContext.StorageName);
+                    if (null != Logger)
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
         }
 
         public ITask BuildCreateTask<T>(IList<T> target)
-             where T :IAlbianObject
+            where T : IAlbianObject
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildCreateFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts(o,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         GenerateFakeCommandByRoutings,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         BuildCreateFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
-                    if(null != Logger)
+                    if (null != Logger)
                         Logger.Error("The storagecontexts is empty.");
                     throw new Exception("The storagecontexts is null.");
                 }
-                if(null == task.Context || 0 == task.Context.Count)
+                if (null == task.Context || 0 == task.Context.Count)
                 {
                     task.Context = storageContexts;
                     continue;
@@ -66,9 +76,11 @@ namespace Albian.Persistence.Imp.Command
                     if (task.Context.ContainsKey(storageContext.Key))
                     {
                         task.Context[storageContext.Key].FakeCommand = task.Context.ContainsKey(storageContext.Key)
-                                                               ? Utils.Concat(task.Context[storageContext.Key].FakeCommand,
-                                                                        storageContext.Value.FakeCommand)
-                                                               : storageContext.Value.FakeCommand;
+                                                                           ? Utils.Concat(
+                                                                                 task.Context[storageContext.Key].
+                                                                                     FakeCommand,
+                                                                                 storageContext.Value.FakeCommand)
+                                                                           : storageContext.Value.FakeCommand;
                     }
                     else
                     {
@@ -84,10 +96,11 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
@@ -100,7 +113,9 @@ namespace Albian.Persistence.Imp.Command
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
-            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildModifyFakeCommandByRouting);
+            task.Context = storageContextBuilder.GenerateStorageContexts(target,
+                                                                         fakeBuilder.GenerateFakeCommandByRoutings,
+                                                                         fakeBuilder.BuildModifyFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
@@ -108,24 +123,31 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
         }
 
         public ITask BuildModifyTask<T>(IList<T> target)
-             where T : IAlbianObject
+            where T : IAlbianObject
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildModifyFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts(o,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         GenerateFakeCommandByRoutings,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         BuildModifyFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if (null != Logger)
@@ -142,9 +164,11 @@ namespace Albian.Persistence.Imp.Command
                     if (task.Context.ContainsKey(storageContext.Key))
                     {
                         task.Context[storageContext.Key].FakeCommand = task.Context.ContainsKey(storageContext.Key)
-                                                               ? Utils.Concat(task.Context[storageContext.Key].FakeCommand,
-                                                                        storageContext.Value.FakeCommand)
-                                                               : storageContext.Value.FakeCommand;
+                                                                           ? Utils.Concat(
+                                                                                 task.Context[storageContext.Key].
+                                                                                     FakeCommand,
+                                                                                 storageContext.Value.FakeCommand)
+                                                                           : storageContext.Value.FakeCommand;
                     }
                     else
                     {
@@ -160,10 +184,11 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
@@ -175,7 +200,9 @@ namespace Albian.Persistence.Imp.Command
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
-            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildDeleteFakeCommandByRouting);
+            task.Context = storageContextBuilder.GenerateStorageContexts(target,
+                                                                         fakeBuilder.GenerateFakeCommandByRoutings,
+                                                                         fakeBuilder.BuildDeleteFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
@@ -183,24 +210,31 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
         }
 
         public ITask BuildRemoveTask<T>(IList<T> target)
-             where T : IAlbianObject
+            where T : IAlbianObject
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildDeleteFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts(o,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         GenerateFakeCommandByRoutings,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         BuildDeleteFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if (null != Logger)
@@ -217,9 +251,11 @@ namespace Albian.Persistence.Imp.Command
                     if (task.Context.ContainsKey(storageContext.Key))
                     {
                         task.Context[storageContext.Key].FakeCommand = task.Context.ContainsKey(storageContext.Key)
-                                                               ? Utils.Concat(task.Context[storageContext.Key].FakeCommand,
-                                                                        storageContext.Value.FakeCommand)
-                                                               : storageContext.Value.FakeCommand;
+                                                                           ? Utils.Concat(
+                                                                                 task.Context[storageContext.Key].
+                                                                                     FakeCommand,
+                                                                                 storageContext.Value.FakeCommand)
+                                                                           : storageContext.Value.FakeCommand;
                     }
                     else
                     {
@@ -235,10 +271,11 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
@@ -251,7 +288,9 @@ namespace Albian.Persistence.Imp.Command
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
-            task.Context = storageContextBuilder.GenerateStorageContexts<T>(target, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildSaveFakeCommandByRouting);
+            task.Context = storageContextBuilder.GenerateStorageContexts(target,
+                                                                         fakeBuilder.GenerateFakeCommandByRoutings,
+                                                                         fakeBuilder.BuildSaveFakeCommandByRouting);
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
             {
                 IStorageContext storageContext = context.Value;
@@ -259,24 +298,31 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
         }
 
         public ITask BuildSaveTask<T>(IList<T> target)
-             where T : IAlbianObject
+            where T : IAlbianObject
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
             foreach (T o in target)
             {
-                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(o, fakeBuilder.GenerateFakeCommandByRoutings, fakeBuilder.BuildSaveFakeCommandByRouting);
+                IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts(o,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         GenerateFakeCommandByRoutings,
+                                                                                                                     fakeBuilder
+                                                                                                                         .
+                                                                                                                         BuildSaveFakeCommandByRouting);
                 if (null == storageContexts || 0 == storageContexts.Count)
                 {
                     if (null != Logger)
@@ -293,9 +339,11 @@ namespace Albian.Persistence.Imp.Command
                     if (task.Context.ContainsKey(storageContext.Key))
                     {
                         task.Context[storageContext.Key].FakeCommand = task.Context.ContainsKey(storageContext.Key)
-                                                               ? Utils.Concat(task.Context[storageContext.Key].FakeCommand,
-                                                                        storageContext.Value.FakeCommand)
-                                                               : storageContext.Value.FakeCommand;
+                                                                           ? Utils.Concat(
+                                                                                 task.Context[storageContext.Key].
+                                                                                     FakeCommand,
+                                                                                 storageContext.Value.FakeCommand)
+                                                                           : storageContext.Value.FakeCommand;
                     }
                     else
                     {
@@ -311,22 +359,25 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
         }
 
-        public ITask BuildQueryTask<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
-            where T:IAlbianObject
+        public ITask BuildQueryTask<T>(string rountingName, int top, IFilterCondition[] where,
+                                       IOrderByCondition[] orderby)
+            where T : IAlbianObject
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();
             IStorageContextBuilder storageContextBuilder = new StorageContextBuilder();
-            IDictionary<string, IStorageContext> storageContexts = storageContextBuilder.GenerateStorageContexts<T>(rountingName, top, where, orderby);
+            IDictionary<string, IStorageContext> storageContexts =
+                storageContextBuilder.GenerateStorageContexts<T>(rountingName, top, where, orderby);
 
             task.Context = storageContexts;
             foreach (KeyValuePair<string, IStorageContext> context in task.Context)
@@ -336,13 +387,16 @@ namespace Albian.Persistence.Imp.Command
                 if (null == oStorage)
                 {
                     if (null != Logger)
-                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.", storageContext.StorageName);
+                        Logger.ErrorFormat("There is no {0} storage attribute in the storage cached.",
+                                           storageContext.StorageName);
                     return null;
                 }
-                IStorageAttribute storage = (IStorageAttribute)oStorage;
+                IStorageAttribute storage = (IStorageAttribute) oStorage;
                 storageContext.Storage = storage;
             }
             return task;
         }
+
+        #endregion
     }
 }

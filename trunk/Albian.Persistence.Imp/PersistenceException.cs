@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace Albian.Persistence.Imp
 {
-    public class PersistenceException: Exception
+    public class PersistenceException : Exception
     {
         public PersistenceException(string message) : base(message)
         {
         }
 
-        public PersistenceException(string message, System.Exception innerException)
+        public PersistenceException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
         public PersistenceException()
-            : base()
         {
         }
     }
 }
-

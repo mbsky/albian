@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Runtime.CompilerServices;
 using Albian.Kernel.Cached;
 using Albian.Kernel.Cached.Impl;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Cache
 {

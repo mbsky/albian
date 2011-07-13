@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Reflection;
@@ -13,13 +15,20 @@ using Albian.Persistence.Model;
 using Albian.Persistence.Model.Impl;
 using log4net;
 
+#endregion
+
 namespace Albian.Persistence.Imp.Command
 {
     public class FakeCommandBuilder : IFakeCommandBuilder
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public IDictionary<string, IStorageContext> GenerateFakeCommandByRoutings<T>(T target, PropertyInfo[] properties, IObjectAttribute objectAttribute,BuildFakeCommandByRoutingHandler<T> buildFakeCommandByRoutingHandler) 
+        #region IFakeCommandBuilder Members
+
+        public IDictionary<string, IStorageContext> GenerateFakeCommandByRoutings<T>(T target, PropertyInfo[] properties,
+                                                                                     IObjectAttribute objectAttribute,
+                                                                                     BuildFakeCommandByRoutingHandler<T>
+                                                                                         buildFakeCommandByRoutingHandler)
             where T : IAlbianObject
         {
             if (null == properties || 0 == properties.Length)
@@ -30,7 +39,8 @@ namespace Albian.Persistence.Imp.Command
             {
                 throw new ArgumentNullException("objectAttribute");
             }
-            if (null == objectAttribute.RoutingAttributes || null == objectAttribute.RoutingAttributes.Values || 0 == objectAttribute.RoutingAttributes.Values.Count)
+            if (null == objectAttribute.RoutingAttributes || null == objectAttribute.RoutingAttributes.Values ||
+                0 == objectAttribute.RoutingAttributes.Values.Count)
             {
                 if (null != Logger)
                     Logger.Error("The routing attributes or routings is null");
@@ -40,11 +50,13 @@ namespace Albian.Persistence.Imp.Command
             IDictionary<string, IStorageContext> storageContexts = new Dictionary<string, IStorageContext>();
             foreach (var routing in objectAttribute.RoutingAttributes.Values)
             {
-                IFakeCommandAttribute fakeCommandAttrribute = buildFakeCommandByRoutingHandler(PermissionMode.W, target, routing, objectAttribute, properties);
-                if (null == fakeCommandAttrribute)//the PermissionMode is not enough
+                IFakeCommandAttribute fakeCommandAttrribute = buildFakeCommandByRoutingHandler(PermissionMode.W, target,
+                                                                                               routing, objectAttribute,
+                                                                                               properties);
+                if (null == fakeCommandAttrribute) //the PermissionMode is not enough
                 {
                     if (null != Logger)
-                        Logger.WarnFormat("The permission is not enough in the {0} routing.",routing.Name);
+                        Logger.WarnFormat("The permission is not enough in the {0} routing.", routing.Name);
                     continue;
                 }
                 if (storageContexts.ContainsKey(fakeCommandAttrribute.StorageName))
@@ -55,7 +67,7 @@ namespace Albian.Persistence.Imp.Command
                 {
                     IStorageContext storageContext = new StorageContext
                                                          {
-                                                             FakeCommand =new List<IFakeCommandAttribute>(),
+                                                             FakeCommand = new List<IFakeCommandAttribute>(),
                                                              StorageName = fakeCommandAttrribute.StorageName,
                                                          };
                     storageContext.FakeCommand.Add(fakeCommandAttrribute);
@@ -86,7 +98,7 @@ namespace Albian.Persistence.Imp.Command
             if (0 == (permission & routing.Permission))
             {
                 if (null != Logger)
-                    Logger.WarnFormat("The routing permission {0} is no enough.",permission);
+                    Logger.WarnFormat("The routing permission {0} is no enough.", permission);
                 return null;
             }
 
@@ -97,12 +109,14 @@ namespace Albian.Persistence.Imp.Command
             IList<DbParameter> paras = new List<DbParameter>();
 
             //create the connection string
-            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            IStorageAttribute storageAttr = (IStorageAttribute) StorageCache.Get(routing.StorageName);
             if (null == storageAttr)
             {
                 if (null != Logger)
-                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.",routing.Name);
-                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+                    Logger.WarnFormat(
+                        "No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.",
+                        routing.Name);
+                storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
             }
 
             //create the hash table name
@@ -125,7 +139,8 @@ namespace Albian.Persistence.Imp.Command
                 sbCols.AppendFormat("{0},", member.FieldName);
                 string paraName = DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
                 sbValues.AppendFormat("{0},", paraName);
-                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value,
+                                                         member.Length));
             }
             int colsLen = sbCols.Length;
             if (0 < colsLen)
@@ -148,10 +163,10 @@ namespace Albian.Persistence.Imp.Command
         }
 
         public IFakeCommandAttribute BuildModifyFakeCommandByRouting<T>(PermissionMode permission, T target,
-                                                                      IRoutingAttribute routing,
-                                                                      IObjectAttribute objectAttribute,
-                                                                      PropertyInfo[] properties)
-          where T : IAlbianObject
+                                                                        IRoutingAttribute routing,
+                                                                        IObjectAttribute objectAttribute,
+                                                                        PropertyInfo[] properties)
+            where T : IAlbianObject
         {
             if (null == routing)
             {
@@ -175,12 +190,14 @@ namespace Albian.Persistence.Imp.Command
             IList<DbParameter> paras = new List<DbParameter>();
 
             //create the connection string
-            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            IStorageAttribute storageAttr = (IStorageAttribute) StorageCache.Get(routing.StorageName);
             if (null == storageAttr)
             {
                 if (null != Logger)
-                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
-                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+                    Logger.WarnFormat(
+                        "No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.",
+                        routing.Name);
+                storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
             }
 
             //create the hash table name
@@ -188,7 +205,7 @@ namespace Albian.Persistence.Imp.Command
 
             //build the command text
             IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
-            IDictionary<string,IMemberAttribute> pks = objectAttribute.PrimaryKeys;
+            IDictionary<string, IMemberAttribute> pks = objectAttribute.PrimaryKeys;
             if (null == pks || 0 == pks.Count)
             {
                 throw new Exception("Can not Update the Database,the pks is null or empty.");
@@ -216,12 +233,14 @@ namespace Albian.Persistence.Imp.Command
                 if (member.PrimaryKey)
                 {
                     sbPKs.AppendFormat("AND {0}={1} ", member.FieldName, paraName);
-                    paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+                    paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value,
+                                                             member.Length));
                     continue;
                 }
 
                 sbCols.AppendFormat("{0}={1},", member.FieldName, paraName);
-                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value,
+                                                         member.Length));
             }
             int colsLen = sbCols.Length;
             if (0 < colsLen)
@@ -232,19 +251,19 @@ namespace Albian.Persistence.Imp.Command
             sbUpdate.AppendFormat("UPDATE {0} SET {1} WHERE 1=1 {2} ", tableFullName, sbCols, sbPKs);
 
             IFakeCommandAttribute fakeCmd = new FakeCommandAttribute
-            {
-                CommandText = sbUpdate.ToString(),
-                Paras = ((List<DbParameter>)paras).ToArray(),
-                StorageName = routing.StorageName
-            };
+                                                {
+                                                    CommandText = sbUpdate.ToString(),
+                                                    Paras = ((List<DbParameter>) paras).ToArray(),
+                                                    StorageName = routing.StorageName
+                                                };
             return fakeCmd;
         }
 
         public IFakeCommandAttribute BuildDeleteFakeCommandByRouting<T>(PermissionMode permission, T target,
-                                                                      IRoutingAttribute routing,
-                                                                      IObjectAttribute objectAttribute,
-                                                                      PropertyInfo[] properties)
-          where T : IAlbianObject
+                                                                        IRoutingAttribute routing,
+                                                                        IObjectAttribute objectAttribute,
+                                                                        PropertyInfo[] properties)
+            where T : IAlbianObject
         {
             if (null == routing)
             {
@@ -271,12 +290,14 @@ namespace Albian.Persistence.Imp.Command
             IList<DbParameter> paras = new List<DbParameter>();
 
             //create the connection string
-            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            IStorageAttribute storageAttr = (IStorageAttribute) StorageCache.Get(routing.StorageName);
             if (null == storageAttr)
             {
                 if (null != Logger)
-                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
-                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+                    Logger.WarnFormat(
+                        "No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.",
+                        routing.Name);
+                storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
             }
 
             //create the hash table name
@@ -300,16 +321,17 @@ namespace Albian.Persistence.Imp.Command
                 string paraName = DatabaseFactory.GetParameterName(storageAttr.DatabaseStyle, member.FieldName);
 
                 sbPKs.AppendFormat(" AND {0}={1}", member.FieldName, paraName);
-                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value, member.Length));
+                paras.Add(DatabaseFactory.GetDbParameter(storageAttr.DatabaseStyle, paraName, member.DBType, value,
+                                                         member.Length));
             }
 
             sbDelete.AppendFormat("DELETE FROM {0} WHERE 1=1 {1} ", tableFullName, sbPKs);
             IFakeCommandAttribute fakeCmd = new FakeCommandAttribute
-            {
-                CommandText = sbDelete.ToString(),
-                Paras = ((List<DbParameter>)paras).ToArray(),
-                StorageName = routing.StorageName
-            };
+                                                {
+                                                    CommandText = sbDelete.ToString(),
+                                                    Paras = ((List<DbParameter>) paras).ToArray(),
+                                                    StorageName = routing.StorageName
+                                                };
             return fakeCmd;
         }
 
@@ -317,7 +339,7 @@ namespace Albian.Persistence.Imp.Command
                                                                       IRoutingAttribute routing,
                                                                       IObjectAttribute objectAttribute,
                                                                       PropertyInfo[] properties)
-          where T : IAlbianObject
+            where T : IAlbianObject
         {
             if (null == routing)
             {
@@ -338,17 +360,18 @@ namespace Albian.Persistence.Imp.Command
                 return null;
             }
 
-            return target.IsNew 
-                    ? 
-                    BuildCreateFakeCommandByRouting<T>(permission, target, routing, objectAttribute, properties) 
-                    : 
-                    BuildModifyFakeCommandByRouting<T>(permission, target, routing, objectAttribute, properties);
+            return target.IsNew
+                       ?
+                           BuildCreateFakeCommandByRouting(permission, target, routing, objectAttribute, properties)
+                       :
+                           BuildModifyFakeCommandByRouting(permission, target, routing, objectAttribute, properties);
         }
 
-        public IFakeCommandAttribute GenerateQuery<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+        public IFakeCommandAttribute GenerateQuery<T>(string rountingName, int top, IFilterCondition[] where,
+                                                      IOrderByCondition[] orderby)
             where T : IAlbianObject
         {
-            Type type =typeof(T);
+            Type type = typeof (T);
             string fullName = AssemblyManager.GetFullTypeName(type);
             object oProperties = PropertyCache.Get(fullName);
             PropertyInfo[] properties;
@@ -358,7 +381,7 @@ namespace Albian.Persistence.Imp.Command
                     Logger.Error("Get the object property info from cache is null.Reflection now and add to cache.");
                 throw new PersistenceException("object property is null in the cache.");
             }
-            properties = (PropertyInfo[])oProperties;
+            properties = (PropertyInfo[]) oProperties;
             object oAttribute = ObjectCache.Get(fullName);
             if (null == oAttribute)
             {
@@ -370,26 +393,29 @@ namespace Albian.Persistence.Imp.Command
             StringBuilder sbCols = new StringBuilder();
             StringBuilder sbWhere = new StringBuilder();
             StringBuilder sbOrderBy = new StringBuilder();
-            IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
+            IObjectAttribute objectAttribute = (IObjectAttribute) oAttribute;
             IRoutingAttribute routing;
 
-            if(!objectAttribute.RoutingAttributes.TryGetValue(rountingName,out routing))
+            if (!objectAttribute.RoutingAttributes.TryGetValue(rountingName, out routing))
             {
-                if(null != Logger)
-                    Logger.WarnFormat("There is not routing of the {} object.Albian use the default routing tempate.",rountingName);
+                if (null != Logger)
+                    Logger.WarnFormat("There is not routing of the {} object.Albian use the default routing tempate.",
+                                      rountingName);
                 routing = objectAttribute.RountingTemplate;
             }
 
-            IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(routing.StorageName);
+            IStorageAttribute storageAttr = (IStorageAttribute) StorageCache.Get(routing.StorageName);
             if (null == storageAttr)
             {
                 if (null != Logger)
-                    Logger.WarnFormat("No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.", routing.Name);
-                storageAttr = (IStorageAttribute)StorageCache.Get(StorageParser.DefaultStorageName);
+                    Logger.WarnFormat(
+                        "No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.",
+                        routing.Name);
+                storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
             }
 
             IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
-            T target = (T) Activator.CreateInstance(typeof(T));
+            T target = (T) Activator.CreateInstance(typeof (T));
             foreach (PropertyInfo property in properties)
             {
                 IMemberAttribute member = members[property.Name];
@@ -443,18 +469,20 @@ namespace Albian.Persistence.Imp.Command
                                                              condition.Value, member.Length));
                 }
             }
-            string tableFullName = Utils.GetTableFullName<T>(routing,target);
-            sbSelect.AppendFormat("SELECT{0} {1} FROM {2} WHERE 1=1 {3}{4}", 
-                0 == top ? string.Empty : string.Format(" TOP {0}",top), 
-                sbCols, tableFullName, sbWhere,
-                0 == sbOrderBy.Length ? string.Empty : string.Format(" ORDER {0}",sbOrderBy));
+            string tableFullName = Utils.GetTableFullName(routing, target);
+            sbSelect.AppendFormat("SELECT{0} {1} FROM {2} WHERE 1=1 {3}{4}",
+                                  0 == top ? string.Empty : string.Format(" TOP {0}", top),
+                                  sbCols, tableFullName, sbWhere,
+                                  0 == sbOrderBy.Length ? string.Empty : string.Format(" ORDER {0}", sbOrderBy));
             IFakeCommandAttribute fakeCommand = new FakeCommandAttribute
                                                     {
                                                         CommandText = sbSelect.ToString(),
-                                                        Paras = ((List<DbParameter>)paras).ToArray(),
+                                                        Paras = ((List<DbParameter>) paras).ToArray(),
                                                         StorageName = storageAttr.Name,
                                                     };
             return fakeCommand;
         }
+
+        #endregion
     }
 }

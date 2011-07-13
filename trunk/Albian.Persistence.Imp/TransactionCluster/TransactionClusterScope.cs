@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -10,16 +12,21 @@ using Albian.Persistence.Imp.Parser.Impl;
 using Albian.Persistence.Model;
 using log4net;
 
+#endregion
+
 namespace Albian.Persistence.Imp.TransactionCluster
 {
-    public class TransactionClusterScope :ITransactionClusterScope
+    public class TransactionClusterScope : ITransactionClusterScope
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private TransactionClusterState _state = TransactionClusterState.NoStarted; 
+        private TransactionClusterState _state = TransactionClusterState.NoStarted;
+
+        #region ITransactionClusterScope Members
+
         /// <summary>
         /// 当前事务集群的状态
         /// </summary>
-        public virtual TransactionClusterState State 
+        public virtual TransactionClusterState State
         {
             get { return _state; }
         }
@@ -55,7 +62,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
                 isSuccess = false;
                 if (null != Logger)
                 {
-                    Logger.ErrorFormat("Execute the cluster transaction scope is error.info:{0}",exc.Message);
+                    Logger.ErrorFormat("Execute the cluster transaction scope is error.info:{0}", exc.Message);
                 }
                 _state = TransactionClusterState.Rollbacking;
                 ExceptionHandler(contexts);
@@ -68,11 +75,12 @@ namespace Albian.Persistence.Imp.TransactionCluster
             return isSuccess;
         }
 
+        #endregion
+
         protected virtual void UnLoadExecute(IDictionary<string, IStorageContext> storageContexts)
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
-
                 IStorageContext storageContext = context.Value;
                 //storageContext.Connection.Dispose();
                 try
@@ -88,7 +96,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
                     storageContext.FakeCommand = null;
                     if (ConnectionState.Closed != storageContext.Connection.State)
                         storageContext.Connection.Close();
-                    
+
                     if (storageContext.Storage.Pooling)
                     {
                         DbConnectionPoolManager.RetutnConnection(storageContext.StorageName, storageContext.Connection);
@@ -104,7 +112,6 @@ namespace Albian.Persistence.Imp.TransactionCluster
                     if (null != Logger)
                         Logger.Warn("Clear the database resources is error.but must close the all connections");
                 }
-
             }
         }
 
@@ -140,13 +147,13 @@ namespace Albian.Persistence.Imp.TransactionCluster
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
                 IStorageContext storageContext = context.Value;
-                string sConnection =  StorageParser.BuildConnectionString(storageContext.Storage);
+                string sConnection = StorageParser.BuildConnectionString(storageContext.Storage);
                 storageContext.Connection =
-                    storageContext.Storage.Pooling 
-                    ?
-                    DbConnectionPoolManager.GetConnection(storageContext.StorageName, sConnection)
-                    :
-                     DatabaseFactory.GetDbConnection(storageContext.Storage.DatabaseStyle, sConnection);
+                    storageContext.Storage.Pooling
+                        ?
+                            DbConnectionPoolManager.GetConnection(storageContext.StorageName, sConnection)
+                        :
+                            DatabaseFactory.GetDbConnection(storageContext.Storage.DatabaseStyle, sConnection);
 
                 if (ConnectionState.Open != storageContext.Connection.State)
                     storageContext.Connection.Open();

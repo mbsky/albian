@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Data;
 using System.Data.OracleClient;
@@ -8,6 +10,8 @@ using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.ConnectionPool.Factory;
 using log4net;
 using MySql.Data.MySqlClient;
+
+#endregion
 
 namespace Albian.Persistence.Imp.ConnectionPool
 {
@@ -21,15 +25,15 @@ namespace Albian.Persistence.Imp.ConnectionPool
         /// <remarks>
         /// isTrackerPool,isStoragePool不能同时为true或者false
         /// </remarks>
-        public static void CreatePool(string storageName,DatabaseStyle dbStyle,int minSize,int maxSize)
+        public static void CreatePool(string storageName, DatabaseStyle dbStyle, int minSize, int maxSize)
         {
-            switch(dbStyle)
+            switch (dbStyle)
             {
                 case DatabaseStyle.MySql:
                     {
-                        IConnectionPool pool = 
-                            new ConnectionPool<MySqlConnection>(new MySqlConnectionFactory(),minSize,maxSize);
-                        ConnectionPoolCached.InsertOrUpdate(storageName,pool);
+                        IConnectionPool pool =
+                            new ConnectionPool<MySqlConnection>(new MySqlConnectionFactory(), minSize, maxSize);
+                        ConnectionPoolCached.InsertOrUpdate(storageName, pool);
                         break;
                     }
                 case DatabaseStyle.Oracle:
@@ -61,12 +65,13 @@ namespace Albian.Persistence.Imp.ConnectionPool
             if (null == obj)
             {
                 Logger.Warn("the pool is null.");
-                return null; ;
+                return null;
+                ;
             }
             return (IConnectionPool) obj;
         }
 
-        public static IDbConnection GetConnection(string storageName,string connectionString)
+        public static IDbConnection GetConnection(string storageName, string connectionString)
         {
             IConnectionPool pool = GetPool(storageName);
             if (null == pool)
@@ -111,6 +116,5 @@ namespace Albian.Persistence.Imp.ConnectionPool
             }
             pool.ReturnObject(connection);
         }
-
     }
 }

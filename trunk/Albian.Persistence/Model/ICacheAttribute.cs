@@ -6,6 +6,7 @@ namespace Albian.Persistence.Model
         /// 是否启用缓存
         /// </summary>
         bool Enable { get; set; }
+
         /// <summary>
         /// 缓存时间
         /// </summary>

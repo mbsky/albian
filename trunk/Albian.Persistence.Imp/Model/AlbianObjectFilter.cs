@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.Data;
-using System.Linq;
-using System.Text;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Model;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Model
 {
     public class AlbianObjectFilter : IAlbianObjectFilter
     {
+        private SortStyle _orderby = SortStyle.Asc;
+
+        private IDataParameter[] _paras;
         private string[] _propertyNames;
 
         private string _tableName;
 
         private string _where;
 
-        private SortStyle _orderby = SortStyle.Asc;
-
-        private IDataParameter[] _paras;
+        #region IAlbianObjectFilter Members
 
         public string[] PropertyNames
         {
@@ -49,5 +50,7 @@ namespace Albian.Persistence.Imp.Model
             get { return _paras; }
             set { _paras = value; }
         }
+
+        #endregion
     }
 }

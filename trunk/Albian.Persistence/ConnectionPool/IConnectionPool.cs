@@ -1,4 +1,8 @@
-﻿using System.Data;
+﻿#region
+
+using System.Data;
+
+#endregion
 
 namespace Albian.Persistence.ConnectionPool
 {
@@ -8,9 +12,18 @@ namespace Albian.Persistence.ConnectionPool
     public interface IConnectionPool
     {
         /// <summary>
+        /// 得到当前对象池中正在使用的对象数. 
+        /// </summary>
+        int NumActive { get; }
+
+        /// <summary>
+        /// 得到当前对象池中可用的对象数
+        /// </summary>
+        int NumIdle { get; }
+
+        /// <summary>
         /// 得到对象.
         /// </summary>
-
         /// <returns></returns>
         IDbConnection GetObject(string connectionString);
 
@@ -23,16 +36,6 @@ namespace Albian.Persistence.ConnectionPool
         /// 关闭对象池并释放池中所有的资源
         /// </summary>
         void Close();
-
-        /// <summary>
-        /// 得到当前对象池中正在使用的对象数. 
-        /// </summary>
-        int NumActive { get; }
-
-        /// <summary>
-        /// 得到当前对象池中可用的对象数
-        /// </summary>
-        int NumIdle { get; }
 
         /// <summary>
         /// 强行创建一个对象

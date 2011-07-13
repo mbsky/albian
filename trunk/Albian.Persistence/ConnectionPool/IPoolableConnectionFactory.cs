@@ -1,4 +1,8 @@
+#region
+
 using System.Data;
+
+#endregion
 
 namespace Albian.Persistence.ConnectionPool
 {
@@ -6,7 +10,7 @@ namespace Albian.Persistence.ConnectionPool
     /// 对象池化工厂
     /// </summary>
     public interface IPoolableConnectionFactory<T>
-        where T :IDbConnection,new()
+        where T : IDbConnection, new()
     {
         /// <summary>
         /// 创建对象
@@ -35,6 +39,5 @@ namespace Albian.Persistence.ConnectionPool
         /// 卸载内存中正在使用的对象.
         /// </summary>
         void PassivateObject(T obj);
-
     }
 }

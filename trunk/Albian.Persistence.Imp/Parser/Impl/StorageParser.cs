@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
@@ -7,10 +9,16 @@ using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Model;
 using Albian.Persistence.Model.Impl;
 
+#endregion
+
 namespace Albian.Persistence.Imp.Parser.Impl
 {
     public class StorageParser : AbstractStorageParser
     {
+        public static string DefaultStorageName
+        {
+            get { return "DefaultStorage"; }
+        }
 
         public override void Loading()
         {
@@ -18,10 +26,6 @@ namespace Albian.Persistence.Imp.Parser.Impl
             base.Loading();
         }
 
-        public static string DefaultStorageName
-        {
-            get { return "DefaultStorage"; }
-        }
         protected override IDictionary<string, IStorageAttribute> ParserStorages(XmlNode node)
         {
             if (null == node)
@@ -45,7 +49,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
                     {
                         //insert the default storage
                         //the default is the first storage
-                        StorageCache.InsertOrUpdate(DefaultStorageName,storageAttribute);
+                        StorageCache.InsertOrUpdate(DefaultStorageName, storageAttribute);
                     }
                     idx++;
                 }
@@ -187,7 +191,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
                         }
                 }
             }
-            if(string.IsNullOrEmpty(storageAttribute.Name))
+            if (string.IsNullOrEmpty(storageAttribute.Name))
             {
                 throw new Exception("the name is empty in the storage.config");
             }
@@ -216,7 +220,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
             }
             if (0 != storageAttribute.Timeout)
             {
-                sbString.AppendFormat("Connection Timeout={0}",storageAttribute.Timeout);
+                sbString.AppendFormat("Connection Timeout={0}", storageAttribute.Timeout);
             }
             return sbString.ToString();
         }

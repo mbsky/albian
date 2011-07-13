@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,14 +14,17 @@ using Albian.Persistence.Imp.Parser.Impl;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 using log4net;
-using log4net.Repository.Hierarchy;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Query
 {
-    public class QueryCluster :IQueryCluster
+    public class QueryCluster : IQueryCluster
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
+
+        #region IQueryCluster Members
+
         public T QueryObject<T>(ITask task)
             where T : IAlbianObject
         {
@@ -32,7 +37,7 @@ namespace Albian.Persistence.Imp.Query
         }
 
         public IList<T> QueryObjects<T>(ITask task)
-             where T : IAlbianObject
+            where T : IAlbianObject
         {
             Hashtable reader;
             IDictionary<string, IMemberAttribute> members;
@@ -67,7 +72,7 @@ namespace Albian.Persistence.Imp.Query
         }
 
         public IList<T> QueryObjects<T>(IDbCommand cmd)
-             where T : IAlbianObject
+            where T : IAlbianObject
         {
             Hashtable reader;
             IDictionary<string, IMemberAttribute> members;
@@ -89,6 +94,8 @@ namespace Albian.Persistence.Imp.Query
                 dr.Dispose();
             }
         }
+
+        #endregion
 
         protected virtual IDataReader Execute(IDbCommand cmd)
         {
@@ -118,7 +125,7 @@ namespace Albian.Persistence.Imp.Query
             {
                 throw new ArgumentNullException("task");
             }
-            if (1 != task.Context.Count)//only one
+            if (1 != task.Context.Count) //only one
             {
                 throw new PersistenceException("The query task is error.");
             }
@@ -152,7 +159,7 @@ namespace Albian.Persistence.Imp.Query
         protected IStorageContext PreExecute(ITask task)
         {
             IStorageContext[] storageContexts = new IStorageContext[] {};
-            task.Context.Values.CopyTo(storageContexts,0);
+            task.Context.Values.CopyTo(storageContexts, 0);
             IStorageContext storageContext = storageContexts[0];
 
             string sConnection = StorageParser.BuildConnectionString(storageContext.Storage);
@@ -164,10 +171,11 @@ namespace Albian.Persistence.Imp.Query
                         DatabaseFactory.GetDbConnection(storageContext.Storage.DatabaseStyle, sConnection);
             return storageContext;
         }
-        
-        protected PropertyInfo[] AfterExecute<T>(IDataReader dr, out Hashtable reader, out IDictionary<string, IMemberAttribute> members)
+
+        protected PropertyInfo[] AfterExecute<T>(IDataReader dr, out Hashtable reader,
+                                                 out IDictionary<string, IMemberAttribute> members)
         {
-            Type type = typeof(T);
+            Type type = typeof (T);
             string fullName = AssemblyManager.GetFullTypeName(type);
             object oProperties = PropertyCache.Get(fullName);
             PropertyInfo[] properties;
@@ -178,7 +186,7 @@ namespace Albian.Persistence.Imp.Query
                 properties = type.GetProperties();
                 PropertyCache.InsertOrUpdate(fullName, properties);
             }
-            properties = (PropertyInfo[])oProperties;
+            properties = (PropertyInfo[]) oProperties;
             object oAttribute = ObjectCache.Get(fullName);
             if (null == oAttribute)
             {
@@ -186,7 +194,7 @@ namespace Albian.Persistence.Imp.Query
                     Logger.ErrorFormat("The {0} object attribute is null in the object cache.", fullName);
                 throw new Exception("The object attribute is null");
             }
-            IObjectAttribute objectAttribute = (IObjectAttribute)oAttribute;
+            IObjectAttribute objectAttribute = (IObjectAttribute) oAttribute;
             members = objectAttribute.MemberAttributes;
 
             reader = new Hashtable();
@@ -197,7 +205,8 @@ namespace Albian.Persistence.Imp.Query
             return properties;
         }
 
-        protected T AlbianObjectCreater<T>(PropertyInfo[] properties, IDataReader dr, Hashtable reader, IDictionary<string, IMemberAttribute> members)
+        protected T AlbianObjectCreater<T>(PropertyInfo[] properties, IDataReader dr, Hashtable reader,
+                                           IDictionary<string, IMemberAttribute> members)
             where T : IAlbianObject
         {
             T target = AlbianObjectGenerator.CreateInstance<T>();
@@ -206,8 +215,8 @@ namespace Albian.Persistence.Imp.Query
                 IMemberAttribute member = members[property.Name];
                 if (!member.IsSave)
                 {
-                    if(property.Name == "IsNew")//define by interface)
-                        property.SetValue(target,false, null);//load from databse
+                    if (property.Name == "IsNew") //define by interface)
+                        property.SetValue(target, false, null); //load from databse
                     continue;
                 }
                 object value = dr.GetValue(int.Parse(reader[member.FieldName].ToString()));

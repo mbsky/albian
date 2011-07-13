@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -5,16 +7,20 @@ using System.Reflection;
 using Albian.Persistence.ConnectionPool;
 using log4net;
 
+#endregion
+
 namespace Albian.Persistence.Imp.ConnectionPool.Factory
 {
     /// <summary>
     /// 连接池创建工厂
     /// </summary>
-    public class SqlServerConnectionFactory: IPoolableConnectionFactory<SqlConnection>
+    public class SqlServerConnectionFactory : IPoolableConnectionFactory<SqlConnection>
         //where T : IDbConnection, new()
     {
-
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #region IPoolableConnectionFactory<SqlConnection> Members
+
         /// <summary>
         /// 创建对象
         /// </summary>
@@ -35,7 +41,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
             }
             if (obj is IDisposable)
             {
-                ((IDisposable)obj).Dispose();
+                ((IDisposable) obj).Dispose();
             }
         }
 
@@ -59,7 +65,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
                 if (ConnectionState.Open != obj.State)
                     obj.Open();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 if (null != Logger) Logger.WarnFormat("连接池激活对象时发生异常,异常信息为:{0}", exc.Message);
             }
@@ -72,5 +78,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
         {
             if (ConnectionState.Closed != obj.State) obj.Close();
         }
+
+        #endregion
     }
 }

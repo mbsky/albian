@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections;
+
+#endregion
 
 namespace Albian.Persistence.Imp
 {
@@ -10,7 +14,8 @@ namespace Albian.Persistence.Imp
     {
         private static readonly Hashtable _hashAlbianObjectHandlers = Hashtable.Synchronized(new Hashtable());
 
-        public static void RegisterHandler<T>(string routingName, string typeFullName, HashAlbianObjectHandler<T> splitHandler)
+        public static void RegisterHandler<T>(string routingName, string typeFullName,
+                                              HashAlbianObjectHandler<T> splitHandler)
             where T : IAlbianObject
         {
             if (string.IsNullOrEmpty(routingName))
