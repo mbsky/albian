@@ -39,6 +39,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -51,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Cached\ICached.cs" />
     <Compile Include="Cached\IExpiredCached.cs" />
-    <Compile Include="Cached\Impl\Cached.cs" />
+    <Compile Include="Cached\Impl\ExpiredCached.cs" />
     <Compile Include="Cached\Impl\PreThreadCached.cs" />
     <Compile Include="Cached\Impl\ServiceCached.cs" />
     <Compile Include="Cached\Impl\StandingCached.cs" />
