@@ -1,4 +1,8 @@
-﻿using System.Data;
+﻿#region
+
+using System.Data;
+
+#endregion
 
 namespace Albian.Persistence.Model
 {

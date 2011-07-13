@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using Albian.Kernel;
@@ -8,10 +10,16 @@ using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 using Albian.Persistence.Model.Impl;
 
+#endregion
+
 namespace Albian.Persistence.Imp.Parser.Impl
 {
     public class PersistenceParser : AbstractPersistenceParser
     {
+        public static string DefaultRoutingName
+        {
+            get { return "DefaultRouting"; }
+        }
 
         public override void Loading()
         {
@@ -19,10 +27,6 @@ namespace Albian.Persistence.Imp.Parser.Impl
             base.Loading();
         }
 
-        public static string DefaultRoutingName
-        {
-            get { return "DefaultRouting"; }
-        }
         protected override IList<IObjectAttribute> ParserObjects(XmlNode entitiesNode)
         {
             if (null == entitiesNode)
@@ -94,8 +98,8 @@ namespace Albian.Persistence.Imp.Parser.Impl
         {
             IDictionary<string, IRoutingAttribute> routings = new Dictionary<string, IRoutingAttribute>();
             //set the default value when the routingnodes is not exist
-            
-            IRoutingAttribute defaultRouting = new RoutingAttribute()
+
+            IRoutingAttribute defaultRouting = new RoutingAttribute
                                                    {
                                                        Name = DefaultRoutingName,
                                                        Permission = PermissionMode.WR,
@@ -173,14 +177,14 @@ namespace Albian.Persistence.Imp.Parser.Impl
                 {
                     return null;
                 }
-                return (IDictionary<string, IMemberAttribute>)target;
+                return (IDictionary<string, IMemberAttribute>) target;
             }
 
             foreach (XmlNode node in memberNodes)
             {
                 ParserMember(typeFullName, node);
             }
-            
+
             if (null == target)
             {
                 throw new Exception("Get the members attribute is error.");
@@ -257,25 +261,24 @@ namespace Albian.Persistence.Imp.Parser.Impl
         {
             if (null == node)
             {
-                new CacheAttribute()
-                {
-                    Enable = true,
-                    LifeTime = 300,
-                };
+                new CacheAttribute
+                    {
+                        Enable = true,
+                        LifeTime = 300,
+                    };
             }
             ICacheAttribute cache = new CacheAttribute();
             object oEnable;
             object oLifeTime;
             if (XmlFileParser.TryGetAttributeValue(node, "Enable", out oEnable))
             {
-                cache.Enable = string.IsNullOrEmpty(oEnable.ToString()) ? false :  bool.Parse(oEnable.ToString());
+                cache.Enable = string.IsNullOrEmpty(oEnable.ToString()) ? false : bool.Parse(oEnable.ToString());
             }
             if (XmlFileParser.TryGetAttributeValue(node, "LifeTime", out oLifeTime))
             {
                 cache.LifeTime = string.IsNullOrEmpty(oLifeTime.ToString()) ? 0 : int.Parse(oLifeTime.ToString());
             }
             return cache;
-
         }
     }
 }

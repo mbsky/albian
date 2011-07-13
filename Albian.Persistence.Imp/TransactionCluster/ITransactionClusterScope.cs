@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using Albian.Persistence.Context;
+
+#endregion
 
 namespace Albian.Persistence.Imp.TransactionCluster
 {
-    interface ITransactionClusterScope
+    internal interface ITransactionClusterScope
     {
-        TransactionClusterState State { get;}
+        TransactionClusterState State { get; }
         bool Execute(ITask task);
     }
 }

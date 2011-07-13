@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using Albian.Persistence.Enum;
+
+#endregion
 
 namespace Albian.Persistence.Model
 {

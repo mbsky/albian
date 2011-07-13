@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using Albian.Persistence.Context;
 using Albian.Persistence.Model;
+
+#endregion
 
 namespace Albian.Persistence
 {
@@ -25,13 +29,12 @@ namespace Albian.Persistence
             where T : IAlbianObject;
 
         ITask BuildSaveTask<T>(IList<T> target)
-           where T : IAlbianObject;
+            where T : IAlbianObject;
 
         ITask BuildSaveTask<T>(T target)
             where T : IAlbianObject;
 
         ITask BuildQueryTask<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
             where T : IAlbianObject;
-
     }
 }

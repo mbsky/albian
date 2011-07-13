@@ -1,4 +1,8 @@
-﻿using Albian.Persistence.Model.Impl;
+﻿#region
+
+using Albian.Persistence.Model.Impl;
+
+#endregion
 
 namespace Albian.Persistence
 {
@@ -7,9 +11,10 @@ namespace Albian.Persistence
     /// </summary>
     public interface IAlbianObject
     {
-        [AlbianMember(PrimaryKey=true)]
+        [AlbianMember(PrimaryKey = true)]
         string Id { get; set; }
-        [AlbianMember(IsSave=false)]
+
+        [AlbianMember(IsSave = false)]
         bool IsNew { get; set; }
     }
 }

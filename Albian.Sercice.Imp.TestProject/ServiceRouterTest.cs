@@ -1,5 +1,7 @@
 ﻿using Albian.Kernel.Service;
 using Albian.Kernel.Service.Impl;
+using Albian.Persistence;
+using Albian.Persistence.Imp.TestProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Albian.Kernel;
 using System.Diagnostics;
@@ -144,6 +146,20 @@ namespace Albian.Sercice.Imp.TestProject
         {
             //Debug.Print(IdGenerator.Generator());
             //Debug.Print(IdGenerator.Generator("Test"));
+            TT oo = new TT();
+            oo.GGG<IAlbianObject>();
+        }
+
+        
+    }
+
+
+    public class TT
+    {
+        public void GGG<T>()
+            where T : class,IAlbianObject
+        {
+            return;
         }
     }
 }

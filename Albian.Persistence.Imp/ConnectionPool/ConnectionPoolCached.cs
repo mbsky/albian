@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Albian.Kernel.Cached;
 using Albian.Kernel.Cached.Impl;
+
+#endregion
 
 namespace Albian.Persistence.Imp.ConnectionPool
 {

@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Model;
 using Albian.Persistence.Model.Impl;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Reflection
 {
@@ -21,10 +25,11 @@ namespace Albian.Persistence.Imp.Reflection
             }
             Type type = Type.GetType(typeFullName, true);
             defaultTableName = type.Name;
-            PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            PropertyInfo[] propertyInfos =
+                type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
 
             //the interface
-            Type itf = type.GetInterface("IAlbianObject");//get the signature interface
+            Type itf = type.GetInterface("IAlbianObject"); //get the signature interface
             PropertyInfo idInfo = itf.GetProperty("Id");
             PropertyInfo isNewInfo = itf.GetProperty("IsNew");
 
@@ -36,7 +41,7 @@ namespace Albian.Persistence.Imp.Reflection
             IDictionary<string, IMemberAttribute> memberAttributes = new Dictionary<string, IMemberAttribute>();
             foreach (PropertyInfo propertyInfo in propertyInfos)
             {
-                IMemberAttribute memberAttribute = ReflectProperty(propertyInfo,idInfo,isNewInfo);
+                IMemberAttribute memberAttribute = ReflectProperty(propertyInfo, idInfo, isNewInfo);
                 memberAttributes.Add(memberAttribute.Name, memberAttribute);
             }
             if (0 == memberAttributes.Count)
@@ -44,38 +49,42 @@ namespace Albian.Persistence.Imp.Reflection
                 return null;
             }
 
-            PropertyCache.InsertOrUpdate(typeFullName, propertyInfos);//just only have property 
-            MemberCache.InsertOrUpdate(typeFullName, memberAttributes);//parser object by member attributes
+            PropertyCache.InsertOrUpdate(typeFullName, propertyInfos); //just only have property 
+            MemberCache.InsertOrUpdate(typeFullName, memberAttributes); //parser object by member attributes
             return memberAttributes;
         }
 
-        public IMemberAttribute ReflectProperty(PropertyInfo propertyInfo,PropertyInfo idInfo,PropertyInfo isNewInfo)
+        #endregion
+
+        public IMemberAttribute ReflectProperty(PropertyInfo propertyInfo, PropertyInfo idInfo, PropertyInfo isNewInfo)
         {
-            object[] attrs = propertyInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true);
+            object[] attrs = propertyInfo.GetCustomAttributes(typeof (AlbianMemberAttribute), true);
 
             if (propertyInfo.Name == idInfo.Name)
             {
-                if(null == attrs || 0 == attrs.Length)
-                    attrs = idInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true); ;
+                if (null == attrs || 0 == attrs.Length)
+                    attrs = idInfo.GetCustomAttributes(typeof (AlbianMemberAttribute), true);
+                ;
             }
             if (propertyInfo.Name == isNewInfo.Name)
             {
                 if (null == attrs || 0 == attrs.Length)
-                    attrs = isNewInfo.GetCustomAttributes(typeof(AlbianMemberAttribute), true); ;
+                    attrs = isNewInfo.GetCustomAttributes(typeof (AlbianMemberAttribute), true);
+                ;
             }
 
             IMemberAttribute memberAttribute;
             if (null == attrs || 0 == attrs.Length)
             {
                 memberAttribute = new AlbianMemberAttribute
-                                                  {
-                                                      Name = propertyInfo.Name,
-                                                      PrimaryKey = false,
-                                                      FieldName = propertyInfo.Name,
-                                                      DBType = ConvertToDbType.Convert(propertyInfo.PropertyType),
-                                                      IsSave = true,
-                                                      AllowNull = Utils.IsNullableType(propertyInfo.PropertyType)
-                                                  };
+                                      {
+                                          Name = propertyInfo.Name,
+                                          PrimaryKey = false,
+                                          FieldName = propertyInfo.Name,
+                                          DBType = ConvertToDbType.Convert(propertyInfo.PropertyType),
+                                          IsSave = true,
+                                          AllowNull = Utils.IsNullableType(propertyInfo.PropertyType)
+                                      };
             }
             else
             {
@@ -87,14 +96,17 @@ namespace Albian.Persistence.Imp.Reflection
                     memberAttribute.Name = propertyInfo.Name;
 
                 //it have problem possible
-                memberAttribute.AllowNull = attr.AllowNull ? Utils.IsNullableType(propertyInfo.PropertyType) ? true : false : false ;
-                memberAttribute.DBType = DbType.Object ==  attr.DBType ? ConvertToDbType.Convert(propertyInfo.PropertyType) :attr.DBType;
+                memberAttribute.AllowNull = attr.AllowNull
+                                                ? Utils.IsNullableType(propertyInfo.PropertyType) ? true : false
+                                                : false;
+                memberAttribute.DBType = DbType.Object == attr.DBType
+                                             ? ConvertToDbType.Convert(propertyInfo.PropertyType)
+                                             : attr.DBType;
                 memberAttribute.IsSave = attr.IsSave;
                 memberAttribute.Length = attr.Length;
                 memberAttribute.PrimaryKey = attr.PrimaryKey;
             }
             return memberAttribute;
         }
-        #endregion
     }
 }

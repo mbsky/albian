@@ -1,18 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Data;
 using System.Data.OracleClient;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using Albian.Persistence.ConnectionPool;
 using log4net;
+
+#endregion
 
 namespace Albian.Persistence.Imp.ConnectionPool.Factory
 {
     public class OracleConnectionFactory : IPoolableConnectionFactory<OracleConnection>
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        #region IPoolableConnectionFactory<OracleConnection> Members
+
         /// <summary>
         /// 创建对象
         /// </summary>
@@ -33,7 +37,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
             }
             if (obj is IDisposable)
             {
-                ((IDisposable)obj).Dispose();
+                ((IDisposable) obj).Dispose();
             }
         }
 
@@ -70,5 +74,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
         {
             if (ConnectionState.Closed != obj.State) obj.Close();
         }
+
+        #endregion
     }
 }

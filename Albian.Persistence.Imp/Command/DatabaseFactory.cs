@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.OracleClient;
@@ -8,6 +10,8 @@ using Albian.Persistence.Enum;
 using log4net;
 using MySql.Data.MySqlClient;
 
+#endregion
+
 namespace Albian.Persistence.Imp.Command
 {
     public class DatabaseFactory
@@ -16,9 +20,9 @@ namespace Albian.Persistence.Imp.Command
 
         public static string GetParameterName(DatabaseStyle databaseStyle, string name)
         {
-            if(string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
-                if(null != name)
+                if (null != name)
                     Logger.Warn("The database parameter is empty.");
                 throw new ArgumentNullException("name");
             }
@@ -40,9 +44,9 @@ namespace Albian.Persistence.Imp.Command
         public static DbParameter GetDbParameter(DatabaseStyle databaseStyle, string name, DbType dbType, object value,
                                                  int size)
         {
-            if(string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
-                if(null != name)
+                if (null != name)
                     Logger.Warn("The database parameter is empty.");
                 throw new ArgumentNullException("name");
             }

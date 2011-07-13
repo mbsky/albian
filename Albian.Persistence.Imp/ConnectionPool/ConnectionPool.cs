@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +8,8 @@ using System.Threading;
 using Albian.Persistence.ConnectionPool;
 using log4net;
 
+#endregion
+
 namespace Albian.Persistence.Imp.ConnectionPool
 {
     /// <summary>
@@ -13,16 +17,17 @@ namespace Albian.Persistence.Imp.ConnectionPool
     /// </summary>
     public class ConnectionPool<T> : IConnectionPool where T : IDbConnection, new()
     {
-        private readonly IPoolableConnectionFactory<T> _factory;
-        private IList<IDbConnection> _busy = new List<IDbConnection>();
-        private bool _closed;
-        private IList<IDbConnection> _free = new List<IDbConnection>();
-        private static object locker = new object();
+        private static readonly object locker = new object();
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private int _minSize = 15;
-        private int _maxSize = 30;
-        private int _currentSize = 0;
-        public ConnectionPool(IPoolableConnectionFactory<T> factory, int minSize,int maxSize)
+        private readonly IList<IDbConnection> _busy = new List<IDbConnection>();
+        private readonly IPoolableConnectionFactory<T> _factory;
+        private readonly int _maxSize = 30;
+        private readonly int _minSize = 15;
+        private bool _closed;
+        private int _currentSize;
+        private IList<IDbConnection> _free = new List<IDbConnection>();
+
+        public ConnectionPool(IPoolableConnectionFactory<T> factory, int minSize, int maxSize)
         {
             if (null == factory)
             {
@@ -37,7 +42,7 @@ namespace Albian.Persistence.Imp.ConnectionPool
             _currentSize = minSize;
 
             if (null != Logger)
-                Logger.InfoFormat("对象池已经创建，对象池初始长度为：{0}，最大长度为{1}", _minSize,_maxSize);
+                Logger.InfoFormat("对象池已经创建，对象池初始长度为：{0}，最大长度为{1}", _minSize, _maxSize);
         }
 
         #region IConnectionPool Members
@@ -58,7 +63,7 @@ namespace Albian.Persistence.Imp.ConnectionPool
         /// </summary>
         public void ReturnObject(IDbConnection target)
         {
-            DoReturnObject((T)target);
+            DoReturnObject((T) target);
         }
 
         /// <summary>
@@ -83,6 +88,15 @@ namespace Albian.Persistence.Imp.ConnectionPool
         public int NumIdle
         {
             get { return _free.Count; }
+        }
+
+        /// <summary>
+        /// 强行创建一个对象
+        /// </summary>
+        /// <returns></returns>
+        public IDbConnection RescueObject(string connectionString)
+        {
+            return DoRescueObject(connectionString);
         }
 
         #endregion
@@ -112,7 +126,7 @@ namespace Albian.Persistence.Imp.ConnectionPool
                         Logger.Warn("从对象池中获取对象时发生异常：对象池已经关闭，无法取得对象，对象池自行创建一个短连接对象。");
                     return RescueObject(connectionString);
                 }
-                if (!Monitor.TryEnter(locker,1000))//默认等1秒
+                if (!Monitor.TryEnter(locker, 1000)) //默认等1秒
                 {
                     if (null != Logger)
                         Logger.Warn("对象池锁阻塞，无法取得对象，对象池自行创建一个短连接对象。");
@@ -134,13 +148,13 @@ namespace Albian.Persistence.Imp.ConnectionPool
                     int i = _free.Count - 1;
                     IDbConnection o = _free[i];
                     _free.RemoveAt(i);
-                    _factory.ActivateObject((T)o, connectionString);
-                    if (!_factory.ValidateObject((T)o)) continue;
+                    _factory.ActivateObject((T) o, connectionString);
+                    if (!_factory.ValidateObject((T) o)) continue;
 
                     _busy.Add(o);
                     if (null != Logger)
                         Logger.InfoFormat("连接池状态：现在空闲对象长度为:{0},忙碌对象长度为{1}.", NumIdle, NumActive);
-                    return (T)o;
+                    return (T) o;
                 }
 
                 if (null != Logger)
@@ -205,15 +219,6 @@ namespace Albian.Persistence.Imp.ConnectionPool
         {
             _free = new List<IDbConnection>();
             _closed = true;
-        }
-
-        /// <summary>
-        /// 强行创建一个对象
-        /// </summary>
-        /// <returns></returns>
-        public IDbConnection RescueObject(string connectionString)
-        {
-            return DoRescueObject(connectionString);
         }
 
         protected T DoRescueObject(string connectionString)

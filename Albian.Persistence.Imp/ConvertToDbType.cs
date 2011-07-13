@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data;
+
+#endregion
 
 namespace Albian.Persistence.Imp
 {

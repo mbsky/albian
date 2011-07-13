@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
@@ -7,6 +9,8 @@ using Albian.Kernel.Service.Impl;
 using Albian.Persistence.Imp.ConnectionPool;
 using Albian.Persistence.Model;
 using log4net;
+
+#endregion
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {
@@ -31,7 +35,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
                     throw new Exception("Analyze the Storages node is error in the Storage.config");
                 }
 
-                IDictionary<string,IStorageAttribute> dic = ParserStorages(nodes[0]);
+                IDictionary<string, IStorageAttribute> dic = ParserStorages(nodes[0]);
                 if (null == dic)
                 {
                     if (null != Logger)
@@ -40,8 +44,9 @@ namespace Albian.Persistence.Imp.Parser.Impl
                 }
                 foreach (KeyValuePair<string, IStorageAttribute> kv in dic)
                 {
-                    if(kv.Value.Pooling)
-                        DbConnectionPoolManager.CreatePool(kv.Value.Name, kv.Value.DatabaseStyle, kv.Value.MinPoolSize, kv.Value.MaxPoolSize);
+                    if (kv.Value.Pooling)
+                        DbConnectionPoolManager.CreatePool(kv.Value.Name, kv.Value.DatabaseStyle, kv.Value.MinPoolSize,
+                                                           kv.Value.MaxPoolSize);
                 }
             }
             catch (Exception exc)

@@ -1,16 +1,20 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Text;
 using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
-using System.Data;
-using System.Text;
+
+#endregion
 
 namespace Albian.Persistence.Imp
 {
     public class Utils
     {
-        public static IList<T> Concat<T>(IList<T> target,IList<T> source)
+        public static IList<T> Concat<T>(IList<T> target, IList<T> source)
         {
             foreach (T o in source)
             {
@@ -22,7 +26,8 @@ namespace Albian.Persistence.Imp
         public static string GetTableFullName<T>(IRoutingAttribute routing, T target) where T : IAlbianObject
         {
             HashAlbianObjectHandler<T> handler = HashAlbianObjectManager.GetHandler<T>(routing.Name,
-                                                                                       AssemblyManager.GetFullTypeName(typeof (T)));
+                                                                                       AssemblyManager.GetFullTypeName(
+                                                                                           typeof (T)));
             string tableName = null == handler
                                    ? routing.TableName
                                    : String.Format("{0}{1}", routing.TableName, handler(target));
@@ -54,7 +59,6 @@ namespace Albian.Persistence.Imp
                     {
                         return "AND";
                     }
-
             }
         }
 
@@ -97,19 +101,21 @@ namespace Albian.Persistence.Imp
             }
         }
 
-        public static string GetCacheKey<T>(string routingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
-             where T : IAlbianObject
+        public static string GetCacheKey<T>(string routingName, int top, IFilterCondition[] where,
+                                            IOrderByCondition[] orderby)
+            where T : IAlbianObject
         {
             StringBuilder sbKey = new StringBuilder();
-            sbKey.Append(AssemblyManager.GetFullTypeName(typeof(T)));
+            sbKey.Append(AssemblyManager.GetFullTypeName(typeof (T)));
             sbKey.Append(routingName);
-            if(0 != top)
+            if (0 != top)
                 sbKey.Append(top);
             if (null != where)
             {
                 foreach (IFilterCondition filter in where)
                 {
-                    sbKey.AppendFormat("{0}{1}{2}{3}", filter.Relational, filter.PropertyName.ToLower(), filter.Logical, DBNull.Value == filter.Value ? "NULL" : filter.Value);
+                    sbKey.AppendFormat("{0}{1}{2}{3}", filter.Relational, filter.PropertyName.ToLower(), filter.Logical,
+                                       DBNull.Value == filter.Value ? "NULL" : filter.Value);
                 }
             }
             if (null != orderby)
@@ -123,7 +129,7 @@ namespace Albian.Persistence.Imp
         }
 
         public static string GetCacheKey<T>(IDbCommand cmd)
-             where T : IAlbianObject
+            where T : IAlbianObject
         {
             StringBuilder sbKey = new StringBuilder();
             if (null != cmd.Connection)
@@ -136,7 +142,7 @@ namespace Albian.Persistence.Imp
             }
             if (null != cmd.Parameters)
             {
-                foreach(IDataParameter para in cmd.Parameters)
+                foreach (IDataParameter para in cmd.Parameters)
                 {
                     sbKey.Append(para.ParameterName).Append(DBNull.Value == para.Value ? "NULL" : para.Value);
                 }
@@ -149,7 +155,7 @@ namespace Albian.Persistence.Imp
             where T : IAlbianObject
         {
             StringBuilder sbKey = new StringBuilder();
-            sbKey.AppendFormat("{0}${1}", AssemblyManager.GetFullTypeName(typeof(T)), idValue);
+            sbKey.AppendFormat("{0}${1}", AssemblyManager.GetFullTypeName(typeof (T)), idValue);
             return sbKey.ToString();
         }
     }
