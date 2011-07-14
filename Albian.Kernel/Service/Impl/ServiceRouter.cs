@@ -57,9 +57,9 @@ namespace Albian.Kernel.Service.Impl
             IAlbianServiceAttrbuite serviceInfo = serviceInfos[id];
             Type impl = Type.GetType(serviceInfo.Implement);
             IAlbianService service = (IAlbianService)Activator.CreateInstance(impl);
-            service.State = ServiceState.Loading;
+            service.BeforeLoading();
             service.Loading();
-            service.State = ServiceState.Running;
+            service.AfterLoading();
             return (T) service;
 
         }
