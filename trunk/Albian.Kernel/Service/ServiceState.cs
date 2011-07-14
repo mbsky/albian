@@ -26,6 +26,6 @@ namespace Albian.Kernel.Service
         /// <summary>
         /// 卸载完毕
         /// </summary>
-        Unload,
+        Unloaded,
     }
 }

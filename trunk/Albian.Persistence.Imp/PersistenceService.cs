@@ -33,7 +33,9 @@ namespace Albian.Persistence.Imp
             TaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildCreateTask(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            return tran.Execute(task);
+            bool isSuccess = tran.Execute(task);
+            ResultCache.CachingObject(albianObject);
+            return isSuccess;
         }
 
         public static bool Create<T>(IList<T> albianObjects)
@@ -50,7 +52,9 @@ namespace Albian.Persistence.Imp
             TaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildCreateTask(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            return tran.Execute(task);
+            bool isSuccess = tran.Execute(task);
+            ResultCache.CachingObjects(albianObjects);
+            return isSuccess;
         }
 
         public static bool Modify<T>(T albianObject)
@@ -64,7 +68,9 @@ namespace Albian.Persistence.Imp
             TaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildModifyTask(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            return tran.Execute(task);
+            bool isSuccess = tran.Execute(task);
+            ResultCache.CachingObject(albianObject);
+            return isSuccess;
         }
 
         public static bool Modify<T>(IList<T> albianObjects)
@@ -81,7 +87,9 @@ namespace Albian.Persistence.Imp
             TaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildModifyTask(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            return tran.Execute(task);
+            bool isSuccess = tran.Execute(task);
+            ResultCache.CachingObjects(albianObjects);
+            return isSuccess;
         }
 
         public static bool Remove<T>(T albianObject)
@@ -125,7 +133,9 @@ namespace Albian.Persistence.Imp
             TaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildSaveTask(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            return tran.Execute(task);
+            bool isSuccess = tran.Execute(task);
+            ResultCache.CachingObject(albianObject);
+            return isSuccess;
         }
 
         public static bool Save<T>(IList<T> albianObjects)
@@ -142,7 +152,9 @@ namespace Albian.Persistence.Imp
             ITaskBuilder builder = new TaskBuilder();
             ITask task = builder.BuildSaveTask(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
-            return tran.Execute(task);
+            bool isSuccess = tran.Execute(task);
+            ResultCache.CachingObjects(albianObjects);
+            return isSuccess;
         }
 
         public static T FindObject<T>(string routingName, IFilterCondition[] where)

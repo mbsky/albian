@@ -65,6 +65,25 @@ namespace Albian.Persistence.Imp.Cache
             cachedService.InsertOrUpdate(cachedKey, target, cache.LifeTime);
         }
 
+        public static void CachingObject<T>(T target)
+            where T: class,IAlbianObject
+        {
+            ICacheAttribute cacheAttr = GetCacheAttribute<T>(target);
+            if (null == cacheAttr || !cacheAttr.Enable) return;
+            string cachedKey = Utils.GetCacheKey<T>(target.Id);
+            IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>("ExpiredCachedService");
+            cachedService.InsertOrUpdate(cachedKey, target, cacheAttr.LifeTime);
+        }
+
+        public static void CachingObjects<T>(IList<T> targets)
+            where T : class, IAlbianObject
+        {
+            foreach (T target in targets)
+            {
+                CachingObject(target);
+            }
+        }
+
 
         public static T GetCachingObject<T>(string routingName, IFilterCondition[] where)
             where T : class, IAlbianObject
@@ -123,6 +142,8 @@ namespace Albian.Persistence.Imp.Cache
             if (null == oTarget) return null;
             return (IList<T>) oTarget;
         }
+
+       
 
         private static ICacheAttribute GetCacheAttribute<T>(T target)
             where T : IAlbianObject

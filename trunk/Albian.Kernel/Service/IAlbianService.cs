@@ -8,7 +8,12 @@ namespace Albian.Kernel.Service
     public interface IAlbianService
     {
         ServiceState State { get; set; }
+        void BeforeLoading();
         void Loading();
+        void AfterLoading();
+
+        void BeforeUnloading();
         void Unloading();
+        void AfterUnloading();
     }
 }
