@@ -2,7 +2,7 @@
 
 namespace Albian.Security.Impl
 {
-    public abstract class AbstractEncrypt :AbstractAlbianService, IEncrypt
+    public abstract class FreeEncrypt :FreeAlbianService, IEncrypt
     {
         #region IEncrypt Members
 

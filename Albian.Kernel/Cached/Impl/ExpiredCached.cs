@@ -5,7 +5,7 @@ using System.Web.Caching;
 
 namespace Albian.Kernel.Cached.Impl
 {
-    public class ExpiredCached :AbstractAlbianService, IExpiredCached
+    public class ExpiredCached :FreeAlbianService, IExpiredCached
     {
         #region IExpiredCached 成员
 

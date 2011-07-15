@@ -54,7 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractAlbianObject.cs" />
     <Compile Include="AlbianObjectGenerator.cs" />
     <Compile Include="Cache\MemberCache.cs" />
     <Compile Include="Cache\ObjectCache.cs" />
@@ -85,8 +84,8 @@
     <Compile Include="TransactionCluster\ITransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterScope.cs" />
     <Compile Include="TransactionCluster\TransactionClusterState.cs" />
-    <Compile Include="Parser\Impl\AbstractPersistenceParser.cs" />
-    <Compile Include="Parser\Impl\AbstractStorageParser.cs" />
+    <Compile Include="Parser\Impl\FreePersistenceParser.cs" />
+    <Compile Include="Parser\Impl\FreeStorageParser.cs" />
     <Compile Include="Parser\Impl\PersistenceParser.cs" />
     <Compile Include="Parser\Impl\StorageParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

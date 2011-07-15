@@ -14,7 +14,7 @@ using log4net;
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {
-    public abstract class AbstractStorageParser : AbstractAlbianService, IStorageParser
+    public abstract class FreeStorageParser : FreeAlbianService, IStorageParser
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

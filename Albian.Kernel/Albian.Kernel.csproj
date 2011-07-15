@@ -56,8 +56,9 @@
     <Compile Include="Cached\Impl\PreThreadCached.cs" />
     <Compile Include="Cached\Impl\ServiceCached.cs" />
     <Compile Include="Cached\Impl\StandingCached.cs" />
-    <Compile Include="Service\Impl\AbstractAlbianService.cs" />
-    <Compile Include="Service\Parser\AbstractServiceConfigParser.cs" />
+    <Compile Include="log4netPlugin\Log4netService.cs" />
+    <Compile Include="Service\Impl\FreeAlbianService.cs" />
+    <Compile Include="Service\Parser\FreeServiceConfigParser.cs" />
     <Compile Include="AlbianKernelAttribute.cs" />
     <Compile Include="AlbianKernelException.cs" />
     <Compile Include="Service\Impl\AlbianServiceAttrbuite.cs" />
@@ -69,7 +70,7 @@
     <Compile Include="IdService.cs" />
     <Compile Include="IIdService.cs" />
     <Compile Include="IXmlParser.cs" />
-    <Compile Include="Parser\Impl\AbstractKernelParser.cs" />
+    <Compile Include="Parser\Impl\FreeKernelParser.cs" />
     <Compile Include="Parser\IKernelParser.cs" />
     <Compile Include="Parser\Impl\KernelParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

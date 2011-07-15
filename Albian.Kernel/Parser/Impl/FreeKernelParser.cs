@@ -9,7 +9,7 @@ using log4net;
 
 namespace Albian.Kernel.Parser.Impl
 {
-    public abstract class AbstractKernelParser : AbstractAlbianService, IKernelParser
+    public abstract class FreeKernelParser : FreeAlbianService, IKernelParser
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

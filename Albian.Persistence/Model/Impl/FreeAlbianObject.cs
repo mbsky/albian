@@ -1,14 +1,13 @@
 ﻿#region
 
 using System;
-using Albian.Persistence.Model.Impl;
 
 #endregion
 
-namespace Albian.Persistence.Imp
+namespace Albian.Persistence.Model.Impl
 {
     [Serializable]
-    public abstract class AbstractAlbianObject : IAlbianObject
+    public abstract class FreeAlbianObject : IAlbianObject
     {
         #region Implementation of IAlbianObject
 

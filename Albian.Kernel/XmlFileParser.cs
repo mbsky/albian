@@ -30,7 +30,7 @@ namespace Albian.Kernel
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        private static string GetFullPath(string path)
+        public static string GetFullPath(string path)
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             if (basePath.ToLower().IndexOf("\\bin") > 0)

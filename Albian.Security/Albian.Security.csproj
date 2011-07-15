@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Impl\AbstractEncrypt.cs" />
+    <Compile Include="Impl\FreeEncrypt.cs" />
     <Compile Include="Impl\Encrypt.cs" />
     <Compile Include="IEncrypt.cs" />
     <Compile Include="MD5Mode.cs" />

@@ -49,7 +49,7 @@ namespace Albian.Kernel.Service.Impl
             if (!isNew)
                 return GetService<T>(id);
 
-            IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(AbstractServiceConfigParser.ServiceKey);
+            IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(FreeServiceConfigParser.ServiceKey);
             if (serviceInfos.ContainsKey(id))
             {
                 throw new ServiceException(string.Format("There is not {0} serice info.", id));

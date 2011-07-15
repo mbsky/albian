@@ -45,7 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="BizofferState.cs" />
+    <Compile Include="IBizoffer.cs" />
+    <Compile Include="ILogInfo.cs" />
+    <Compile Include="InfoStyle.cs" />
+    <Compile Include="IOrder.cs" />
+    <Compile Include="IUser.cs" />
+    <Compile Include="OrderState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

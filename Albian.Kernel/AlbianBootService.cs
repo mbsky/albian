@@ -18,8 +18,8 @@ namespace Albian.Kernel
         public static void Start()
         {
             IXmlParser parser = new ServiceConfigParser();
-            parser.Init("Service.config");
-            IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>) ServiceInfoCached.Get(AbstractServiceConfigParser.ServiceKey);
+            parser.Init("config/Service.config");
+            IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>) ServiceInfoCached.Get(FreeServiceConfigParser.ServiceKey);
             bool isSuccess = true;
             IDictionary<string, IAlbianServiceAttrbuite> failServicesInfos = new Dictionary<string, IAlbianServiceAttrbuite>();
             int failCountBeforeTimes = 0;
