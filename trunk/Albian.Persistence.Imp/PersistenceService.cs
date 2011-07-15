@@ -34,6 +34,7 @@ namespace Albian.Persistence.Imp
             ITask task = builder.BuildCreateTask(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             bool isSuccess = tran.Execute(task);
+            if (!isSuccess) return isSuccess;
             ResultCache.CachingObject(albianObject);
             return isSuccess;
         }
@@ -53,6 +54,7 @@ namespace Albian.Persistence.Imp
             ITask task = builder.BuildCreateTask(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             bool isSuccess = tran.Execute(task);
+            if (!isSuccess) return isSuccess;
             ResultCache.CachingObjects(albianObjects);
             return isSuccess;
         }
@@ -69,6 +71,7 @@ namespace Albian.Persistence.Imp
             ITask task = builder.BuildModifyTask(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             bool isSuccess = tran.Execute(task);
+            if (!isSuccess) return isSuccess;
             ResultCache.CachingObject(albianObject);
             return isSuccess;
         }
@@ -88,6 +91,7 @@ namespace Albian.Persistence.Imp
             ITask task = builder.BuildModifyTask(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             bool isSuccess = tran.Execute(task);
+            if (!isSuccess) return isSuccess;
             ResultCache.CachingObjects(albianObjects);
             return isSuccess;
         }
@@ -134,6 +138,7 @@ namespace Albian.Persistence.Imp
             ITask task = builder.BuildSaveTask(albianObject);
             ITransactionClusterScope tran = new TransactionClusterScope();
             bool isSuccess = tran.Execute(task);
+            if (!isSuccess) return isSuccess;
             ResultCache.CachingObject(albianObject);
             return isSuccess;
         }
@@ -153,6 +158,7 @@ namespace Albian.Persistence.Imp
             ITask task = builder.BuildSaveTask(albianObjects);
             ITransactionClusterScope tran = new TransactionClusterScope();
             bool isSuccess = tran.Execute(task);
+            if (!isSuccess) return isSuccess;
             ResultCache.CachingObjects(albianObjects);
             return isSuccess;
         }
