@@ -10,9 +10,9 @@ using log4net;
 
 namespace Albian.Kernel.Service.Parser
 {
-    public abstract class AbstractServiceConfigParser : AbstractAlbianService, IXmlParser
+    public abstract class FreeServiceConfigParser : FreeAlbianService, IXmlParser
     {
-        public const string ServiceKey = "ALBIAN_ALL_SERVICE";
+        public const string ServiceKey = "@$#&ALBIAN_ALL_SERVICE&#$@";
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public void Init(string path)

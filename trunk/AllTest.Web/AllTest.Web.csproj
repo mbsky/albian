@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Reference\dll\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -64,9 +68,28 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Albian.Kernel\Albian.Kernel.csproj">
+      <Project>{5EF37887-AADF-4753-A1F2-BAA45135DAF4}</Project>
+      <Name>Albian.Kernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence.Imp\Albian.Persistence.Imp.csproj">
+      <Project>{376313F1-1886-4690-8E93-9B4ACE705868}</Project>
+      <Name>Albian.Persistence.Imp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
+      <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
+      <Name>Albian.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Security\Albian.Security.csproj">
+      <Project>{9A36CCF2-2173-40EB-95A0-715F75E8EA81}</Project>
+      <Name>Albian.Security</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppTest.Business.Imp\AppTest.Business.Imp.csproj">
       <Project>{13B98AAC-E005-4918-95CD-EDDB12A07E48}</Project>
       <Name>AppTest.Business.Imp</Name>
@@ -91,6 +114,10 @@
   <ItemGroup>
     <Content Include="config\Persistence.config" />
     <Content Include="config\Storage.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config\log4net.config" />
+    <Content Include="Global.asax" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

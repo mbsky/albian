@@ -9,7 +9,7 @@ using log4net;
 
 namespace Albian.Kernel.Service.Parser
 {
-    public class ServiceConfigParser : AbstractServiceConfigParser
+    public class ServiceConfigParser : FreeServiceConfigParser
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

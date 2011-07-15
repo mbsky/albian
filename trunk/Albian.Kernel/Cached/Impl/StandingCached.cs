@@ -8,7 +8,7 @@ namespace Albian.Kernel.Cached.Impl
     /// 不过期缓存
     /// </summary>
     /// <remarks>注意：缓存项永不过期，需要手动更新</remarks>
-    public class StandingCached :AbstractAlbianService, ICached
+    public class StandingCached :FreeAlbianService, ICached
     {
         private readonly Hashtable cache = Hashtable.Synchronized(new Hashtable());
 

@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace Albian.Kernel.Parser.Impl
 {
-    public class KernelParser : AbstractKernelParser
+    public class KernelParser : FreeKernelParser
     {
         protected override void ParserAppId(XmlNode node)
         {
@@ -20,7 +20,7 @@ namespace Albian.Kernel.Parser.Impl
 
         public override void Loading()
         {
-            Init("Kernel.config");
+            Init(@"config/Kernel.config");
             base.Loading();
         }
     }

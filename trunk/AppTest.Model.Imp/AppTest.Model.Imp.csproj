@@ -45,13 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Bizoffer.cs" />
+    <Compile Include="LogInfo.cs" />
+    <Compile Include="Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
       <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
       <Name>Albian.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppTest.Model\AppTest.Model.csproj">
+      <Project>{B437200C-0A46-4F56-AF16-C726074C19CB}</Project>
+      <Name>AppTest.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

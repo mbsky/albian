@@ -14,7 +14,7 @@ using Albian.Persistence.Model.Impl;
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {
-    public class PersistenceParser : AbstractPersistenceParser
+    public class PersistenceParser : FreePersistenceParser
     {
         public static string DefaultRoutingName
         {
@@ -23,7 +23,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
 
         public override void Loading()
         {
-            Init("Persistence.config");
+            Init(@"config/Persistence.config");
             base.Loading();
         }
 

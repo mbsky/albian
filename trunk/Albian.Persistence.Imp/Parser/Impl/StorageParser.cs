@@ -13,7 +13,7 @@ using Albian.Persistence.Model.Impl;
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {
-    public class StorageParser : AbstractStorageParser
+    public class StorageParser : FreeStorageParser
     {
         public static string DefaultStorageName
         {
@@ -22,7 +22,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
 
         public override void Loading()
         {
-            Init("Storage.config");
+            Init(@"config/Storage.config");
             base.Loading();
         }
 

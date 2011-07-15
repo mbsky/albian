@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Albian.Security.Impl
 {
-    public class Encrypt : AbstractEncrypt
+    public class Encrypt : FreeEncrypt
     {
         private readonly string _iv;
         private readonly string _key;

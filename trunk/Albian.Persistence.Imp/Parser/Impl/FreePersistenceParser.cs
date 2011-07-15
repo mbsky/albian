@@ -11,7 +11,7 @@ using Albian.Persistence.Model;
 
 namespace Albian.Persistence.Imp.Parser.Impl
 {
-    public abstract class AbstractPersistenceParser : AbstractAlbianService, IPersistenceParser
+    public abstract class FreePersistenceParser : FreeAlbianService, IPersistenceParser
     {
         #region IPersistenceParser Members
 

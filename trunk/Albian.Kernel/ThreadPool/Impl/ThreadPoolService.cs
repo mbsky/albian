@@ -6,7 +6,7 @@ using Albian.Kernel.Service.Impl;
 
 namespace Albian.Kernel.ThreadPool.Impl
 {
-    public class ThreadPoolService : AbstractAlbianService,IThreadPoolService
+    public class ThreadPoolService : FreeAlbianService,IThreadPoolService
     {
         private static Impl.ThreadPool pools;
 

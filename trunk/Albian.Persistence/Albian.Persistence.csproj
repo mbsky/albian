@@ -58,6 +58,7 @@
     <Compile Include="IStorageContextBuilder.cs" />
     <Compile Include="ITaskBuilder.cs" />
     <Compile Include="Model\ICacheAttribute.cs" />
+    <Compile Include="Model\Impl\FreeAlbianObject.cs" />
     <Compile Include="Model\Impl\AlbianMemberAttribute.cs" />
     <Compile Include="Model\Impl\AlbianObjectAttribute.cs" />
     <Compile Include="Model\Impl\CacheAttribute.cs" />

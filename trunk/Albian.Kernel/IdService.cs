@@ -8,7 +8,7 @@ using Albian.Kernel.Service.Impl;
 namespace Albian.Kernel
 {
     [AlbianKernel]
-    public class IdService : AbstractAlbianService,IIdService
+    public class IdService : FreeAlbianService,IIdService
     {
         private static int _idx = 0;
 
