@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace Albian.Persistence.Imp.Reflection
+namespace Albian.Kernel.Service
 {
     public class AssemblyManager
     {
@@ -31,6 +31,10 @@ namespace Albian.Persistence.Imp.Reflection
         public static string GetFullTypeName<T>(T target)
         {
             return GetFullTypeName(target.GetType());
+        }
+        public static string GetFullTypeName<T>()
+        {
+            return GetFullTypeName(typeof(T));
         }
     }
 }

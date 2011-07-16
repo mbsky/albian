@@ -3,10 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Albian.Kernel.Service;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Context;
-using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 using log4net;
 

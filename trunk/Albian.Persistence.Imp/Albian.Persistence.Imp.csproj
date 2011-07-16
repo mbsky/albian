@@ -89,7 +89,6 @@
     <Compile Include="Parser\Impl\PersistenceParser.cs" />
     <Compile Include="Parser\Impl\StorageParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reflection\AssemblyManager.cs" />
     <Compile Include="Reflection\ReflectMember.cs" />
     <Compile Include="HashAlbianObjectManager.cs" />
     <Compile Include="PersistenceService.cs" />

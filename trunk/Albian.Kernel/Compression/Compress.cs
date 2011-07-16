@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace Albian.Kernel.Compression
@@ -60,6 +61,74 @@ namespace Albian.Kernel.Compression
                 }
 
                 return Encoding.UTF8.GetString(buffer);
+            }
+        }
+
+        public static MemoryStream GZipCompress(Stream inputStream)
+        {
+            MemoryStream stream = new MemoryStream();
+            using (GZipStream stream2 = new GZipStream(stream, CompressionMode.Compress, true))
+            {
+                int BufferSize = 0x1000;
+                int num;
+                byte[] buffer = new byte[BufferSize];
+                while ((num = inputStream.Read(buffer, 0, BufferSize)) > 0)
+                {
+                    stream2.Write(buffer, 0, num);
+                }
+            }
+            stream.Seek(0L, SeekOrigin.Begin);
+            return stream;
+        }
+
+        public static MemoryStream GZipDecompress(Stream inputStream)
+        {
+            MemoryStream stream = new MemoryStream();
+            using (GZipStream stream2 = new GZipStream(inputStream, CompressionMode.Decompress, true))
+            {
+                int num;
+                int BufferSize = 0x1000;
+                byte[] buffer = new byte[BufferSize];
+                while ((num = stream2.Read(buffer, 0, BufferSize)) > 0)
+                {
+                    stream.Write(buffer, 0, num);
+                }
+            }
+            stream.Seek(0L, SeekOrigin.Begin);
+            return stream;
+        }
+
+        public static byte[] GetData(object obj)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+            using (MemoryStream stream = new MemoryStream())
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                binaryFormatter.Serialize(stream, obj);
+                stream.Position = 0L;
+                MemoryStream stream2 = GZipCompress(stream);
+                byte[] buffer = stream2.ToArray();
+                stream2.Close();
+                return buffer;
+            }
+        }
+
+        public static object GetObject(byte[] data)
+        {
+            if ((data == null) || (data.Length == 0))
+            {
+                return null;
+            }
+            using (MemoryStream stream = new MemoryStream(data))
+            {
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                MemoryStream serializationStream = GZipDecompress(stream);
+                object obj2 = binaryFormatter.Deserialize(serializationStream);
+                serializationStream.Close();
+                return obj2;
             }
         }
     }

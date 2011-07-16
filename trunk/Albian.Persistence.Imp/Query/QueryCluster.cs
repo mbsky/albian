@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
+using Albian.Kernel.Service;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.ConnectionPool;
 using Albian.Persistence.Imp.Parser.Impl;
-using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 using log4net;
 
@@ -26,7 +26,7 @@ namespace Albian.Persistence.Imp.Query
         #region IQueryCluster Members
 
         public T QueryObject<T>(ITask task)
-            where T : IAlbianObject
+            where T : class, IAlbianObject, new()
         {
             IList<T> targets = QueryObjects<T>(task);
             if (null == targets || 1 != targets.Count)
@@ -37,7 +37,7 @@ namespace Albian.Persistence.Imp.Query
         }
 
         public IList<T> QueryObjects<T>(ITask task)
-            where T : IAlbianObject
+            where T : class, IAlbianObject, new()
         {
             Hashtable reader;
             IDictionary<string, IMemberAttribute> members;
@@ -61,7 +61,7 @@ namespace Albian.Persistence.Imp.Query
         }
 
         public T QueryObject<T>(IDbCommand cmd)
-            where T : IAlbianObject
+            where T : class, IAlbianObject, new()
         {
             IList<T> targets = QueryObjects<T>(cmd);
             if (null == targets || 1 != targets.Count)
@@ -72,7 +72,7 @@ namespace Albian.Persistence.Imp.Query
         }
 
         public IList<T> QueryObjects<T>(IDbCommand cmd)
-            where T : IAlbianObject
+            where T : class, IAlbianObject, new()
         {
             Hashtable reader;
             IDictionary<string, IMemberAttribute> members;
@@ -207,7 +207,7 @@ namespace Albian.Persistence.Imp.Query
 
         protected T AlbianObjectCreater<T>(PropertyInfo[] properties, IDataReader dr, Hashtable reader,
                                            IDictionary<string, IMemberAttribute> members)
-            where T : IAlbianObject
+            where T :class, IAlbianObject,new()
         {
             T target = AlbianObjectGenerator.CreateInstance<T>();
             foreach (PropertyInfo property in properties)

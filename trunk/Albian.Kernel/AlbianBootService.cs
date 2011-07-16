@@ -35,7 +35,7 @@ namespace Albian.Kernel
                             Logger.ErrorFormat("Refer to each other when service loading!");
                             foreach (KeyValuePair<string, IAlbianServiceAttrbuite> kv in failServicesInfos)
                             {
-                                Logger.ErrorFormat("Refer to each other!Id:{0},impl:{1}", kv.Value.Id, kv.Value.Implement);
+                                Logger.ErrorFormat("Refer to each other!interface:{0},impl:{1}", kv.Value.Interface, kv.Value.Implement);
                             }
                             Logger.Error("Please examine the service id above the line!");
                         }

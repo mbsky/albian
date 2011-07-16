@@ -15,17 +15,14 @@ namespace Albian.Kernel.Service.Impl
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         
-        public static T GetService<T>(string id)
-            where T: IAlbianService
+        public static T GetService<T>()
+            where T:class, IAlbianService
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException("id");
-            }
-            object service = ServiceCached.Get(id);
+            string typeFullName = AssemblyManager.GetFullTypeName(typeof(T));
+            object service = ServiceCached.Get(typeFullName);
             if (null == service)
             {
-                throw new ServiceException(string.Format("The {0} service is null.",id));
+                throw new ServiceException(string.Format("The {0} service is null.", typeFullName));
             }
             return (T)service;
 
@@ -36,32 +33,44 @@ namespace Albian.Kernel.Service.Impl
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id">The id.</param>
-        /// <param name="isNew">if set to <c>true</c> [is new].</param>
-        /// <remarks>注意，该方法有未处理异常</remarks>
+        /// <param name="reload">if set to <c>true</c> [reload].</param>
         /// <returns></returns>
-        public static T GetService<T>(string id,bool isNew)
-            where T : IAlbianService
+        /// <remarks>
+        /// 注意，该方法有未处理异常
+        /// </remarks>
+        public static T GetService<T>(bool reload)
+            where T :class, IAlbianService
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                throw new ArgumentNullException("id");
-            }
-            if (!isNew)
-                return GetService<T>(id);
+            string typeFullName = AssemblyManager.GetFullTypeName(typeof(T));
+            if (!reload)
+                return GetService<T>();
 
             IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(FreeServiceConfigParser.ServiceKey);
-            if (serviceInfos.ContainsKey(id))
+            if (serviceInfos.ContainsKey(typeFullName))
             {
-                throw new ServiceException(string.Format("There is not {0} serice info.", id));
+                throw new ServiceException(string.Format("There is not {0} serice info.", typeFullName));
             }
-            IAlbianServiceAttrbuite serviceInfo = serviceInfos[id];
+            IAlbianServiceAttrbuite serviceInfo = serviceInfos[typeFullName];
             Type impl = Type.GetType(serviceInfo.Implement);
-            IAlbianService service = (IAlbianService)Activator.CreateInstance(impl);
+            IAlbianService service = (IAlbianService) Activator.CreateInstance(impl);
             service.BeforeLoading();
             service.Loading();
             service.AfterLoading();
             return (T) service;
 
+        }
+
+        /// <summary>
+        /// Objects the generator.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="V"></typeparam>
+        /// <returns></returns>
+        public static I ObjectGenerator<T, I>()
+            where T : class,I
+        {
+            I target = Activator.CreateInstance<T>();
+            return target;
         }
     }
 }
