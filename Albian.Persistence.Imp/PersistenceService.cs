@@ -769,7 +769,7 @@ namespace Albian.Persistence.Imp
         }
 
         private static T DoFindObject<T>(IDbCommand cmd)
-            where T : class, IAlbianObject, new()
+            where T : class, IAlbianObject,new()
         {
             try
             {

@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Albian.Kernel.Service;
 using Albian.Persistence.Enum;
-using Albian.Persistence.Imp.Reflection;
 using Albian.Persistence.Model;
 
 #endregion
@@ -25,9 +25,7 @@ namespace Albian.Persistence.Imp
 
         public static string GetTableFullName<T>(IRoutingAttribute routing, T target) where T : IAlbianObject
         {
-            HashAlbianObjectHandler<T> handler = HashAlbianObjectManager.GetHandler<T>(routing.Name,
-                                                                                       AssemblyManager.GetFullTypeName(
-                                                                                           typeof (T)));
+            HashAlbianObjectHandler<T> handler = HashAlbianObjectManager.GetHandler<T>(routing.Name);
             string tableName = null == handler
                                    ? routing.TableName
                                    : String.Format("{0}{1}", routing.TableName, handler(target));

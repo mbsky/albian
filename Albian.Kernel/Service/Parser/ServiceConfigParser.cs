@@ -25,7 +25,7 @@ namespace Albian.Kernel.Service.Parser
             foreach (XmlNode node in nodes)
             {
                 IAlbianServiceAttrbuite serviceAttr = ServiceParser(node);
-                services.Add(serviceAttr.Id, serviceAttr);
+                services.Add(serviceAttr.Interface, serviceAttr);
             }
             return services;
         }
@@ -36,16 +36,16 @@ namespace Albian.Kernel.Service.Parser
             {
                 throw new ArgumentNullException("node");
             }
-            object oId;
+            //object oId;
             object oImplement;
             object oInterface;
 
-            if (!XmlFileParser.TryGetAttributeValue(node, "Id", out oId))
-            {
-                if (null != Logger)
-                    Logger.Error("There is not 'id' config item in the service.config.");
-                throw new ServiceException("There is not 'id' config item in the service.config.");
-            }
+            //if (!XmlFileParser.TryGetAttributeValue(node, "Id", out oId))
+            //{
+            //    if (null != Logger)
+            //        Logger.Error("There is not 'id' config item in the service.config.");
+            //    throw new ServiceException("There is not 'id' config item in the service.config.");
+            //}
             if (!XmlFileParser.TryGetAttributeValue(node, "Implement", out oImplement))
             {
                 if (null != Logger)
@@ -59,7 +59,7 @@ namespace Albian.Kernel.Service.Parser
                 throw new ServiceException("There is not 'Interface' config item in the service.config.");
             }
             IAlbianServiceAttrbuite serviceAttr = new AlbianServiceAttrbuite();
-            serviceAttr.Id = oId.ToString();
+            //serviceAttr.Id = oId.ToString();
             serviceAttr.Implement = oImplement.ToString();
             serviceAttr.Interface = oInterface.ToString();
             return serviceAttr;

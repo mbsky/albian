@@ -57,6 +57,7 @@
     <Compile Include="Cached\Impl\ServiceCached.cs" />
     <Compile Include="Cached\Impl\StandingCached.cs" />
     <Compile Include="log4netPlugin\Log4netService.cs" />
+    <Compile Include="Service\AssemblyManager.cs" />
     <Compile Include="Service\Impl\FreeAlbianService.cs" />
     <Compile Include="Service\Parser\FreeServiceConfigParser.cs" />
     <Compile Include="AlbianKernelAttribute.cs" />

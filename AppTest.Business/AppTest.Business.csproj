@@ -45,13 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="IUserOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Albian.Kernel\Albian.Kernel.csproj">
       <Project>{5EF37887-AADF-4753-A1F2-BAA45135DAF4}</Project>
       <Name>Albian.Kernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
+      <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
+      <Name>Albian.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppTest.DataAccess\AppTest.DataAccess.csproj">
       <Project>{EF98D1C8-ED7F-4531-B395-13282EF6159C}</Project>

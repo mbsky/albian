@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Albian.Kernel.Service;
+using AppTest.Model;
 
 namespace AppTest.Business
 {
-    public class Class1
+    public interface IUserOperation : IAlbianService
     {
+        bool Create(IUser user);
     }
 }

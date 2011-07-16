@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2EDF6137-52F4-4018-B87F-C837D45E3935}"
 	ProjectSection(SolutionItems) = preProject
 		Albian.vsmdi = Albian.vsmdi
+		Albian1.vsmdi = Albian1.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
@@ -39,13 +40,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTest.Model", "AppTest.Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTest.Model.Imp", "AppTest.Model.Imp\AppTest.Model.Imp.csproj", "{DF8CF1A3-95EE-45C8-9091-DD68CEC5EF46}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{5EB86C7D-74F3-40EE-B9CE-E34316A975B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{74F172CC-220A-4508-946C-BF5AA3E03616}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Albian.vsmdi
+		CategoryFile = Albian1.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +117,10 @@ Global
 		{DF8CF1A3-95EE-45C8-9091-DD68CEC5EF46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF8CF1A3-95EE-45C8-9091-DD68CEC5EF46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF8CF1A3-95EE-45C8-9091-DD68CEC5EF46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F172CC-220A-4508-946C-BF5AA3E03616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F172CC-220A-4508-946C-BF5AA3E03616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F172CC-220A-4508-946C-BF5AA3E03616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F172CC-220A-4508-946C-BF5AA3E03616}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,5 +133,6 @@ Global
 		{3BE43565-ADE7-4F1A-9481-887E15B59671} = {D45B3A19-309F-485F-B918-C440E52155AB}
 		{B437200C-0A46-4F56-AF16-C726074C19CB} = {D45B3A19-309F-485F-B918-C440E52155AB}
 		{DF8CF1A3-95EE-45C8-9091-DD68CEC5EF46} = {D45B3A19-309F-485F-B918-C440E52155AB}
+		{74F172CC-220A-4508-946C-BF5AA3E03616} = {5EB86C7D-74F3-40EE-B9CE-E34316A975B9}
 	EndGlobalSection
 EndGlobal
