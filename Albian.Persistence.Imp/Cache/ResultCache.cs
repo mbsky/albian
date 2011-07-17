@@ -21,10 +21,10 @@ namespace Albian.Persistence.Imp.Cache
         public static void CachingObject<T>(string routingName, IFilterCondition[] where, T target)
             where T : class, IAlbianObject
         {
-            ICacheAttribute cache = GetCacheAttribute<T>();
+            ICacheAttribute cache = GetCacheAttribute(target);
             if (null == cache || !cache.Enable) return;
             string cachedKey = null != where && 1 == where.Length && "id" == where[0].PropertyName.ToLower()
-                                   ? Utils.GetCacheKey<T>(where[0].Value.ToString()) //find by pk id
+                                   ? Utils.GetCacheKey<T>(where[0].Value.ToString(),AssemblyManager.GetFullTypeName(target)) //find by pk id
                                    : Utils.GetCacheKey<T>(routingName, 0, where, null);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
 
@@ -35,7 +35,7 @@ namespace Albian.Persistence.Imp.Cache
         public static void CachingObject<T>(IDbCommand cmd, T target)
             where T : class, IAlbianObject
         {
-            ICacheAttribute cache = GetCacheAttribute<T>();
+            ICacheAttribute cache = GetCacheAttribute(target);
             if (null == cache || !cache.Enable) return;
 
             string cachedKey = Utils.GetCacheKey<T>(cmd);
@@ -68,9 +68,9 @@ namespace Albian.Persistence.Imp.Cache
         public static void CachingObject<T>(T target)
             where T: class,IAlbianObject
         {
-            ICacheAttribute cacheAttr = GetCacheAttribute<T>(target);
+            ICacheAttribute cacheAttr = GetCacheAttribute(target);
             if (null == cacheAttr || !cacheAttr.Enable) return;
-            string cachedKey = Utils.GetCacheKey<T>(target.Id);
+            string cachedKey = Utils.GetCacheKey<T>(target.Id,AssemblyManager.GetFullTypeName(target));
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
             cachedService.InsertOrUpdate(cachedKey, target, cacheAttr.LifeTime);
         }
@@ -91,7 +91,7 @@ namespace Albian.Persistence.Imp.Cache
             ICacheAttribute cache = GetCacheAttribute<T>();
             if (null == cache || !cache.Enable) return null;
             string cachedKey = null != where && 1 == where.Length && "id" == where[0].PropertyName.ToLower()
-                                   ? Utils.GetCacheKey<T>(where[0].Value.ToString()) //find by pk id
+                                   ? Utils.GetCacheKey<T>(where[0].Value.ToString(), AssemblyManager.GetFullTypeName<T>()) //find by pk id
                                    : Utils.GetCacheKey<T>(routingName, 0, where, null);
 
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
