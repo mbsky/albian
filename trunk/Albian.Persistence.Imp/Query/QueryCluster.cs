@@ -158,7 +158,7 @@ namespace Albian.Persistence.Imp.Query
 
         protected IStorageContext PreExecute(ITask task)
         {
-            IStorageContext[] storageContexts = new IStorageContext[] {};
+            IStorageContext[] storageContexts = new IStorageContext[task.Context.Values.Count];
             task.Context.Values.CopyTo(storageContexts, 0);
             IStorageContext storageContext = storageContexts[0];
 

@@ -23,9 +23,9 @@ namespace Albian.Persistence.Imp
             return target;
         }
 
-        public static string GetTableFullName<T>(IRoutingAttribute routing, T target) where T : IAlbianObject
+        public static string GetTableFullName(IRoutingAttribute routing, IAlbianObject target)
         {
-            HashAlbianObjectHandler<T> handler = HashAlbianObjectManager.GetHandler<T>(routing.Name);
+            HashAlbianObjectHandler<IAlbianObject> handler = HashAlbianObjectManager.GetHandler(routing.Name, AssemblyManager.GetFullTypeName(target));
             string tableName = null == handler
                                    ? routing.TableName
                                    : String.Format("{0}{1}", routing.TableName, handler(target));
