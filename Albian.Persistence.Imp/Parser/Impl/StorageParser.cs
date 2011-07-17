@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using Albian.Kernel;
+using Albian.Persistence.Enum;
 using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Model;
 using Albian.Persistence.Model.Impl;
@@ -220,7 +221,13 @@ namespace Albian.Persistence.Imp.Parser.Impl
             }
             if (0 != storageAttribute.Timeout)
             {
-                sbString.AppendFormat("Connection Timeout={0}", storageAttribute.Timeout);
+                sbString.AppendFormat("Connection Timeout={0};", storageAttribute.Timeout);
+            }
+            if (DatabaseStyle.MySql == storageAttribute.DatabaseStyle)//chinese charset
+            {
+                sbString.Append("charset = gb2312;");//chinese charset，and the space with both sides from = must exist
+                                                    //do not ask me why must exist space,then konwed by god only
+                                                    // if you have chinese,the chinese word with 2 char length
             }
             return sbString.ToString();
         }
