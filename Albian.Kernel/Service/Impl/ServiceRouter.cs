@@ -30,37 +30,56 @@ namespace Albian.Kernel.Service.Impl
 
         }
 
+        public static T GetService<T>(string serviceId)
+           where T : class, IAlbianService
+        {
+            object service = ServiceCached.Get(serviceId);
+            if (null == service)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("The {0} service is null.", serviceId);
+                return null;
+            }
+            return (T)service;
+
+        }
+
         /// <summary>
         /// Gets the service.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="id">The id.</param>
         /// <param name="reload">if set to <c>true</c> [reload].</param>
         /// <returns></returns>
         /// <remarks>
         /// 注意，该方法有未处理异常
         /// </remarks>
         public static T GetService<T>(bool reload)
-            where T :class, IAlbianService
+            where T : class, IAlbianService
         {
             string typeFullName = AssemblyManager.GetFullTypeName(typeof(T));
+            return GetService<T>(typeFullName, reload);
+        }
+
+        public static T GetService<T>(string serviceId,bool reload)
+            where T : class, IAlbianService
+        {
             if (!reload)
-                return GetService<T>();
+                return GetService<T>(serviceId);
 
             IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(FreeServiceConfigParser.ServiceKey);
-            if (serviceInfos.ContainsKey(typeFullName))
+            if (serviceInfos.ContainsKey(serviceId))
             {
-                 if(null != Logger)
-                    Logger.WarnFormat("There is not {0} serice info.", typeFullName);
-                 return null;
+                if (null != Logger)
+                    Logger.WarnFormat("There is not {0} serice info.", serviceId);
+                return null;
             }
-            IAlbianServiceAttrbuite serviceInfo = serviceInfos[typeFullName];
+            IAlbianServiceAttrbuite serviceInfo = serviceInfos[serviceId];
             Type impl = Type.GetType(serviceInfo.Implement);
-            IAlbianService service = (IAlbianService) Activator.CreateInstance(impl);
+            IAlbianService service = (IAlbianService)Activator.CreateInstance(impl);
             service.BeforeLoading();
             service.Loading();
             service.AfterLoading();
-            return (T) service;
+            return (T)service;
 
         }
 
