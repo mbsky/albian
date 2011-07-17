@@ -14,6 +14,6 @@ namespace AppTest.DataAccess
         bool Modify(IList<IAlbianObject> userInfo);
         bool Delete(IList<IAlbianObject> userInfo);
         IUser Find(string userId);
-        //IList<IUser> Find(DateTime createTime);
+        IUser Load(string userId);
     }
 }

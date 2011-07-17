@@ -51,7 +51,7 @@ namespace AppTest.Business.Imp
         public bool Modify(string id,string nickName)
         {
             IUserDao dao = ServiceRouter.ObjectGenerator<UserDao, IUserDao>();
-            IUser user = dao.Find(id);
+            IUser user = dao.Load(id);
             user.Nickname = nickName;
             user.LastMofidyTime = DateTime.Now;
             user.LastModifier = id;

@@ -34,6 +34,11 @@ namespace AppTest.DataAccess.Imp
             return PersistenceService.FindObject<User>("1thRouting", userId);
         }
 
+        public virtual IUser Load(string userId)
+        {
+            return PersistenceService.LoadObject<User>("1thRouting", userId);
+        }
+
         #endregion
     }
 }
