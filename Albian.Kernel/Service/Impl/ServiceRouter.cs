@@ -22,7 +22,9 @@ namespace Albian.Kernel.Service.Impl
             object service = ServiceCached.Get(typeFullName);
             if (null == service)
             {
-                throw new ServiceException(string.Format("The {0} service is null.", typeFullName));
+                if(null != Logger)
+                    Logger.WarnFormat("The {0} service is null.", typeFullName);
+                return null;
             }
             return (T)service;
 
@@ -48,7 +50,9 @@ namespace Albian.Kernel.Service.Impl
             IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(FreeServiceConfigParser.ServiceKey);
             if (serviceInfos.ContainsKey(typeFullName))
             {
-                throw new ServiceException(string.Format("There is not {0} serice info.", typeFullName));
+                 if(null != Logger)
+                    Logger.WarnFormat("There is not {0} serice info.", typeFullName);
+                 return null;
             }
             IAlbianServiceAttrbuite serviceInfo = serviceInfos[typeFullName];
             Type impl = Type.GetType(serviceInfo.Implement);
@@ -64,13 +68,23 @@ namespace Albian.Kernel.Service.Impl
         /// Objects the generator.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="V"></typeparam>
+        /// <typeparam name="I"></typeparam>
         /// <returns></returns>
         public static I ObjectGenerator<T, I>()
             where T : class,I
+            where I : class
         {
-            I target = Activator.CreateInstance<T>();
-            return target;
+            try
+            {
+                I target = Activator.CreateInstance<T>();
+                return target;
+            }
+            catch (Exception exc)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("Create instance is error.Info{0},StackTrace:{1}", exc.Message, exc.StackTrace);
+                return null;
+            }
         }
     }
 }

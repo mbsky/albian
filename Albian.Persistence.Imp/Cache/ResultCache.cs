@@ -27,7 +27,12 @@ namespace Albian.Persistence.Imp.Cache
                                    ? Utils.GetCacheKey<T>(where[0].Value.ToString(),AssemblyManager.GetFullTypeName(target)) //find by pk id
                                    : Utils.GetCacheKey<T>(routingName, 0, where, null);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
-
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return;
+            }
             cachedService.InsertOrUpdate(cachedKey, target, cache.LifeTime);
         }
 
@@ -40,6 +45,12 @@ namespace Albian.Persistence.Imp.Cache
 
             string cachedKey = Utils.GetCacheKey<T>(cmd);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return;
+            }
             cachedService.InsertOrUpdate(cachedKey, target, cache.LifeTime);
         }
 
@@ -51,6 +62,12 @@ namespace Albian.Persistence.Imp.Cache
             if (null == cache || !cache.Enable) return;
             string cachedKey = Utils.GetCacheKey<T>(routingName, top, where, orderby);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return;
+            }
             cachedService.InsertOrUpdate(cachedKey, target, cache.LifeTime);
         }
 
@@ -62,6 +79,12 @@ namespace Albian.Persistence.Imp.Cache
             if (null == cache || !cache.Enable) return;
             string cachedKey = Utils.GetCacheKey<T>(cmd);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return;
+            }
             cachedService.InsertOrUpdate(cachedKey, target, cache.LifeTime);
         }
 
@@ -72,6 +95,12 @@ namespace Albian.Persistence.Imp.Cache
             if (null == cacheAttr || !cacheAttr.Enable) return;
             string cachedKey = Utils.GetCacheKey<T>(target.Id,AssemblyManager.GetFullTypeName(target));
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return;
+            }
             cachedService.InsertOrUpdate(cachedKey, target, cacheAttr.LifeTime);
         }
 
@@ -95,7 +124,12 @@ namespace Albian.Persistence.Imp.Cache
                                    : Utils.GetCacheKey<T>(routingName, 0, where, null);
 
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
-
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return null;
+            }
             object oTarget = cachedService.Get(cachedKey);
             if (null == oTarget) return null;
             return (T) oTarget;
@@ -110,7 +144,12 @@ namespace Albian.Persistence.Imp.Cache
 
             string cachedKey = Utils.GetCacheKey<T>(cmd);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
-
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return null;
+            }
             object oTarget = cachedService.Get(cachedKey);
             if (null == oTarget) return null;
             return (T) oTarget;
@@ -124,7 +163,12 @@ namespace Albian.Persistence.Imp.Cache
             if (null == cache || !cache.Enable) return null;
             string cachedKey = Utils.GetCacheKey<T>(routingName, top, where, orderby);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
-
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return null;
+            }
             object oTarget = cachedService.Get(cachedKey);
             if (null == oTarget) return null;
             return (IList<T>) oTarget;
@@ -138,6 +182,12 @@ namespace Albian.Persistence.Imp.Cache
             if (null == cache || !cache.Enable) return null;
             string cachedKey = Utils.GetCacheKey<T>(cmd);
             IExpiredCached cachedService = ServiceRouter.GetService<IExpiredCached>();
+            if (null == cachedService)
+            {
+                if (null != Logger)
+                    Logger.Warn("No expired cached service.");
+                return null;
+            }
             object oTarget = cachedService.Get(cachedKey);
             if (null == oTarget) return null;
             return (IList<T>) oTarget;
