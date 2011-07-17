@@ -10,5 +10,6 @@ namespace AppTest.Business
     public interface IUserOperation : IAlbianService
     {
         bool Create(IUser user);
+        bool Modify(string id, string nickName);
     }
 }

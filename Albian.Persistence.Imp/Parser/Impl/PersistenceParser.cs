@@ -97,18 +97,19 @@ namespace Albian.Persistence.Imp.Parser.Impl
                                                                                  XmlNodeList routingNodes)
         {
             IDictionary<string, IRoutingAttribute> routings = new Dictionary<string, IRoutingAttribute>();
-            //set the default value when the routingnodes is not exist
-
-            IRoutingAttribute defaultRouting = new RoutingAttribute
-                                                   {
-                                                       Name = DefaultRoutingName,
-                                                       Permission = PermissionMode.WR,
-                                                       StorageName = StorageParser.DefaultStorageName,
-                                                       TableName = defaultTableName,
-                                                   };
-            routings.Add(DefaultRoutingName, defaultRouting);
+            
             if (null == routingNodes || 0 == routingNodes.Count)
             {
+                //set the default value when the routingnodes is not exist
+
+                IRoutingAttribute defaultRouting = new RoutingAttribute
+                {
+                    Name = DefaultRoutingName,
+                    Permission = PermissionMode.WR,
+                    StorageName = StorageParser.DefaultStorageName,
+                    TableName = defaultTableName,
+                };
+                routings.Add(DefaultRoutingName, defaultRouting);
                 return routings;
             }
 

@@ -10,6 +10,7 @@ using AppTest.DataAccess;
 using AppTest.DataAccess.Imp;
 using AppTest.Model;
 using AppTest.Model.Imp;
+using Albian.Kernel.Service;
 
 namespace AppTest.Business.Imp
 {
@@ -18,14 +19,21 @@ namespace AppTest.Business.Imp
 
         public override void Loading()
         {
-            HashAlbianObjectManager.RegisterHandler<IUser>(HashAlbianObjectHandler);
+            HashAlbianObjectManager.RegisterHandler("1thRouting", AssemblyManager.GetFullTypeName(typeof(User)), HashAlbianObjectHandlerUser);
+            HashAlbianObjectManager.RegisterHandler( AssemblyManager.GetFullTypeName(typeof(LogInfo)), HashAlbianObjectHandlerByCreatrUser);
             base.Loading();
         }
 
-        private string HashAlbianObjectHandler(IUser target)
+        private string HashAlbianObjectHandlerUser(IAlbianObject target)
         {
-            return string.Format("_{0}", target.Id.GetHashCode() % 3);
+            return string.Format("_{0}", Math.Abs(target.Id.GetHashCode() % 3));
         }
+        private string HashAlbianObjectHandlerByCreatrUser(IAlbianObject target)
+        {
+            ILogInfo user = (ILogInfo)target;
+            return string.Format("_{0}", user.Style == InfoStyle.Registr || user.Style == InfoStyle.Modify ? "user":string.Empty);
+        }
+
 
         public bool Create(IUser user)
         {
@@ -34,10 +42,28 @@ namespace AppTest.Business.Imp
             log.Content = string.Format("创建用户，用户id为:{0}", user.Id);
             log.CreateTime = DateTime.Now;
             log.Creator = user.Id;
-            log.Id = ServiceRouter.GetService<IIdService>().Generator("User");
+            log.Id = AlbianObjectGenerator.CreateId("Log");
             log.Style = InfoStyle.Registr;
             IList<IAlbianObject> infos = new List<IAlbianObject> {user, log};
             return dao.Create(infos);
+        }
+
+        public bool Modify(string id,string nickName)
+        {
+            IUserDao dao = ServiceRouter.ObjectGenerator<UserDao, IUserDao>();
+            IUser user = dao.Find(id);
+            user.Nickname = nickName;
+            user.LastMofidyTime = DateTime.Now;
+            user.LastModifier = id;
+
+            ILogInfo log = AlbianObjectGenerator.CreateInstance<LogInfo>();
+            log.Content = string.Format("修改用户，用户id为:{0}", user.Id);
+            log.CreateTime = DateTime.Now;
+            log.Creator = user.Id;
+            log.Id = AlbianObjectGenerator.CreateId("Log");
+            log.Style = InfoStyle.Modify;
+            IList<IAlbianObject> infos = new List<IAlbianObject> { user, log };
+            return dao.Modify(infos);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace AppTest.DataAccess.Imp
 
         public virtual IUser Find(string userId)
         {
-            return PersistenceService.FindObject<User>("1thStorage", userId);
+            return PersistenceService.FindObject<User>("1thRouting", userId);
         }
 
         #endregion

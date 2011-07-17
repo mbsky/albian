@@ -17,14 +17,13 @@ namespace Albian.Persistence.Imp
     {
         private static readonly Hashtable _hashAlbianObjectHandlers = Hashtable.Synchronized(new Hashtable());
 
-        public static void RegisterHandler<T>(string routingName,HashAlbianObjectHandler<T> splitHandler)
-            where T : IAlbianObject
+        public static void RegisterHandler(string routingName,string typeFullName,HashAlbianObjectHandler<IAlbianObject> splitHandler)
         {
             if (string.IsNullOrEmpty(routingName))
             {
                 throw new ArgumentNullException("routingName");
             }
-            string typeFullName = AssemblyManager.GetFullTypeName<T>();
+            //string typeFullName = AssemblyManager.GetFullTypeName<T>();
             if (null == splitHandler)
                 return;
             string key = GetHashTableKey(routingName, typeFullName);
@@ -43,45 +42,43 @@ namespace Albian.Persistence.Imp
             return string.Format("{0}{1}", typeFullName, routingName);
         }
        
-        public static void RegisterHandler<T>(HashAlbianObjectHandler<T> splitHandler)
-           where T : IAlbianObject
+        public static void RegisterHandler(string typeFullName,HashAlbianObjectHandler<IAlbianObject> splitHandler)
         {
             string routingName = string.Empty;
             if (string.IsNullOrEmpty(routingName))
             {
                 routingName = PersistenceParser.DefaultRoutingName;
             }
-            RegisterHandler(routingName,splitHandler);
+            //Type[] types = splitHandler.GetType().GetGenericArguments();
+            RegisterHandler(routingName,typeFullName,splitHandler);
         }
 
-        public static HashAlbianObjectHandler<T> GetHandler<T>()
-            where T : IAlbianObject
+        public static HashAlbianObjectHandler<IAlbianObject> GetHandler(string typeFullName)
         {
             string routingName = string.Empty;
             if (string.IsNullOrEmpty(routingName))
             {
                 routingName = PersistenceParser.DefaultRoutingName;
             }
-            string typeFullName = AssemblyManager.GetFullTypeName<T>();
+            //string typeFullName = AssemblyManager.GetFullTypeName<T>();
             string key = GetHashTableKey(routingName, typeFullName);
             object target = _hashAlbianObjectHandlers[key];
             if (null != target)
-                return (HashAlbianObjectHandler<T>)target;
+                return (HashAlbianObjectHandler<IAlbianObject>)target;
             return null;
         }
 
-        public static HashAlbianObjectHandler<T> GetHandler<T>(string routingName)
-            where T : IAlbianObject
+        public static HashAlbianObjectHandler<IAlbianObject> GetHandler(string routingName, string typeFullName)
         {
             if (string.IsNullOrEmpty(routingName))
             {
                 throw new ArgumentNullException("routingName");
             }
-            string typeFullName = AssemblyManager.GetFullTypeName<T>();
+            //string typeFullName = AssemblyManager.GetFullTypeName<T>();
             string key = GetHashTableKey(routingName, typeFullName);
             object target = _hashAlbianObjectHandlers[key];
             if (null != target)
-                return (HashAlbianObjectHandler<T>) target;
+                return (HashAlbianObjectHandler<IAlbianObject>)target;
             return null;
         }
     }

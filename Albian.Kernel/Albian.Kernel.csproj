@@ -68,8 +68,6 @@
     <Compile Include="Service\IAlbianService.cs" />
     <Compile Include="Service\IAlbianServiceAttrbuite.cs" />
     <Compile Include="Service\ServiceState.cs" />
-    <Compile Include="IdService.cs" />
-    <Compile Include="IIdService.cs" />
     <Compile Include="IXmlParser.cs" />
     <Compile Include="Parser\Impl\FreeKernelParser.cs" />
     <Compile Include="Parser\IKernelParser.cs" />

@@ -29,6 +29,6 @@ namespace AppTest.Model
         /// <summary>
         /// ĞŞ¸ÄÃÜÂë
         /// </summary>
-        ModifyPassword,
+        Modify,
     }
 }
