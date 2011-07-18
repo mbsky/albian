@@ -3,9 +3,9 @@ using Albian.Persistence.Model.Impl;
 
 namespace AppTest.Model.Imp
 {
-    public class Bizoffer : FreeAlbianObject,IBizoffer
+    public class BizOffer : FreeAlbianObject,IBizOffer
     {
-        #region Implementation of IBizoffer
+        #region Implementation of IBizOffer
 
         private string _name;
 
@@ -19,9 +19,9 @@ namespace AppTest.Model.Imp
 
         private decimal _price;
 
-        private bool _isDiscount;
+        private bool? _isDiscount;
 
-        private decimal _discount;
+        private decimal? _discount;
 
         private decimal _lastPrice;
 
@@ -78,7 +78,7 @@ namespace AppTest.Model.Imp
         /// <summary>
         ///  «∑Ò¥Ú’€
         /// </summary>
-        public virtual bool IsDiscount
+        public virtual bool? IsDiscount
         {
             get { return _isDiscount; }
             set { _isDiscount = value; }
@@ -87,7 +87,7 @@ namespace AppTest.Model.Imp
         /// <summary>
         /// ’€ø€
         /// </summary>
-        public virtual decimal Discount
+        public virtual decimal? Discount
         {
             get { return _discount; }
             set { _discount = value; }

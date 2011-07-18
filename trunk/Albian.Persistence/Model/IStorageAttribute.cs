@@ -19,5 +19,6 @@ namespace Albian.Persistence.Model
         bool Pooling { get; set; }
         bool IntegratedSecurity { get; set; }
         DatabaseStyle DatabaseStyle { get; set; }
+        string Charset { get; set; }
     }
 }

@@ -92,6 +92,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
             object oPooling;
             object oIntegratedSecurity;
             object oDbClass;
+            object oCharset;
 
             foreach (XmlNode n in node.ChildNodes)
             {
@@ -190,6 +191,14 @@ namespace Albian.Persistence.Imp.Parser.Impl
                             }
                             break;
                         }
+                    case "Charset":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oCharset))
+                            {
+                                storageAttribute.Charset = oCharset.ToString().Trim();
+                            }
+                            break;
+                        }
                 }
             }
             if (string.IsNullOrEmpty(storageAttribute.Name))
@@ -225,7 +234,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
             }
             if (DatabaseStyle.MySql == storageAttribute.DatabaseStyle)//chinese charset
             {
-                sbString.Append("charset = gb2312;");//chinese charset，and the space with both sides from = must exist
+                sbString.AppendFormat("charset = {0};",storageAttribute.Charset);//chinese charset，and the space with both sides from = must exist
                                                     //do not ask me why must exist space,then konwed by god only
                                                     // if you have chinese,the chinese word with 2 char length
             }

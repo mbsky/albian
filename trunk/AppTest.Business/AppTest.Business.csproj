@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBizofferOperation.cs" />
     <Compile Include="IUserOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,6 +61,10 @@
     <ProjectReference Include="..\AppTest.DataAccess\AppTest.DataAccess.csproj">
       <Project>{EF98D1C8-ED7F-4531-B395-13282EF6159C}</Project>
       <Name>AppTest.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppTest.Model.Imp\AppTest.Model.Imp.csproj">
+      <Project>{DF8CF1A3-95EE-45C8-9091-DD68CEC5EF46}</Project>
+      <Name>AppTest.Model.Imp</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppTest.Model\AppTest.Model.csproj">
       <Project>{B437200C-0A46-4F56-AF16-C726074C19CB}</Project>

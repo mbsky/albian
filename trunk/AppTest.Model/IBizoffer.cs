@@ -3,7 +3,7 @@ using Albian.Persistence;
 
 namespace AppTest.Model
 {
-    public interface IBizoffer : IAlbianObject
+    public interface IBizOffer : IAlbianObject
     {
         string Name { get; set; }
 
@@ -23,11 +23,11 @@ namespace AppTest.Model
         /// <summary>
         /// 是否打折
         /// </summary>
-        bool IsDiscount { get; set; }
+        bool? IsDiscount { get; set; }
         /// <summary>
         /// 折扣
         /// </summary>
-        decimal Discount { get; set; }
+        decimal? Discount { get; set; }
         /// <summary>
         /// 交易价格
         /// </summary>

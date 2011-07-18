@@ -448,7 +448,7 @@ namespace Albian.Persistence.Imp.Command
             }
             if (0 != sbOrderBy.Length)
             {
-                sbOrderBy.Remove(sbCols.Length - 1, 1);
+                sbOrderBy.Remove(sbOrderBy.Length - 1, 1);
             }
             if (0 != sbCols.Length)
             {
@@ -473,7 +473,7 @@ namespace Albian.Persistence.Imp.Command
             sbSelect.AppendFormat("SELECT{0} {1} FROM {2} WHERE 1=1 {3}{4}",
                                   0 == top ? string.Empty : string.Format(" TOP {0}", top),
                                   sbCols, tableFullName, sbWhere,
-                                  0 == sbOrderBy.Length ? string.Empty : string.Format(" ORDER {0}", sbOrderBy));
+                                  0 == sbOrderBy.Length ? string.Empty : string.Format(" ORDER BY {0}", sbOrderBy));
             IFakeCommandAttribute fakeCommand = new FakeCommandAttribute
                                                     {
                                                         CommandText = sbSelect.ToString(),

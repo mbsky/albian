@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BizofferState.cs" />
-    <Compile Include="IBizoffer.cs" />
+    <Compile Include="IBizOffer.cs" />
     <Compile Include="ILogInfo.cs" />
     <Compile Include="InfoStyle.cs" />
     <Compile Include="IOrder.cs" />
