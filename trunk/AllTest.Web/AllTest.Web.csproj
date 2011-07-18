@@ -86,10 +86,6 @@
       <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
       <Name>Albian.Persistence</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Albian.Security\Albian.Security.csproj">
-      <Project>{9A36CCF2-2173-40EB-95A0-715F75E8EA81}</Project>
-      <Name>Albian.Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AppTest.Business.Imp\AppTest.Business.Imp.csproj">
       <Project>{13B98AAC-E005-4918-95CD-EDDB12A07E48}</Project>
       <Name>AppTest.Business.Imp</Name>

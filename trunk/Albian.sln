@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Persistence", "Albia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Persistence.Imp", "Albian.Persistence.Imp\Albian.Persistence.Imp.csproj", "{376313F1-1886-4690-8E93-9B4ACE705868}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Albian.Security", "Albian.Security\Albian.Security.csproj", "{9A36CCF2-2173-40EB-95A0-715F75E8EA81}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2EDF6137-52F4-4018-B87F-C837D45E3935}"
 	ProjectSection(SolutionItems) = preProject
 		Albian.vsmdi = Albian.vsmdi
@@ -61,10 +59,6 @@ Global
 		{376313F1-1886-4690-8E93-9B4ACE705868}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{376313F1-1886-4690-8E93-9B4ACE705868}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{376313F1-1886-4690-8E93-9B4ACE705868}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A36CCF2-2173-40EB-95A0-715F75E8EA81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A36CCF2-2173-40EB-95A0-715F75E8EA81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A36CCF2-2173-40EB-95A0-715F75E8EA81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A36CCF2-2173-40EB-95A0-715F75E8EA81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2116FE8B-0939-403B-975C-8AC806FC070E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2116FE8B-0939-403B-975C-8AC806FC070E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2116FE8B-0939-403B-975C-8AC806FC070E}.Release|Any CPU.ActiveCfg = Release|Any CPU
