@@ -61,6 +61,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bizoffer.aspx.cs">
+      <DependentUpon>Bizoffer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Bizoffer.aspx.designer.cs">
+      <DependentUpon>Bizoffer.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -112,6 +119,7 @@
     <Content Include="config\Storage.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Bizoffer.aspx" />
     <Content Include="config\log4net.config" />
     <Content Include="Global.asax" />
   </ItemGroup>

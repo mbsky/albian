@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBizofferDao.cs" />
     <Compile Include="IUserDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,6 +57,10 @@
     <ProjectReference Include="..\Albian.Persistence\Albian.Persistence.csproj">
       <Project>{911A7AEC-4D7C-4A61-88F9-7F8645735F92}</Project>
       <Name>Albian.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppTest.Model.Imp\AppTest.Model.Imp.csproj">
+      <Project>{DF8CF1A3-95EE-45C8-9091-DD68CEC5EF46}</Project>
+      <Name>AppTest.Model.Imp</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppTest.Model\AppTest.Model.csproj">
       <Project>{B437200C-0A46-4F56-AF16-C726074C19CB}</Project>
