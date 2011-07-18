@@ -57,6 +57,10 @@
     <Compile Include="Cached\Impl\ServiceCached.cs" />
     <Compile Include="Cached\Impl\StandingCached.cs" />
     <Compile Include="log4netPlugin\Log4netService.cs" />
+    <Compile Include="Security\IEncrypt.cs" />
+    <Compile Include="Security\Impl\Encrypt.cs" />
+    <Compile Include="Security\Impl\FreeEncrypt.cs" />
+    <Compile Include="Security\MD5Mode.cs" />
     <Compile Include="Service\AssemblyManager.cs" />
     <Compile Include="Service\Impl\FreeAlbianService.cs" />
     <Compile Include="Service\Parser\FreeServiceConfigParser.cs" />
