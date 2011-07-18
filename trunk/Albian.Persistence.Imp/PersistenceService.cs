@@ -757,7 +757,7 @@ namespace Albian.Persistence.Imp
                 T target = ResultCache.GetCachingObject<T>(routingName, where);
                 if (null != target) return target;
                 target = DoLoadObject<T>(routingName, where);
-                ResultCache.CachingObject(routingName, where, target);
+                //ResultCache.CachingObject(routingName, where, target);
                 return target;
             }
             catch (Exception exc)
@@ -776,7 +776,7 @@ namespace Albian.Persistence.Imp
                 T target = ResultCache.GetCachingObject<T>(cmd);
                 if (null != target) return target;
                 target = DoLoadObject<T>(cmd);
-                ResultCache.CachingObject(cmd, target);
+                //ResultCache.CachingObject(cmd, target);
                 return target;
             }
             catch (Exception exc)
@@ -796,7 +796,7 @@ namespace Albian.Persistence.Imp
                 IList<T> target = ResultCache.GetCachingObjects<T>(routingName, top, where, orderby);
                 if (null != target) return target;
                 target = DoLoadObjects<T>(routingName, top, where, orderby);
-                ResultCache.CachingObjects(routingName, top, where, orderby, target);
+                //ResultCache.CachingObjects(routingName, top, where, orderby, target);
                 return target;
             }
             catch (Exception exc)
@@ -815,7 +815,7 @@ namespace Albian.Persistence.Imp
                 IList<T> target = ResultCache.GetCachingObjects<T>(cmd);
                 if (null != target) return target;
                 target = DoLoadObjects<T>(cmd);
-                ResultCache.CachingObjects(cmd, target);
+                //ResultCache.CachingObjects(cmd, target);
                 return target;
             }
             catch (Exception exc)
