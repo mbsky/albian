@@ -470,10 +470,46 @@ namespace Albian.Persistence.Imp.Command
                 }
             }
             string tableFullName = Utils.GetTableFullName(routing, target);
-            sbSelect.AppendFormat("SELECT{0} {1} FROM {2} WHERE 1=1 {3}{4}",
-                                  0 == top ? string.Empty : string.Format(" TOP {0}", top),
+            switch (storageAttr.DatabaseStyle)
+            {
+                case DatabaseStyle.MySql:
+                    {
+                        sbSelect.AppendFormat("SELECT {0} FROM {1} WHERE 1=1 {2} {3} {4}",
                                   sbCols, tableFullName, sbWhere,
-                                  0 == sbOrderBy.Length ? string.Empty : string.Format(" ORDER BY {0}", sbOrderBy));
+                                  0 == sbOrderBy.Length ? string.Empty : string.Format("ORDER BY {0}", sbOrderBy),
+                                  0 == top ? string.Empty : string.Format("LIMIT {0}", top)
+                                  );
+                        break;
+                    }
+                case DatabaseStyle.Oracle:
+                    {
+                        if (0 == top)
+                        {
+                            sbSelect.AppendFormat("SELECT {0} FROM {1} WHERE 1=1 {2} {3}",
+                               sbCols, tableFullName, sbWhere,
+                               0 == sbOrderBy.Length ? string.Empty : string.Format("ORDER BY {0}", sbOrderBy));
+                        }
+                        else
+                        {
+                            sbSelect.AppendFormat("SELECT A.* FROM (SELECT {0} FROM {1} WHERE 1=1 {2} {3})A WHERE ROWNUM <= {4}",
+                                sbCols, tableFullName, sbWhere,
+                               0 == sbOrderBy.Length ? string.Empty : string.Format("ORDER BY {0}", sbOrderBy),
+                               top);
+                        }
+                       
+                        break;
+                    }
+                case DatabaseStyle.SqlServer:
+                default:
+                    {
+                        sbSelect.AppendFormat("SELECT {0} {1} FROM {2} WHERE 1=1 {3} {4}",
+                                 0 == top ? string.Empty : string.Format("TOP {0}", top),
+                                 sbCols, tableFullName, sbWhere,
+                                 0 == sbOrderBy.Length ? string.Empty : string.Format("ORDER BY {0}", sbOrderBy));
+                        break;
+                    }
+            }
+            
             IFakeCommandAttribute fakeCommand = new FakeCommandAttribute
                                                     {
                                                         CommandText = sbSelect.ToString(),
