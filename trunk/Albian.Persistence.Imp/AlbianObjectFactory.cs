@@ -3,12 +3,13 @@
 using System;
 using System.Runtime.CompilerServices;
 using Albian.Kernel;
+using Albian.Kernel.BasedAlgorithm;
 
 #endregion
 
 namespace Albian.Persistence.Imp
 {
-    public class AlbianObjectGenerator
+    public class AlbianObjectFactory
     {
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static T CreateInstance<T>()
@@ -33,6 +34,15 @@ namespace Albian.Persistence.Imp
             string id = string.Format("{0}{1}{2}{3:0000}", Settings.AppId, mark.PadLeft(6, '0'), DateTime.Now.ToString("yyyyMMddHHmmssffff"), _idx);
             _idx++;
             return id;
+        }
+
+        public static ulong GenerateCode(IAlbianObject target)
+        {
+            if (string.IsNullOrEmpty("target"))
+            {
+                throw new ArgumentNullException("target");
+            }
+            return Hash.GenerateCode(target.Id);
         }
     }
 }

@@ -209,7 +209,7 @@ namespace Albian.Persistence.Imp.Query
                                            IDictionary<string, IMemberAttribute> members)
             where T :class, IAlbianObject,new()
         {
-            T target = AlbianObjectGenerator.CreateInstance<T>();
+            T target = AlbianObjectFactory.CreateInstance<T>();
             foreach (PropertyInfo property in properties)
             {
                 IMemberAttribute member = members[property.Name];

@@ -38,11 +38,11 @@ namespace AppTest.Business.Imp
         public bool Create(IUser user)
         {
             IUserDao dao = ServiceRouter.ObjectGenerator<UserDao,IUserDao>();
-            ILogInfo log = AlbianObjectGenerator.CreateInstance<LogInfo>();
+            ILogInfo log = AlbianObjectFactory.CreateInstance<LogInfo>();
             log.Content = string.Format("创建用户，用户id为:{0}", user.Id);
             log.CreateTime = DateTime.Now;
             log.Creator = user.Id;
-            log.Id = AlbianObjectGenerator.CreateId("Log");
+            log.Id = AlbianObjectFactory.CreateId("Log");
             log.Style = InfoStyle.Registr;
             IList<IAlbianObject> infos = new List<IAlbianObject> {user, log};
             return dao.Create(infos);
@@ -56,11 +56,11 @@ namespace AppTest.Business.Imp
             user.LastMofidyTime = DateTime.Now;
             user.LastModifier = id;
 
-            ILogInfo log = AlbianObjectGenerator.CreateInstance<LogInfo>();
+            ILogInfo log = AlbianObjectFactory.CreateInstance<LogInfo>();
             log.Content = string.Format("修改用户，用户id为:{0}", user.Id);
             log.CreateTime = DateTime.Now;
             log.Creator = user.Id;
-            log.Id = AlbianObjectGenerator.CreateId("Log");
+            log.Id = AlbianObjectFactory.CreateId("Log");
             log.Style = InfoStyle.Modify;
             IList<IAlbianObject> infos = new List<IAlbianObject> { user, log };
             return dao.Modify(infos);
