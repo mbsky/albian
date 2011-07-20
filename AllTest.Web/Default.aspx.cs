@@ -22,8 +22,8 @@ namespace AllTest.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            IUser user = AlbianObjectGenerator.CreateInstance<User>();
-            user.Id = AlbianObjectGenerator.CreateId("User");
+            IUser user = AlbianObjectFactory.CreateInstance<User>();
+            user.Id = AlbianObjectFactory.CreateId("User");
             user.CreateTime = DateTime.Now;
             user.Creator = user.Id;
             user.LastModifier = user.Id;

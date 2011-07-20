@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasedAlgorithm\Hash.cs" />
     <Compile Include="Cached\ICached.cs" />
     <Compile Include="Cached\IExpiredCached.cs" />
     <Compile Include="Cached\Impl\ExpiredCached.cs" />

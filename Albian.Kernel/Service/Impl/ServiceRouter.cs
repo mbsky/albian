@@ -48,22 +48,22 @@ namespace Albian.Kernel.Service.Impl
         /// Gets the service.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="reload">if set to <c>true</c> [reload].</param>
+        /// <param name="isNew">if set to <c>true</c> [reload].</param>
         /// <returns></returns>
         /// <remarks>
         /// 注意，该方法有未处理异常
         /// </remarks>
-        public static T GetService<T>(bool reload)
+        public static T GetService<T>(bool isNew)
             where T : class, IAlbianService
         {
             string typeFullName = AssemblyManager.GetFullTypeName(typeof(T));
-            return GetService<T>(typeFullName, reload);
+            return GetService<T>(typeFullName, isNew);
         }
 
-        public static T GetService<T>(string serviceId,bool reload)
+        public static T GetService<T>(string serviceId,bool isNew)
             where T : class, IAlbianService
         {
-            if (!reload)
+            if (!isNew)
                 return GetService<T>(serviceId);
 
             IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(FreeServiceConfigParser.ServiceKey);
