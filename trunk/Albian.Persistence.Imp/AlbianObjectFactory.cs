@@ -36,7 +36,7 @@ namespace Albian.Persistence.Imp
             return id;
         }
 
-        public static ulong GenerateCode(IAlbianObject target)
+        public static ulong GenerateHashCode(IAlbianObject target)
         {
             if (string.IsNullOrEmpty("target"))
             {
