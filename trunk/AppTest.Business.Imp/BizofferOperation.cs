@@ -42,7 +42,7 @@ namespace AppTest.Business.Imp
 
         public IList<BizOffer> FindBizoffer()
         {
-            IBizofferDao dao = ServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
+            IBizofferDao dao = AlbianServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
             return dao.FindBizoffer();
         }
 
@@ -56,7 +56,7 @@ namespace AppTest.Business.Imp
             log.Style = InfoStyle.Registr;
 
             IList<IAlbianObject> list = new List<IAlbianObject> {bizoffer, log};
-            IBizofferDao dao = ServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
+            IBizofferDao dao = AlbianServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
             return dao.Create(list);
         }
 

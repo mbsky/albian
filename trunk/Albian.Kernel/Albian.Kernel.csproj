@@ -81,7 +81,7 @@
     <Compile Include="Cached\Impl\ServiceInfoCached.cs" />
     <Compile Include="Service\Parser\ServiceConfigParser.cs" />
     <Compile Include="Service\ServiceException.cs" />
-    <Compile Include="Service\Impl\ServiceRouter.cs" />
+    <Compile Include="Service\Impl\AlbianServiceRouter.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ThreadPool\IThreadPool.cs" />
     <Compile Include="ThreadPool\IThreadPoolService.cs" />

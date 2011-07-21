@@ -38,7 +38,7 @@ namespace AppTest.Business.Imp
 
         public bool Create(IUser user)
         {
-            IUserDao dao = ServiceRouter.ObjectGenerator<UserDao,IUserDao>();
+            IUserDao dao = AlbianServiceRouter.ObjectGenerator<UserDao,IUserDao>();
             ILogInfo log = AlbianObjectFactory.CreateInstance<LogInfo>();
             log.Content = string.Format("创建用户，用户id为:{0}", user.Id);
             log.CreateTime = DateTime.Now;
@@ -51,7 +51,7 @@ namespace AppTest.Business.Imp
 
         public bool Modify(string id,string nickName)
         {
-            IUserDao dao = ServiceRouter.ObjectGenerator<UserDao, IUserDao>();
+            IUserDao dao = AlbianServiceRouter.ObjectGenerator<UserDao, IUserDao>();
             IUser user = dao.Load(id);
             user.Nickname = nickName;
             user.LastMofidyTime = DateTime.Now;

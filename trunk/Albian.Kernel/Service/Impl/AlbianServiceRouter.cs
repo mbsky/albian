@@ -11,7 +11,7 @@ using log4net;
 namespace Albian.Kernel.Service.Impl
 {
     [AlbianKernel]
-    public class ServiceRouter
+    public class AlbianServiceRouter
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         

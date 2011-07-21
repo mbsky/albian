@@ -34,14 +34,14 @@ namespace AllTest.Web
             user.Password = txtPassword.Text;
             user.RegistrDate = DateTime.Now;
             user.UserName = txtUserName.Text;
-            bool isSuccess = ServiceRouter.GetService<IUserOperation>().Create(user);
+            bool isSuccess = AlbianServiceRouter.GetService<IUserOperation>().Create(user);
             txtID.Text = user.Id;
 
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            bool isSuccess = ServiceRouter.GetService<IUserOperation>().Modify(txtID.Text,txtNickName.Text);
+            bool isSuccess = AlbianServiceRouter.GetService<IUserOperation>().Modify(txtID.Text,txtNickName.Text);
         }
     }
 }
