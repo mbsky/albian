@@ -803,7 +803,7 @@ namespace Albian.Persistence.Imp
             {
                 if (null != Logger)
                     Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
-                throw;
+                throw exc;
             }
         }
 
@@ -822,7 +822,7 @@ namespace Albian.Persistence.Imp
             {
                 if (null != Logger)
                     Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
-                throw;
+                throw exc;
             }
         }
 

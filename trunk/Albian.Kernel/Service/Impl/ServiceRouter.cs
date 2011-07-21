@@ -87,15 +87,15 @@ namespace Albian.Kernel.Service.Impl
         /// Objects the generator.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="I"></typeparam>
+        /// <typeparam name="V"></typeparam>
         /// <returns></returns>
-        public static I ObjectGenerator<T, I>()
-            where T : class,I
-            where I : class
+        public static V ObjectGenerator<T, V>()
+            where T : class,V,new()
+            where V : class
         {
             try
             {
-                I target = Activator.CreateInstance<T>();
+                V target = new T();
                 return target;
             }
             catch (Exception exc)
