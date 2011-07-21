@@ -18,7 +18,7 @@ namespace AllTest.Web
         {
             if (!IsPostBack)
             {
-                IList<BizOffer> bizoffers = ServiceRouter.GetService<IBizofferOperation>().FindBizoffer();
+                IList<BizOffer> bizoffers = AlbianServiceRouter.GetService<IBizofferOperation>().FindBizoffer();
                 gv.DataSource = bizoffers;
                 gv.DataBind();
             }
@@ -41,7 +41,7 @@ namespace AllTest.Web
             bizoffer.SellerId = txtSellerId.Text;
             bizoffer.SellerName = txtSellerName.Text;
             bizoffer.State = BizofferState.Create;
-            ServiceRouter.GetService<IBizofferOperation>().Create(bizoffer);
+            AlbianServiceRouter.GetService<IBizofferOperation>().Create(bizoffer);
         }
     }
 }
