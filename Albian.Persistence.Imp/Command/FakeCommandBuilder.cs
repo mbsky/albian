@@ -404,6 +404,13 @@ namespace Albian.Persistence.Imp.Command
                 routing = objectAttribute.RountingTemplate;
             }
 
+            if (0 == (PermissionMode.R & routing.Permission))
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("The routing permission {0} is no enough.", routing.Permission);
+                return null;
+            }
+
             IStorageAttribute storageAttr = (IStorageAttribute) StorageCache.Get(routing.StorageName);
             if (null == storageAttr)
             {

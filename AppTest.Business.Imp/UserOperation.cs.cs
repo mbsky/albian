@@ -35,6 +35,7 @@ namespace AppTest.Business.Imp
         }
 
 
+
         public bool Create(IUser user)
         {
             IUserDao dao = ServiceRouter.ObjectGenerator<UserDao,IUserDao>();
