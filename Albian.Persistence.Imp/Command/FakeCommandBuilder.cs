@@ -369,7 +369,7 @@ namespace Albian.Persistence.Imp.Command
 
         public IFakeCommandAttribute GenerateQuery<T>(string rountingName, int top, IFilterCondition[] where,
                                                       IOrderByCondition[] orderby)
-            where T : IAlbianObject
+            where T :class, IAlbianObject,new()
         {
             Type type = typeof (T);
             string fullName = AssemblyManager.GetFullTypeName(type);
@@ -415,7 +415,7 @@ namespace Albian.Persistence.Imp.Command
             }
 
             IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
-            T target = (T) Activator.CreateInstance(typeof (T));
+            T target = AlbianObjectFactory.CreateInstance<T>();
             foreach (PropertyInfo property in properties)
             {
                 IMemberAttribute member = members[property.Name];

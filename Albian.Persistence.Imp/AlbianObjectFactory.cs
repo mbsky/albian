@@ -15,8 +15,7 @@ namespace Albian.Persistence.Imp
         public static T CreateInstance<T>()
             where T :class, IAlbianObject,new()
         {
-            T instance = Activator.CreateInstance<T>();
-            instance.IsNew = true;
+            T instance = new T {IsNew = true};
             return instance;
         }
 

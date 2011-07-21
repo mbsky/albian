@@ -69,6 +69,6 @@ namespace Albian.Persistence.Imp.Command
 
         IFakeCommandAttribute GenerateQuery<T>(string rountingName, int top, IFilterCondition[] where,
                                                IOrderByCondition[] orderby)
-            where T : IAlbianObject;
+            where T :class, IAlbianObject,new();
     }
 }
