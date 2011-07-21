@@ -22,7 +22,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
         /// </summary>
         public OracleConnection CreateObject()
         {
-            OracleConnection obj = Activator.CreateInstance<OracleConnection>();
+            OracleConnection obj = new OracleConnection();
             return obj;
         }
 

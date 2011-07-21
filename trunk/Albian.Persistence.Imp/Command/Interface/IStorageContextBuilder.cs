@@ -20,6 +20,6 @@ namespace Albian.Persistence.Imp.Command
         IDictionary<string, IStorageContext> GenerateStorageContexts<T>(string rountingName, int top,
                                                                         IFilterCondition[] where,
                                                                         IOrderByCondition[] orderby)
-            where T : IAlbianObject;
+            where T : class, IAlbianObject,new();
     }
 }

@@ -26,7 +26,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
         /// </summary>
         public SqlConnection CreateObject()
         {
-            SqlConnection obj = Activator.CreateInstance<SqlConnection>();
+            SqlConnection obj = new SqlConnection();
             return obj;
         }
 

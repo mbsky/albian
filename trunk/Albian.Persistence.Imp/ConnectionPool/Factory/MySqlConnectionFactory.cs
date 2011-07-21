@@ -22,7 +22,7 @@ namespace Albian.Persistence.Imp.ConnectionPool.Factory
         /// </summary>
         public MySqlConnection CreateObject()
         {
-            MySqlConnection obj = Activator.CreateInstance<MySqlConnection>();
+            MySqlConnection obj =  new MySqlConnection();
             return obj;
         }
 

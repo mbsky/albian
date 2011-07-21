@@ -68,7 +68,7 @@ namespace Albian.Persistence.Imp.Command
         public IDictionary<string, IStorageContext> GenerateStorageContexts<T>(string rountingName, int top,
                                                                                IFilterCondition[] where,
                                                                                IOrderByCondition[] orderby)
-            where T : IAlbianObject
+            where T : class, IAlbianObject,new()
         {
             IDictionary<string, IStorageContext> storageContexts = new Dictionary<string, IStorageContext>();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();

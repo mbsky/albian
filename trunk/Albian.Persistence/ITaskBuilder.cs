@@ -35,6 +35,6 @@ namespace Albian.Persistence
             where T : IAlbianObject;
 
         ITask BuildQueryTask<T>(string rountingName, int top, IFilterCondition[] where, IOrderByCondition[] orderby)
-            where T : IAlbianObject;
+            where T : class, IAlbianObject,new();
     }
 }
