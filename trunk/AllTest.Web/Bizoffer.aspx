@@ -19,7 +19,13 @@
     Dis:<asp:RadioButton ID="rbTrue" runat="server" GroupName="dis" Checked ="true"/>
     <asp:RadioButton ID="rbfalse" runat="server" GroupName="dis"></asp:RadioButton><br />
     Desc:<asp:TextBox ID="txtDesc" runat="server"></asp:TextBox><br />
+    ID:<asp:TextBox ID="txtId" runat="server" Width="469px" ></asp:TextBox>
+    <br />
     <asp:Button runat="server" ID="btnSubmit" Text="Submit" onclick="btnSubmit_Click"/>
+        <asp:Button ID="btnModify" runat="server" onclick="btnModify_Click" 
+            Text="Modify" />
+        <asp:Button ID="btnFind" runat="server" Text="Find" onclick="btnFind_Click" />
+        <asp:Button ID="btnLoad" runat="server" Text="Load" onclick="btnLoad_Click" />
     </div>
     </form>
 </body>

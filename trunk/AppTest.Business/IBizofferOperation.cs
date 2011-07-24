@@ -9,5 +9,8 @@ namespace AppTest.Business
     {
         IList<BizOffer> FindBizoffer();
         bool Create(IBizOffer bizoffer);
+        bool Modify(IBizOffer bizoffer);
+        IBizOffer FindBizOffer(string id);
+        IBizOffer LoadBizOffer(string id);
     }
 }

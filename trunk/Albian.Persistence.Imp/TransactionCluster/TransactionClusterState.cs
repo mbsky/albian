@@ -17,7 +17,11 @@
         /// <summary>
         /// 执行命令完毕，准备提交
         /// </summary>
-        RunnedAndCommiting,
+        Runned,
+        /// <summary>
+        /// 正在提交中
+        /// </summary>
+        Commiting,
         /// <summary>
         /// 提交完毕
         /// </summary>

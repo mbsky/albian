@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Albian.Persistence;
 using Albian.Persistence.Imp;
@@ -15,9 +16,19 @@ namespace AppTest.DataAccess.Imp
            return PersistenceService.Save(bizoffer);
         }
 
-        public IBizOffer Load(string id)
+        public virtual bool Modify(IList<IAlbianObject> bizoffer)
         {
-            return PersistenceService.LoadObject<BizOffer>(id);
+            return PersistenceService.Modify(bizoffer);
+        }
+
+        public IBizOffer Load(string routerName,string id)
+        {
+            return PersistenceService.LoadObject<BizOffer>(routerName,id);
+        }
+
+        public virtual IBizOffer Find(string routerName,string id)
+        {
+            return PersistenceService.FindObject<BizOffer>(routerName,id);
         }
 
         public IList<BizOffer> FindBizoffer()

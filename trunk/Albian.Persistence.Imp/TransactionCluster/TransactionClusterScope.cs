@@ -50,7 +50,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
 
                 ExecuteHandler(contexts);
 
-                _state = TransactionClusterState.RunnedAndCommiting;
+                _state = TransactionClusterState.Runned;
 
                 Executed(contexts);
 
@@ -82,30 +82,39 @@ namespace Albian.Persistence.Imp.TransactionCluster
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
                 IStorageContext storageContext = context.Value;
-                //storageContext.Connection.Dispose();
                 try
                 {
-                    foreach (IDbCommand cmd in context.Value.Command)
+                    if (null != context.Value.Command)
                     {
-                        cmd.Parameters.Clear();
-                        cmd.Dispose();
+                        foreach (IDbCommand cmd in context.Value.Command)
+                        {
+                            cmd.Parameters.Clear();
+                            cmd.Dispose();
+                        }
                     }
-
-                    storageContext.Transaction.Dispose();
+                    if (null != storageContext.Transaction)
+                    {
+                        storageContext.Transaction.Dispose();
+                    }
                     storageContext.Transaction = null;
                     storageContext.FakeCommand = null;
-                    if (ConnectionState.Closed != storageContext.Connection.State)
+
+                    if (null != storageContext.Connection &&
+                        ConnectionState.Closed != storageContext.Connection.State)
+                    {
                         storageContext.Connection.Close();
 
-                    if (storageContext.Storage.Pooling)
-                    {
-                        DbConnectionPoolManager.RetutnConnection(storageContext.StorageName, storageContext.Connection);
+                        if (storageContext.Storage.Pooling)
+                        {
+                            DbConnectionPoolManager.RetutnConnection(storageContext.StorageName,
+                                                                     storageContext.Connection);
+                        }
+                        else
+                        {
+                            storageContext.Connection.Dispose();
+                        }
+                        storageContext.Connection = null;
                     }
-                    else
-                    {
-                        storageContext.Connection.Dispose();
-                    }
-                    storageContext.Connection = null;
                 }
                 catch
                 {
@@ -120,6 +129,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
                 context.Value.Transaction.Commit();
+                _state = TransactionClusterState.Commiting;
             }
         }
 
