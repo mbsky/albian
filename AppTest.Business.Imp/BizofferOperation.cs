@@ -19,20 +19,9 @@ namespace AppTest.Business.Imp
         public override void Loading()
         {
 
-            HashAlbianObjectManager.RegisterHandler("IdRouting", AssemblyManager.GetFullTypeName(typeof(User)), HashAlbianObjectHandlerUser);
-            HashAlbianObjectManager.RegisterHandler("CreateTimeRouting", AssemblyManager.GetFullTypeName(typeof(LogInfo)), HashAlbianObjectHandlerLog);
+            HashAlbianObjectManager.RegisterHandler(AssemblyManager.GetFullTypeName(typeof(LogInfo)), HashAlbianObjectHandlerLog);
             base.Loading();
         }
-
-        private string HashAlbianObjectHandlerUser(IAlbianObject target)
-        {
-            return string.Format("_{0}", Math.Abs(target.Id.GetHashCode() % 3));
-        }
-        //private string HashAlbianObjectHandlerByCreatrTime(IAlbianObject target)
-        //{
-        //    IBizOffer bizoffer = (IBizOffer)target;
-        //    return string.Format("_{0}", Math.Abs(bizoffer.CreateTime.GetHashCode() % 3));
-        //}
         private string HashAlbianObjectHandlerLog(IAlbianObject target)
         {
             ILogInfo user = (ILogInfo)target;
@@ -53,11 +42,38 @@ namespace AppTest.Business.Imp
             log.CreateTime = DateTime.Now;
             log.Creator = bizoffer.Id;
             log.Id = AlbianObjectFactory.CreateId("Log");
-            log.Style = InfoStyle.Registr;
+            log.Style = InfoStyle.Publish;
 
             IList<IAlbianObject> list = new List<IAlbianObject> {bizoffer, log};
             IBizofferDao dao = AlbianServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
             return dao.Create(list);
+        }
+
+        public virtual bool Modify(IBizOffer bizoffer)
+        {
+            ILogInfo log = AlbianObjectFactory.CreateInstance<LogInfo>();
+            log.Content = string.Format("修改发布单，发布单id为:{0}", bizoffer.Id);
+            log.CreateTime = DateTime.Now;
+            log.Creator = bizoffer.Id;
+            log.Id = AlbianObjectFactory.CreateId("Log");
+            log.Style = InfoStyle.Publish;
+
+            IList<IAlbianObject> list = new List<IAlbianObject> { bizoffer, log };
+            IBizofferDao dao = AlbianServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
+            return dao.Modify(list);
+        }
+
+        public virtual IBizOffer FindBizOffer(string id)
+        {
+            IBizofferDao dao = AlbianServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
+            return dao.Find("IdRouting", id);
+            
+        }
+
+        public virtual IBizOffer LoadBizOffer(string id)
+        {
+            IBizofferDao dao = AlbianServiceRouter.ObjectGenerator<BizofferDao, IBizofferDao>();
+            return dao.Load("IdRouting", id);
         }
 
         #endregion

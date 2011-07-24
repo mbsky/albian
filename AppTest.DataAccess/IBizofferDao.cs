@@ -8,7 +8,9 @@ namespace AppTest.DataAccess
     public interface IBizofferDao
     {
         bool Create(IList<IAlbianObject> bizoffer);
-        IBizOffer Load(string id);
+        bool Modify(IList<IAlbianObject> bizoffer);
+        IBizOffer Load(string routerName,string id);
+        IBizOffer Find(string routerName,string id);
         IList<BizOffer> FindBizoffer();
     }
 }
