@@ -76,6 +76,7 @@
     <Compile Include="Model\AlbianObjectFilter.cs" />
     <Compile Include="Model\FilterCondition.cs" />
     <Compile Include="Model\OrderByCondition.cs" />
+    <Compile Include="Notify\IConnectionNotify.cs" />
     <Compile Include="Parser\IPersistenceParser.cs" />
     <Compile Include="Parser\IStorageParser.cs" />
     <Compile Include="PersistenceException.cs" />

@@ -93,6 +93,7 @@ namespace Albian.Persistence.Imp.Parser.Impl
             object oIntegratedSecurity;
             object oDbClass;
             object oCharset;
+            object oTransactional;
 
             foreach (XmlNode n in node.ChildNodes)
             {
@@ -196,6 +197,14 @@ namespace Albian.Persistence.Imp.Parser.Impl
                             if (XmlFileParser.TryGetNodeValue(n, out oCharset))
                             {
                                 storageAttribute.Charset = oCharset.ToString().Trim();
+                            }
+                            break;
+                        }
+                    case "Transactional":
+                        {
+                            if (XmlFileParser.TryGetNodeValue(n, out oTransactional))
+                            {
+                                storageAttribute.Transactional = bool.Parse(oTransactional.ToString().Trim());
                             }
                             break;
                         }

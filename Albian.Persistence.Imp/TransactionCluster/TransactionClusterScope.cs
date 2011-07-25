@@ -8,9 +8,11 @@ using System.Reflection;
 using Albian.Persistence.Context;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.ConnectionPool;
+using Albian.Persistence.Imp.Notify;
 using Albian.Persistence.Imp.Parser.Impl;
 using Albian.Persistence.Model;
 using log4net;
+using Albian.Kernel.Service.Impl;
 
 #endregion
 
@@ -92,7 +94,7 @@ namespace Albian.Persistence.Imp.TransactionCluster
                             cmd.Dispose();
                         }
                     }
-                    if (null != storageContext.Transaction)
+                    if (storageContext.Storage.Transactional && null != storageContext.Transaction)
                     {
                         storageContext.Transaction.Dispose();
                     }
@@ -128,7 +130,10 @@ namespace Albian.Persistence.Imp.TransactionCluster
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
-                context.Value.Transaction.Commit();
+                if (context.Value.Storage.Transactional)
+                {
+                    context.Value.Transaction.Commit();
+                }
                 _state = TransactionClusterState.Commiting;
             }
         }
@@ -137,7 +142,10 @@ namespace Albian.Persistence.Imp.TransactionCluster
         {
             foreach (KeyValuePair<string, IStorageContext> context in storageContexts)
             {
-                context.Value.Transaction.Rollback();
+                if (context.Value.Storage.Transactional)
+                {
+                    context.Value.Transaction.Rollback();
+                }
             }
         }
 
@@ -165,15 +173,36 @@ namespace Albian.Persistence.Imp.TransactionCluster
                         :
                             DatabaseFactory.GetDbConnection(storageContext.Storage.DatabaseStyle, sConnection);
 
-                if (ConnectionState.Open != storageContext.Connection.State)
-                    storageContext.Connection.Open();
-                storageContext.Transaction = storageContext.Connection.BeginTransaction(IsolationLevel.ReadUncommitted);
+                try
+                {
+                    if (ConnectionState.Open != storageContext.Connection.State)
+                        storageContext.Connection.Open();
+                }
+                catch (Exception exc)
+                {
+                    IConnectionNotify notify = AlbianServiceRouter.GetService<IConnectionNotify>();
+                    if (null != notify)
+                    {
+                        Logger.Info("send message when open database is error.");
+                        string msg = string.Format("Server:{0},Database:{1},Exception Message:{2}.",storageContext.Storage.Server,storageContext.Storage.Database,exc.Message);
+                        notify.SendMessage(msg);
+                    }
+                    throw exc;
+                }
+                if (storageContext.Storage.Transactional)
+                {
+                    storageContext.Transaction =
+                        storageContext.Connection.BeginTransaction(IsolationLevel.ReadUncommitted);
+                }
                 foreach (IFakeCommandAttribute fc in storageContext.FakeCommand)
                 {
                     IDbCommand cmd = storageContext.Connection.CreateCommand();
                     cmd.CommandText = fc.CommandText;
                     cmd.CommandType = CommandType.Text;
-                    cmd.Transaction = storageContext.Transaction;
+                    if (storageContext.Storage.Transactional)
+                    {
+                        cmd.Transaction = storageContext.Transaction;
+                    }
                     foreach (DbParameter para in fc.Paras)
                     {
                         cmd.Parameters.Add(para);

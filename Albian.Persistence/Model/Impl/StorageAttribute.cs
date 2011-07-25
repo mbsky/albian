@@ -22,6 +22,7 @@ namespace Albian.Persistence.Model.Impl
         private int _timeout = 15;
         private string _uid = string.Empty;
         private string _charset = "gb2312";
+        private bool _transactional = true;
 
         #region IStorageAttribute Members
 
@@ -95,6 +96,12 @@ namespace Albian.Persistence.Model.Impl
         {
             get { return _charset; }
             set { _charset = value; }
+        }
+
+        public virtual bool Transactional
+        {
+            get { return _transactional; }
+            set { _transactional = value; }
         }
 
         #endregion

@@ -20,5 +20,6 @@ namespace Albian.Persistence.Model
         bool IntegratedSecurity { get; set; }
         DatabaseStyle DatabaseStyle { get; set; }
         string Charset { get; set; }
+        bool Transactional { get; set; }
     }
 }
