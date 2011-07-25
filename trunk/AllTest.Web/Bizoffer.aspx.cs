@@ -9,6 +9,7 @@ using Albian.Persistence.Imp;
 using AppTest.Business;
 using AppTest.Model;
 using AppTest.Model.Imp;
+using System.Diagnostics;
 
 namespace AllTest.Web
 {
@@ -26,6 +27,8 @@ namespace AllTest.Web
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             IBizOffer bizoffer = AlbianObjectFactory.CreateInstance<BizOffer>();
             bizoffer.Id = AlbianObjectFactory.CreateId("BOFF");
             bizoffer.CreateTime = DateTime.Now;
@@ -52,6 +55,9 @@ namespace AllTest.Web
                 ClientScript.RegisterClientScriptBlock(this.GetType(), "Save",
                                                        "<script language=\"javascript\" type=\"text/javascript\">alert(\"Create Fail!\");</script>");
             }
+            sw.Stop();
+            Response.Write(sw.ElapsedMilliseconds);
+
 
         }
 
