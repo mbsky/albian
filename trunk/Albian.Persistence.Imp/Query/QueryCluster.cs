@@ -57,6 +57,26 @@ namespace Albian.Persistence.Imp.Query
             {
                 dr.Close();
                 dr.Dispose();
+                foreach (KeyValuePair<string, IStorageContext> kv in task.Context)
+                {
+                    if(null != kv.Value.Connection)
+                    {
+                        if (ConnectionState.Closed != kv.Value.Connection.State)
+                        {
+                            kv.Value.Connection.Close();
+                        }
+                        if (kv.Value.Storage.Pooling)
+                        {
+                            DbConnectionPoolManager.RetutnConnection(kv.Value.StorageName, kv.Value.Connection);
+                        }
+                        else
+                        {
+                            //kv.Value.StorageName,
+                            kv.Value.Connection.Dispose();
+                            //conn = null;
+                        }
+                    }
+                }
             }
         }
 
@@ -160,6 +180,8 @@ namespace Albian.Persistence.Imp.Query
         {
             IStorageContext[] storageContexts = new IStorageContext[task.Context.Values.Count];
             task.Context.Values.CopyTo(storageContexts, 0);
+            //task.Context.
+            //IStorageContext storageContext = task.Context.
             IStorageContext storageContext = storageContexts[0];
 
             string sConnection = StorageParser.BuildConnectionString(storageContext.Storage);

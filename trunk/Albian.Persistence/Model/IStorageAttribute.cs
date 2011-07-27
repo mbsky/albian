@@ -21,5 +21,6 @@ namespace Albian.Persistence.Model
         DatabaseStyle DatabaseStyle { get; set; }
         string Charset { get; set; }
         bool Transactional { get; set; }
+        bool IsHealth { get; set; }
     }
 }

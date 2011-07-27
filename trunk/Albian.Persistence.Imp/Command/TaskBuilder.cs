@@ -371,7 +371,7 @@ namespace Albian.Persistence.Imp.Command
 
         public ITask BuildQueryTask<T>(string rountingName, int top, IFilterCondition[] where,
                                        IOrderByCondition[] orderby)
-            where T : class, IAlbianObject,new()
+            where T : class, IAlbianObject, new()
         {
             ITask task = new Task();
             IFakeCommandBuilder fakeBuilder = new FakeCommandBuilder();

@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Common;
 using System.Reflection;
 using Albian.Persistence.Context;
+using Albian.Persistence.Imp.Cache;
 using Albian.Persistence.Imp.Command;
 using Albian.Persistence.Imp.ConnectionPool;
 using Albian.Persistence.Imp.Notify;
@@ -144,7 +145,15 @@ namespace Albian.Persistence.Imp.TransactionCluster
             {
                 if (context.Value.Storage.Transactional)
                 {
-                    context.Value.Transaction.Rollback();
+                    try
+                    {
+                        context.Value.Transaction.Rollback();
+                    }
+                    catch (Exception exc)
+                    {
+                        if (null != Logger)
+                            Logger.ErrorFormat("Rollback is error.Message:{0}.",exc.Message);
+                    }
                 }
             }
         }
@@ -180,6 +189,11 @@ namespace Albian.Persistence.Imp.TransactionCluster
                 }
                 catch (Exception exc)
                 {
+                    IStorageAttribute storageAttr = (IStorageAttribute)StorageCache.Get(storageContext.StorageName);
+                    storageAttr.IsHealth = false;
+                    UnhealthyStorage.Add(storageAttr.Name);
+                    if (null != Logger)
+                        Logger.WarnFormat("Storage:{0} can not open.Set the health is false and it not used until the health set true.",storageAttr.Name);
                     IConnectionNotify notify = AlbianServiceRouter.GetService<IConnectionNotify>();
                     if (null != notify)
                     {
