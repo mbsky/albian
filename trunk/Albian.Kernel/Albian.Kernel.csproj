@@ -62,6 +62,7 @@
     <Compile Include="Security\Impl\Encrypt.cs" />
     <Compile Include="Security\Impl\FreeEncrypt.cs" />
     <Compile Include="Security\MD5Mode.cs" />
+    <Compile Include="ServiceState.cs" />
     <Compile Include="Service\AssemblyManager.cs" />
     <Compile Include="Service\Impl\FreeAlbianService.cs" />
     <Compile Include="Service\Parser\FreeServiceConfigParser.cs" />
