@@ -60,6 +60,7 @@
     <Compile Include="Cache\PropertyCache.cs" />
     <Compile Include="Cache\ResultCache.cs" />
     <Compile Include="Cache\StorageCache.cs" />
+    <Compile Include="Cache\UnhealthyStorage.cs" />
     <Compile Include="Command\Interface\IFakeCommandBuilder.cs" />
     <Compile Include="Command\Interface\IStorageContextBuilder.cs" />
     <Compile Include="Context\StorageContext.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="ConnectionPool\Factory\MySqlConnectionFactory.cs" />
     <Compile Include="ConnectionPool\Factory\OracleConnectionFactory.cs" />
     <Compile Include="ConnectionPool\Factory\SqlServerConnectionFactory.cs" />
+    <Compile Include="Heartbeat\IStorageCheckService.cs" />
+    <Compile Include="Heartbeat\StorageCheckService.cs" />
     <Compile Include="Model\AlbianObjectFilter.cs" />
     <Compile Include="Model\FilterCondition.cs" />
     <Compile Include="Model\OrderByCondition.cs" />

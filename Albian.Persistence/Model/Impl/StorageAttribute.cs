@@ -23,6 +23,7 @@ namespace Albian.Persistence.Model.Impl
         private string _uid = string.Empty;
         private string _charset = "gb2312";
         private bool _transactional = true;
+        private bool _isHealth = true;
 
         #region IStorageAttribute Members
 
@@ -102,6 +103,12 @@ namespace Albian.Persistence.Model.Impl
         {
             get { return _transactional; }
             set { _transactional = value; }
+        }
+
+        public virtual bool IsHealth
+        {
+            get { return _isHealth; }
+            set { _isHealth = value; }
         }
 
         #endregion

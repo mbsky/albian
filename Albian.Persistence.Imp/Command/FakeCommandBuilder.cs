@@ -102,14 +102,11 @@ namespace Albian.Persistence.Imp.Command
                 return null;
             }
 
-            var sbInsert = new StringBuilder();
-            var sbCols = new StringBuilder();
-            var sbValues = new StringBuilder();
-
-            IList<DbParameter> paras = new List<DbParameter>();
+           
 
             //create the connection string
             IStorageAttribute storageAttr = (IStorageAttribute) StorageCache.Get(routing.StorageName);
+           
             if (null == storageAttr)
             {
                 if (null != Logger)
@@ -118,6 +115,19 @@ namespace Albian.Persistence.Imp.Command
                         routing.Name);
                 storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
             }
+
+            if (!storageAttr.IsHealth)
+            {
+                if(null != Logger)
+                    Logger.WarnFormat("Routing:{0},Storage:{1} is not health.", routing.Name, storageAttr.Name);
+                return null;
+            }
+
+            var sbInsert = new StringBuilder();
+            var sbCols = new StringBuilder();
+            var sbValues = new StringBuilder();
+
+            IList<DbParameter> paras = new List<DbParameter>();
 
             //create the hash table name
             string tableFullName = Utils.GetTableFullName(routing, target);
@@ -198,6 +208,13 @@ namespace Albian.Persistence.Imp.Command
                         "No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.",
                         routing.Name);
                 storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
+            }
+
+            if (!storageAttr.IsHealth)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("Routing:{0},Storage:{1} is not health.", routing.Name, storageAttr.Name);
+                return null;
             }
 
             //create the hash table name
@@ -299,6 +316,14 @@ namespace Albian.Persistence.Imp.Command
                         routing.Name);
                 storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
             }
+
+            if (!storageAttr.IsHealth)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("Routing:{0},Storage:{1} is not health.", routing.Name, storageAttr.Name);
+                return null;
+            }
+
 
             //create the hash table name
             string tableFullName = Utils.GetTableFullName(routing, target);
@@ -419,6 +444,13 @@ namespace Albian.Persistence.Imp.Command
                         "No {0} rounting mapping storage attribute in the sotrage cache.Use default storage.",
                         routing.Name);
                 storageAttr = (IStorageAttribute) StorageCache.Get(StorageParser.DefaultStorageName);
+            }
+
+            if (!storageAttr.IsHealth)
+            {
+                if (null != Logger)
+                    Logger.WarnFormat("Routing:{0},Storage:{1} is not health.", routing.Name, storageAttr.Name);
+                return null;
             }
 
             IDictionary<string, IMemberAttribute> members = objectAttribute.MemberAttributes;
