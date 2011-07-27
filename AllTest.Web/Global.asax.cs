@@ -9,6 +9,7 @@ using System.Web.SessionState;
 using Albian.Kernel;
 using log4net;
 using log4net.Config;
+using System.Threading;
 
 namespace AllTest.Web
 {
@@ -37,12 +38,11 @@ namespace AllTest.Web
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-
+            AlbianBootService.RequestHandler();
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
-
         }
 
         protected void Application_Error(object sender, EventArgs e)
