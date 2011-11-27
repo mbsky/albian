@@ -12,9 +12,8 @@ namespace Albian.Persistence.Model.Impl
     {
         private string _name = string.Empty;
         private string _owner = string.Empty;
-        private PermissionMode _permission = PermissionMode.WR;
-        private string _storageName = string.Empty;
-        private string _tableName = string.Empty;
+        private string _storage = string.Empty;
+        private string _baseTableName = string.Empty;
 
         #region IRoutingAttribute Members
 
@@ -30,10 +29,10 @@ namespace Albian.Persistence.Model.Impl
         /// <summary>
         /// table名称
         /// </summary>
-        public virtual string TableName
+        public virtual string BaseTableName
         {
-            get { return _tableName; }
-            set { _tableName = value; }
+            get { return _baseTableName; }
+            set { _baseTableName = value; }
         }
 
         /// <summary>
@@ -45,16 +44,10 @@ namespace Albian.Persistence.Model.Impl
             set { _owner = value; }
         }
 
-        public virtual string StorageName
+        public virtual string Storage
         {
-            get { return _storageName; }
-            set { _storageName = value; }
-        }
-
-        public PermissionMode Permission
-        {
-            get { return _permission; }
-            set { _permission = value; }
+            get { return _storage; }
+            set { _storage = value; }
         }
 
         #endregion

@@ -11,23 +11,12 @@ namespace Albian.Persistence.Model.Impl
     public class AlbianObjectAttribute : IObjectAttribute
     {
         private ICacheAttribute _cache;
-        private string _implement = string.Empty;
-        private string _interface = string.Empty;
-        private IDictionary<string, IMemberAttribute> _memberAttributes; //new Dictionary<string, IMemberAttribute>();
-        private IDictionary<string, IMemberAttribute> _primaryKeys; // new Dictionary<string, IMemberAttribute>();
-        private IRoutingAttribute _rountingTemplate;
-        private IDictionary<string, IRoutingAttribute> _routingAttributes; // new List<IRoutingAttribute>();
+        private string _type = string.Empty;
+        private IDictionary<string, IMemberAttribute> _memberAttributes;
+        private IDictionary<string, IMemberAttribute> _primaryKeys;
+        private IRoutingAttribute _defaultRounting;
 
         #region IObjectAttribute Members
-
-        /// <summary>
-        /// 存储上下文
-        /// </summary>
-        public virtual IDictionary<string, IRoutingAttribute> RoutingAttributes
-        {
-            get { return _routingAttributes; }
-            set { _routingAttributes = value; }
-        }
 
         /// <summary>
         /// 属性的成员
@@ -44,16 +33,10 @@ namespace Albian.Persistence.Model.Impl
             set { _primaryKeys = value; }
         }
 
-        public virtual string Implement
+        public virtual string Type
         {
-            get { return _implement; }
-            set { _implement = value; }
-        }
-
-        public virtual string Interface
-        {
-            get { return _interface; }
-            set { _interface = value; }
+            get { return _type; }
+            set { _type = value; }
         }
 
         public ICacheAttribute Cache
@@ -62,10 +45,10 @@ namespace Albian.Persistence.Model.Impl
             set { _cache = value; }
         }
 
-        public virtual IRoutingAttribute RountingTemplate
+        public virtual IRoutingAttribute DefaultRounting
         {
-            get { return _rountingTemplate; }
-            set { _rountingTemplate = value; }
+            get { return _defaultRounting; }
+            set { _defaultRounting = value; }
         }
 
         #endregion
