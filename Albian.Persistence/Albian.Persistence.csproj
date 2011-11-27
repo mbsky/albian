@@ -45,35 +45,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\IStorageContext.cs" />
-    <Compile Include="Context\ITaskContext.cs" />
     <Compile Include="ConnectionPool\IConnectionPool.cs" />
     <Compile Include="ConnectionPool\IPoolableConnectionFactory.cs" />
+    <Compile Include="Context\IRoutingMapping.cs" />
+    <Compile Include="Context\IStorageContext.cs" />
+    <Compile Include="Context\ITaskContext.cs" />
     <Compile Include="Enum\DatabaseStyle.cs" />
     <Compile Include="Enum\LogicalOperation.cs" />
     <Compile Include="Enum\RelationalOperators.cs" />
     <Compile Include="Enum\SortStyle.cs" />
-    <Compile Include="Enum\PermissionMode.cs" />
     <Compile Include="IAlbianObject.cs" />
     <Compile Include="IStorageContextBuilder.cs" />
     <Compile Include="ITaskBuilder.cs" />
+    <Compile Include="Model\IAlbianObjectFilter.cs" />
     <Compile Include="Model\ICacheAttribute.cs" />
-    <Compile Include="Model\Impl\FreeAlbianObject.cs" />
+    <Compile Include="Model\IFakeCommandAttribute.cs" />
+    <Compile Include="Model\IFilterCondition.cs" />
+    <Compile Include="Model\IMemberAttribute.cs" />
     <Compile Include="Model\Impl\AlbianMemberAttribute.cs" />
     <Compile Include="Model\Impl\AlbianObjectAttribute.cs" />
     <Compile Include="Model\Impl\CacheAttribute.cs" />
     <Compile Include="Model\Impl\FakeCommandAttribute.cs" />
-    <Compile Include="Model\IAlbianObjectFilter.cs" />
-    <Compile Include="Model\IFakeCommandAttribute.cs" />
-    <Compile Include="Model\IFilterCondition.cs" />
-    <Compile Include="Model\IMemberAttribute.cs" />
+    <Compile Include="Model\Impl\FreeAlbianObject.cs" />
+    <Compile Include="Model\Impl\RoutingAttribute.cs" />
+    <Compile Include="Model\Impl\RoutingsAttribute.cs" />
+    <Compile Include="Model\Impl\StorageAttribute.cs" />
     <Compile Include="Model\IObjectAttribute.cs" />
     <Compile Include="Model\IOrderByCondition.cs" />
     <Compile Include="Model\IReflectMember.cs" />
     <Compile Include="Model\IRoutingAttribute.cs" />
+    <Compile Include="Model\IRoutingsAttribute.cs" />
     <Compile Include="Model\IStorageAttribute.cs" />
-    <Compile Include="Model\Impl\RoutingAttribute.cs" />
-    <Compile Include="Model\Impl\StorageAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
