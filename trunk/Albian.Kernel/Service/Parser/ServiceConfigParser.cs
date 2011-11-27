@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using Albian.Foundation;
 using Albian.Kernel.Service.Impl;
 using log4net;
 
@@ -37,33 +38,25 @@ namespace Albian.Kernel.Service.Parser
                 throw new ArgumentNullException("node");
             }
             object oId;
-            object oImplement;
-            object oInterface;
+            object oType;
 
-            if (!XmlFileParser.TryGetAttributeValue(node, "Implement", out oImplement))
+            if (!XmlFileParserService.TryGetAttributeValue(node, "Type", out oType))
             {
                 if (null != Logger)
                     Logger.Error("There is not 'Implement' config item in the service.config.");
                 throw new ServiceException("There is not 'Implement' config item in the service.config.");
             }
-            if (!XmlFileParser.TryGetAttributeValue(node, "Interface", out oInterface))
-            {
-                if (null != Logger)
-                    Logger.Error("There is not 'Interface' config item in the service.config.");
-                throw new ServiceException("There is not 'Interface' config item in the service.config.");
-            }
 
-            if (!XmlFileParser.TryGetAttributeValue(node, "Id", out oId))
+            if (!XmlFileParserService.TryGetAttributeValue(node, "Id", out oId))
             {
                 if (null != Logger)
-                    Logger.WarnFormat("There is not 'Id' config-item with the {0} in the service.config,then replace interface {1} to the id.",oImplement,oInterface);
-                oId = oInterface;
+                    Logger.ErrorFormat("There is not 'Id' config-item with the {0} in the service.config.",oType);
+                throw new ServiceException(string.Format("There is not 'Id' config-item with the {0} in the service.config.", oType));
             }
             IAlbianServiceAttrbuite serviceAttr = new AlbianServiceAttrbuite
                                                       {
                                                           Id = oId.ToString(),
-                                                          Implement = oImplement.ToString(),
-                                                          Interface = oInterface.ToString()
+                                                          Type = oType.ToString(),
                                                       };
             return serviceAttr;
         }

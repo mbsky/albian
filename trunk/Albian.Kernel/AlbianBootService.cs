@@ -5,7 +5,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Web;
-using Albian.Kernel.Cached.Impl;
+using Albian.Foundation.Chunk;
 using Albian.Kernel.Service;
 using Albian.Kernel.Service.Parser;
 using log4net;
@@ -18,15 +18,23 @@ namespace Albian.Kernel
     {
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static AlbianState _state = AlbianState.UnStart;
+
+        private static IAlbianChunk _service;
+        internal static IAlbianChunk AlbianService
+        {
+            get { return _service; }
+        }
+
         public static void Start()
         {
             new Thread(
                 delegate()
                 {
                     _state = AlbianState.Starting;
-                    IXmlParser parser = new ServiceConfigParser();
-                    parser.Init("config/Service.config");
-                    IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = (IDictionary<string, IAlbianServiceAttrbuite>)ServiceInfoCached.Get(FreeServiceConfigParser.ServiceKey);
+                    _service = new AlbianChunk("AlbianService");
+                    IConfigParser parser = new ServiceConfigParser();
+                    parser.Init("config/service.config");
+                    IDictionary<string, IAlbianServiceAttrbuite> serviceInfos = FreeServiceConfigParser.ServiceConfigInfo;
                     bool isSuccess = true;
                     IDictionary<string, IAlbianServiceAttrbuite> failServicesInfos = new Dictionary<string, IAlbianServiceAttrbuite>();
                     int failCountBeforeTimes = 0;
@@ -42,7 +50,7 @@ namespace Albian.Kernel
                                     Logger.ErrorFormat("Refer to each other when service loading!");
                                     foreach (KeyValuePair<string, IAlbianServiceAttrbuite> kv in failServicesInfos)
                                     {
-                                        Logger.ErrorFormat("Refer to each other!id:{0},impl:{1}", kv.Value.Id, kv.Value.Implement);
+                                        Logger.ErrorFormat("Refer to each other!id:{0},Type:{1}", kv.Value.Id, kv.Value.Type);
                                     }
                                     Logger.Error("Please examine the service id above the line!");
                                 }
@@ -63,12 +71,12 @@ namespace Albian.Kernel
                         {
                             try
                             {
-                                Type impl = Type.GetType(kv.Value.Implement);
+                                Type impl = Type.GetType(kv.Value.Type);
                                 IAlbianService service = (IAlbianService)Activator.CreateInstance(impl);
                                 service.State = ServiceState.Loading;
                                 service.Loading();
                                 service.State = ServiceState.Running;
-                                ServiceCached.InsertOrUpdate(kv.Key, service);
+                                _service.Set(kv.Key, service);
                             }
                             catch
                             {
